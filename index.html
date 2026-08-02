@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Reese Ferguson — Portfolio</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23000000'/%3E%3Crect x='3' y='3' width='10' height='10' fill='%23d97757'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #000000;
+    --surface: #0f0f0f;
+    --accent: #d97757;
+    --accent-dim: color-mix(in srgb, var(--accent) 55%, transparent);
+    --accent-faint: color-mix(in srgb, var(--accent) 30%, transparent);
+    --accent-glow: color-mix(in srgb, var(--accent) 9%, transparent);
+    --text: #faf9f5;
+    --text-body: #dedad1;
+    --muted: #8e8e8e;
+    --faint: #7a7a7a;
+    --rule: #262626;
+    --mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  button { font: inherit; background: none; border: none; color: inherit; cursor: pointer; }
+
+  /* ---------- Header (name only, no nav) ---------- */
+  .site-header { padding: 28px 48px; }
+
+  .logo {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+
+  /* ---------- Hero terminal ---------- */
+  .hero {
+    flex: 1;
+    width: min(1160px, calc(100% - 96px));
+    margin: 0 auto;
+    padding: 24px 0 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .term-line { font-size: 13px; line-height: 22px; color: var(--muted); }
+  .term-line .cmd { color: var(--text); }
+
+  .term-box {
+    position: relative;
+    display: flex;
+    margin-top: 14px;
+    border: 1px solid var(--accent-dim);
+    border-radius: 8px;
+    background: var(--surface);
+  }
+
+  .term-box-title {
+    position: absolute;
+    top: 0;
+    left: 20px;
+    transform: translateY(-50%);
+    padding: 0 10px;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+    /* top half matches the page, bottom half the box, so the chip reads as a break in the border line */
+    background: linear-gradient(to bottom, var(--bg) 50%, var(--surface) 50%);
+  }
+
+  .term-left {
+    flex: 1.15;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 26px;
+    padding: 34px 32px 22px;
+    text-align: center;
+  }
+
+  .welcome {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 26px;
+  }
+
+  .welcome .phrase { color: var(--accent); }
+
+  .cursor {
+    display: inline-block;
+    width: 10px;
+    height: 19px;
+    vertical-align: -3px;
+    background: var(--accent);
+    animation: blink 1.1s steps(1) infinite;
+  }
+
+  .avatar {
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent); /* single-color pixel logos inherit the active theme via currentColor */
+  }
+
+  .avatar svg { display: block; }
+  .avatar svg[hidden] { display: none; }
+
+  .term-left-info { margin-top: auto; }
+
+  .tools-line { font-size: 13.5px; line-height: 24px; color: var(--muted); }
+  .tools-line .sep { color: var(--faint); padding: 0 2px; }
+
+  .tool {
+    color: var(--muted);
+    padding: 1px 2px;
+    transition: color 120ms ease;
+  }
+
+  .tool:hover { color: var(--text); }
+  .tool.is-active { color: var(--accent); font-weight: 700; }
+
+  .path-line { font-size: 13px; color: var(--faint); margin-top: 2px; }
+
+  .term-divider {
+    width: 1px;
+    align-self: stretch;
+    background: var(--accent-faint);
+  }
+
+  .term-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 22px 32px;
+  }
+
+  /* horizontal rule between right-column sections, edge to edge like the real TUI */
+  .h-rule {
+    height: 1px;
+    background: var(--accent-faint);
+    margin: 20px -32px;
+  }
+
+  .panel-heading {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .about-copy {
+    font-size: 13.5px;
+    line-height: 22px;
+    color: var(--text-body);
+  }
+
+  .project-row {
+    font-size: 13.5px;
+    line-height: 24px;
+    color: var(--text);
+    white-space: pre-wrap;
+  }
+
+  .project-row .desc { color: var(--muted); }
+
+  /* ---------- Below the box ---------- */
+  .flavor-line {
+    margin-top: 26px;
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+
+  .flavor-line .spark { color: var(--accent); }
+  .flavor-line .slash { color: var(--text); }
+
+  /* ---------- Question block ---------- */
+  .ask-box {
+    position: relative;
+    margin-top: 26px;
+    border: 1px solid var(--accent-dim);
+    border-radius: 8px;
+    padding: 16px 10px 10px;
+  }
+
+  .ask-title {
+    position: absolute;
+    top: 0;
+    left: 14px;
+    transform: translateY(-50%);
+    padding: 0 8px;
+    font-size: 13px;
+    color: var(--accent);
+    background: var(--bg);
+  }
+
+  .ask-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    text-align: left;
+    padding: 7px 10px;
+    border-radius: 4px;
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+
+  .ask-caret { width: 12px; color: transparent; flex-shrink: 0; }
+  .ask-label { color: inherit; }
+  .ask-desc { color: var(--faint); }
+
+  .ask-option.is-selected { background: var(--accent-glow); color: var(--text); }
+  .ask-option.is-selected .ask-caret { color: var(--accent); }
+  .ask-option.is-selected .ask-desc { color: var(--muted); }
+
+  /* ---------- Output log ---------- */
+  .term-output {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13.5px;
+    line-height: 22px;
+  }
+
+  .term-output:not(:empty) { margin-top: 20px; }
+
+  .out-line { display: flex; gap: 10px; }
+  .out-line .marker { flex-shrink: 0; }
+  .out-echo { color: var(--faint); }
+  .out-resp { color: var(--text-body); }
+  .out-resp .marker { color: var(--accent); }
+  .out-err { color: var(--muted); }
+  .out-err .marker { color: var(--accent); }
+
+  /* ---------- Input ---------- */
+  .input-area { margin-top: 22px; }
+
+  .input-rule { height: 1px; background: var(--rule); }
+
+  .input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 4px;
+  }
+
+  .input-row .chevron { color: var(--accent); font-size: 15px; flex-shrink: 0; }
+
+  #cmd {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    font: inherit;
+    font-size: 14px;
+    color: var(--text);
+    caret-color: var(--accent);
+  }
+
+  #cmd::placeholder { color: var(--faint); }
+  #cmd:not(:focus)::placeholder { color: transparent; }
+
+  .input-cursor {
+    display: inline-block;
+    width: 9px;
+    height: 17px;
+    background: var(--text);
+    animation: blink 1.1s steps(1) infinite;
+  }
+
+  .input-row:focus-within .input-cursor, .input-area.has-text .input-cursor { display: none; }
+
+  .suggest {
+    display: none;
+    margin-top: 8px;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: var(--surface);
+    padding: 6px;
+  }
+
+  .suggest.is-open { display: block; }
+
+  .suggest-row {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    width: 100%;
+    text-align: left;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 13.5px;
+  }
+
+  .suggest-row .s-cmd { color: var(--text); }
+  .suggest-row .s-desc { color: var(--muted); }
+  .suggest-row.is-selected { background: var(--accent-glow); }
+  .suggest-row.is-selected .s-cmd { color: var(--accent); }
+
+  .shortcuts-hint {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--faint);
+  }
+
+  @keyframes blink { 50% { opacity: 0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cursor, .input-cursor { animation: none; }
+  }
+
+  /* ---------- Local-only text edit mode (inert unless served from localhost) ---------- */
+  #editModeToggle {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 50;
+    padding: 8px 14px;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  #editModeToggle:hover { color: var(--text); border-color: var(--accent-dim); }
+  #editModeToggle.is-on { color: var(--accent); border-color: var(--accent); }
+
+  .is-editable {
+    outline: 1px dashed var(--accent-faint);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  .is-editable:focus { outline-style: solid; outline-color: var(--accent); }
+
+  @media (max-width: 980px) {
+    .site-header { padding: 24px 28px; }
+    .hero { width: calc(100% - 56px); justify-content: flex-start; padding-top: 12px; }
+    .term-box { flex-direction: column; }
+    .term-divider { width: auto; height: 1px; align-self: stretch; }
+    .term-left-info { margin-top: 6px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="logo" href="#">Reese Ferguson</a>
+  </header>
+
+  <section class="hero">
+    <p class="term-line">Last login: Tue Jul 22 20:44:24 on console</p>
+    <p class="term-line">reese@portfolio ~ % <span class="cmd">claude</span></p>
+
+    <div class="term-box">
+      <span class="term-box-title">Reese's Portfolio v0.0.2</span>
+
+      <div class="term-left">
+        <p class="welcome">Reese is <span class="phrase" id="phrase"></span>&nbsp;<span class="cursor"></span></p>
+
+        <div class="avatar" id="avatar">
+          <!-- Claude Code — the resident pixel mascot (follows the accent color) -->
+          <svg data-logo="claude" width="96" height="72" viewBox="0 0 96 72" shape-rendering="crispEdges" aria-label="Claude Code pixel mascot">
+            <g fill="currentColor">
+              <rect x="24" y="0"  width="48" height="12" />
+              <rect x="12" y="12" width="72" height="12" />
+              <rect x="0"  y="24" width="24" height="12" />
+              <rect x="36" y="24" width="24" height="12" />
+              <rect x="72" y="24" width="24" height="12" />
+              <rect x="0"  y="36" width="96" height="12" />
+              <rect x="12" y="48" width="72" height="12" />
+              <rect x="12" y="60" width="12" height="12" />
+              <rect x="72" y="60" width="12" height="12" />
+            </g>
+            <g fill="#141414">
+              <rect x="24" y="24" width="12" height="12" />
+              <rect x="60" y="24" width="12" height="12" />
+            </g>
+          </svg>
+
+          <!-- Figma — the five brand shapes, pixelated -->
+          <svg data-logo="figma" width="72" height="72" viewBox="0 0 72 72" shape-rendering="crispEdges" aria-label="Figma pixel logo" hidden>
+            <rect x="12" y="0"  width="24" height="24" fill="#f24e1e" />
+            <rect x="36" y="0"  width="24" height="24" fill="#ff7262" />
+            <rect x="12" y="24" width="24" height="24" fill="#a259ff" />
+            <rect x="36" y="24" width="24" height="24" fill="#1abcfe" />
+            <rect x="12" y="48" width="24" height="24" fill="#0acf83" />
+          </svg>
+
+          <!-- Conductor — blocky C lettermark -->
+          <svg data-logo="conductor" width="72" height="72" viewBox="0 0 72 72" shape-rendering="crispEdges" aria-label="Conductor pixel logo" hidden>
+            <g fill="currentColor">
+              <rect x="12" y="0"  width="48" height="12" />
+              <rect x="0"  y="12" width="24" height="48" />
+              <rect x="48" y="12" width="12" height="12" />
+              <rect x="12" y="60" width="48" height="12" />
+              <rect x="48" y="48" width="12" height="12" />
+            </g>
+          </svg>
+
+          <!-- Paper — folded-corner page glyph -->
+          <svg data-logo="paper" width="72" height="72" viewBox="0 0 72 72" shape-rendering="crispEdges" aria-label="Paper pixel logo" hidden>
+            <g fill="currentColor">
+              <rect x="12" y="0"  width="36" height="12" />
+              <rect x="12" y="12" width="48" height="60" />
+            </g>
+            <rect x="48" y="12" width="12" height="12" fill="#000000" opacity="0.55" />
+          </svg>
+
+          <!-- Framer — descending staircase F-mark -->
+          <svg data-logo="framer" width="72" height="72" viewBox="0 0 72 72" shape-rendering="crispEdges" aria-label="Framer pixel logo" hidden>
+            <g fill="currentColor">
+              <rect x="0" y="6"  width="72" height="16" />
+              <rect x="0" y="28" width="48" height="16" />
+              <rect x="0" y="50" width="24" height="16" />
+            </g>
+          </svg>
+
+          <!-- Linear — parallel diagonal steps -->
+          <svg data-logo="linear" width="72" height="72" viewBox="0 0 72 72" shape-rendering="crispEdges" aria-label="Linear pixel logo" hidden>
+            <g fill="currentColor">
+              <rect x="0"  y="60" width="18" height="6" /><rect x="6"  y="54" width="18" height="6" />
+              <rect x="12" y="48" width="18" height="6" /><rect x="18" y="42" width="18" height="6" />
+              <rect x="24" y="36" width="18" height="6" /><rect x="30" y="30" width="18" height="6" />
+              <rect x="36" y="24" width="18" height="6" /><rect x="42" y="18" width="18" height="6" />
+              <rect x="48" y="12" width="18" height="6" /><rect x="54" y="6"  width="18" height="6" />
+              <rect x="0"  y="36" width="18" height="6" /><rect x="6"  y="30" width="18" height="6" />
+              <rect x="12" y="24" width="18" height="6" /><rect x="18" y="18" width="18" height="6" />
+              <rect x="24" y="12" width="18" height="6" />
+              <rect x="30" y="54" width="18" height="6" /><rect x="36" y="48" width="18" height="6" />
+              <rect x="42" y="42" width="18" height="6" /><rect x="48" y="36" width="18" height="6" />
+              <rect x="54" y="30" width="18" height="6" />
+            </g>
+          </svg>
+        </div>
+
+        <div class="term-left-info">
+          <p class="tools-line">
+            <button class="tool is-active" data-theme="claude">Claude Code</button><span class="sep">·</span
+            ><button class="tool" data-theme="conductor">Conductor</button><span class="sep">·</span
+            ><button class="tool" data-theme="figma">Figma</button><span class="sep">·</span
+            ><button class="tool" data-theme="framer">Framer</button><span class="sep">·</span
+            ><button class="tool" data-theme="linear">Linear</button><span class="sep">·</span
+            ><button class="tool" data-theme="paper">Paper</button>
+          </p>
+          <p class="path-line">~/reese/portfolio</p>
+        </div>
+      </div>
+
+      <div class="term-divider"></div>
+
+      <div class="term-right">
+        <div>
+          <h2 class="panel-heading">About me</h2>
+          <p class="about-copy">I'm Reese — a UX designer and business graduate who designs with AI in the loop. I shape interfaces in Figma and Paper, pressure-test them with real flows, then ship them with Claude Code. Less deck, more demo.</p>
+        </div>
+        <div class="h-rule"></div>
+        <div>
+          <h2 class="panel-heading">Recent projects</h2>
+          <p class="project-row">north-coast-bjj <span class="desc">— client project</span></p>
+          <p class="project-row">project-cadence <span class="desc">— case study, 2026</span></p>
+          <p class="project-row">databrew <span class="desc">— client project</span></p>
+          <p class="project-row">savr-app <span class="desc">— case study, 2026</span></p>
+        </div>
+      </div>
+    </div>
+
+    <p class="flavor-line"><span class="spark">✳</span> Open to opportunities · <span class="slash">/contact</span> to get in touch</p>
+
+    <div class="ask-box" id="askBox">
+      <span class="ask-title">Where would you like to go?</span>
+      <button class="ask-option is-selected" data-cmd="/about">
+        <span class="ask-caret">❯</span><span class="ask-label">1. About</span><span class="ask-desc">— who I am</span>
+      </button>
+      <button class="ask-option" data-cmd="/work">
+        <span class="ask-caret">❯</span><span class="ask-label">2. Work</span><span class="ask-desc">— selected projects</span>
+      </button>
+      <button class="ask-option" data-cmd="/contact">
+        <span class="ask-caret">❯</span><span class="ask-label">3. Contact</span><span class="ask-desc">— get in touch</span>
+      </button>
+    </div>
+
+    <div class="term-output" id="output" aria-live="polite"></div>
+
+    <div class="input-area" id="inputArea">
+      <div class="input-rule"></div>
+      <div class="input-row">
+        <span class="chevron">❯</span>
+        <span class="input-cursor"></span>
+        <input id="cmd" type="text" autocomplete="off" spellcheck="false" placeholder='try "/work" — or ? for shortcuts' aria-label="Command input" />
+      </div>
+      <div class="input-rule"></div>
+      <div class="suggest" id="suggest"></div>
+    </div>
+
+    <p class="shortcuts-hint">? for shortcuts</p>
+  </section>
+
+<script>
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Welcome typewriter ---------- */
+  const phrases = ["a UX designer", "a business graduate", "futureproof"];
+  const phraseEl = document.getElementById("phrase");
+  let editPaused = false;
+  let restartCycle = () => {};
+
+  if (reduced) {
+    phraseEl.textContent = phrases[0];
+  } else {
+    let pi = 0;
+    const TYPE = 55, ERASE = 30, HOLD = 1600, GAP = 400;
+
+    function typePhrase(text, at, done) {
+      if (editPaused) return;
+      if (at > text.length) return done();
+      phraseEl.textContent = text.slice(0, at);
+      setTimeout(() => typePhrase(text, at + 1, done), TYPE);
+    }
+
+    function erasePhrase(done) {
+      if (editPaused) return;
+      const t = phraseEl.textContent;
+      if (!t.length) return done();
+      phraseEl.textContent = t.slice(0, -1);
+      setTimeout(() => erasePhrase(done), ERASE);
+    }
+
+    function cycle() {
+      if (editPaused) return;
+      typePhrase(phrases[pi], 0, () => {
+        setTimeout(() => erasePhrase(() => {
+          pi = (pi + 1) % phrases.length;
+          setTimeout(cycle, GAP);
+        }), HOLD);
+      });
+    }
+
+    restartCycle = cycle;
+    cycle();
+  }
+
+  /* ---------- Tool themes ---------- */
+  const THEMES = {
+    claude:    "#d97757", // Claude Code
+    figma:     "#f24e1e", // Figma brand red-orange
+    conductor: "#eae8e6", // conductor.build theme color (warm cream) — tweak freely
+    paper:     "#81acec", // paper.design accent blue — tweak freely
+    framer:    "#2e6bff", // brand #0055ff, brightened for contrast on black
+    linear:    "#5e6ad2", // Linear indigo
+  };
+
+  const toolButtons = document.querySelectorAll(".tool");
+  const logos = document.querySelectorAll("#avatar svg");
+
+  function applyTheme(name) {
+    document.documentElement.style.setProperty("--accent", THEMES[name]);
+    toolButtons.forEach(b => b.classList.toggle("is-active", b.dataset.theme === name));
+    logos.forEach(l => l.toggleAttribute("hidden", l.dataset.logo !== name));
+  }
+
+  toolButtons.forEach(b => b.addEventListener("click", () => applyTheme(b.dataset.theme)));
+
+  /* ---------- Commands ---------- */
+  const COMMANDS = [
+    { cmd: "/about",   desc: "who I am",           out: "about — coming soon. This section is being built. (v0.0.2)" },
+    { cmd: "/work",    desc: "selected projects",  out: "work — coming soon. Case studies are being written up. (v0.0.2)" },
+    { cmd: "/contact", desc: "get in touch",       out: "contact — coming soon. For now: reesefergie@gmail.com" },
+    { cmd: "/north-coast-bjj", desc: "client project",   out: "north-coast-bjj — coming soon. A deep dive is on the way." },
+    { cmd: "/project-cadence", desc: "case study, 2026", out: "project-cadence — coming soon. A deep dive is on the way." },
+    { cmd: "/databrew",        desc: "client project",   out: "databrew — coming soon. A deep dive is on the way." },
+    { cmd: "/savr-app",        desc: "case study, 2026", out: "savr-app — coming soon. A deep dive is on the way." },
+  ];
+
+  const SHORTCUTS_TEXT = "shortcuts — /about, /work, /contact · /north-coast-bjj, /project-cadence, /databrew, /savr-app for project details · ↑↓ + enter picks an option above · click a tool name to re-theme the terminal";
+
+  const output = document.getElementById("output");
+  const MAX_LINES = 8;
+
+  function addLine(kind, marker, text) {
+    const line = document.createElement("p");
+    line.className = "out-line " + kind;
+    const m = document.createElement("span");
+    m.className = "marker";
+    m.textContent = marker;
+    const t = document.createElement("span");
+    line.append(m, t);
+    output.append(line);
+    while (output.children.length > MAX_LINES) output.firstChild.remove();
+
+    if (reduced) {
+      t.textContent = text;
+    } else {
+      let at = 0;
+      (function tick() {
+        if (at > text.length) return;
+        t.textContent = text.slice(0, at++);
+        setTimeout(tick, 8);
+      })();
+    }
+  }
+
+  function execute(raw) {
+    const v = raw.trim().replace(/\s+/g, " ");
+    if (!v) return;
+    addLine("out-echo", "❯", v);
+
+    if (v === "?") {
+      addLine("out-resp", "⏺", SHORTCUTS_TEXT);
+      return;
+    }
+
+    const match = COMMANDS.find(c => c.cmd.toLowerCase() === v.toLowerCase());
+    if (match) {
+      addLine("out-resp", "⏺", match.out);
+    } else if (v.startsWith("/")) {
+      addLine("out-err", "✗", "command not found: " + v + " · try ? for shortcuts");
+    } else {
+      addLine("out-err", "✗", "not a command: " + v + " · commands start with /");
+    }
+  }
+
+  /* ---------- Question block ---------- */
+  const options = [...document.querySelectorAll(".ask-option")];
+  let sel = 0;
+
+  function selectOption(i) {
+    sel = (i + options.length) % options.length;
+    options.forEach((o, k) => o.classList.toggle("is-selected", k === sel));
+  }
+
+  options.forEach((o, i) => {
+    o.addEventListener("mouseenter", () => selectOption(i));
+    o.addEventListener("click", () => { if (!editPaused) execute(o.dataset.cmd); });
+  });
+
+  /* ---------- Input + suggestions ---------- */
+  const input = document.getElementById("cmd");
+  const inputArea = document.getElementById("inputArea");
+  const suggest = document.getElementById("suggest");
+  let sugItems = [];
+  let sugSel = 0;
+
+  function renderSuggest() {
+    suggest.innerHTML = "";
+    sugItems.forEach((c, i) => {
+      const row = document.createElement("button");
+      row.className = "suggest-row" + (i === sugSel ? " is-selected" : "");
+      row.type = "button";
+      const cm = document.createElement("span");
+      cm.className = "s-cmd";
+      cm.textContent = c.cmd;
+      const d = document.createElement("span");
+      d.className = "s-desc";
+      d.textContent = c.desc;
+      row.append(cm, d);
+      row.addEventListener("mousedown", e => e.preventDefault()); // keep focus in the input
+      row.addEventListener("click", () => { closeSuggest(); input.value = ""; syncHasText(); execute(c.cmd); });
+      suggest.append(row);
+    });
+    suggest.classList.toggle("is-open", sugItems.length > 0);
+  }
+
+  function closeSuggest() {
+    sugItems = [];
+    suggest.classList.remove("is-open");
+    suggest.innerHTML = "";
+  }
+
+  function syncHasText() {
+    inputArea.classList.toggle("has-text", input.value.length > 0);
+  }
+
+  input.addEventListener("input", () => {
+    syncHasText();
+    const v = input.value.trim().toLowerCase();
+    if (v.startsWith("/")) {
+      sugItems = COMMANDS.filter(c => c.cmd.toLowerCase().startsWith(v) && c.cmd.toLowerCase() !== v);
+      sugSel = 0;
+      renderSuggest();
+    } else {
+      closeSuggest();
+    }
+  });
+
+  input.addEventListener("keydown", e => {
+    const open = suggest.classList.contains("is-open");
+    if (open && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
+      e.preventDefault();
+      sugSel = (sugSel + (e.key === "ArrowDown" ? 1 : -1) + sugItems.length) % sugItems.length;
+      renderSuggest();
+    } else if (open && e.key === "Tab") {
+      e.preventDefault();
+      input.value = sugItems[sugSel].cmd;
+      input.dispatchEvent(new Event("input"));
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (open) {
+        const chosen = sugItems[sugSel].cmd;
+        closeSuggest();
+        input.value = "";
+        syncHasText();
+        execute(chosen);
+      } else {
+        execute(input.value);
+        input.value = "";
+        syncHasText();
+      }
+    } else if (e.key === "Escape") {
+      closeSuggest();
+      input.blur();
+    }
+  });
+
+  input.addEventListener("blur", () => setTimeout(closeSuggest, 120));
+
+  /* ---------- Global keys: question nav + type-anywhere ---------- */
+  document.addEventListener("keydown", e => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (document.activeElement && document.activeElement.isContentEditable) return;
+    const inInput = document.activeElement === input;
+
+    if (!inInput || (input.value === "" && !suggest.classList.contains("is-open"))) {
+      if (e.key === "ArrowDown") { e.preventDefault(); selectOption(sel + 1); return; }
+      if (e.key === "ArrowUp")   { e.preventDefault(); selectOption(sel - 1); return; }
+    }
+
+    if (!inInput) {
+      if (e.key === "Enter") { e.preventDefault(); execute(options[sel].dataset.cmd); return; }
+      const n = parseInt(e.key, 10);
+      if (n >= 1 && n <= options.length) { e.preventDefault(); execute(options[n - 1].dataset.cmd); return; }
+      if (e.key.length === 1) input.focus(); // the keypress lands in the freshly focused input
+    }
+  });
+
+  /* ---------- Local-only text edit mode ---------- */
+  /* Gated on hostname, not a build flag, so this never ships live on the real domain. */
+  if (["localhost", "127.0.0.1"].includes(location.hostname)) {
+    const editBtn = document.createElement("button");
+    editBtn.id = "editModeToggle";
+    editBtn.type = "button";
+    editBtn.textContent = "✎ edit text";
+    document.body.append(editBtn);
+
+    const editableEls = document.querySelectorAll(
+      ".about-copy, .project-row, .panel-heading, .flavor-line, .term-box-title, .phrase, .path-line, .ask-label, .ask-desc"
+    );
+
+    let editOn = false;
+    editBtn.addEventListener("click", () => {
+      editOn = !editOn;
+      editPaused = editOn;
+      editBtn.classList.toggle("is-on", editOn);
+      editBtn.textContent = editOn ? "✓ editing — click to stop" : "✎ edit text";
+      editableEls.forEach(el => {
+        el.contentEditable = editOn;
+        el.classList.toggle("is-editable", editOn);
+      });
+      if (!editOn) restartCycle();
+    });
+  }
+</script>
+</body>
+</html>
