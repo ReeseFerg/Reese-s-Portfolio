@@ -649,7 +649,7 @@
 
   options.forEach((o, i) => {
     o.addEventListener("mouseenter", () => selectOption(i));
-    o.addEventListener("click", () => execute(o.dataset.cmd));
+    o.addEventListener("click", () => { if (!editPaused) execute(o.dataset.cmd); });
   });
 
   /* ---------- Input + suggestions ---------- */
