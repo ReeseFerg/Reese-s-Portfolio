@@ -326,6 +326,192 @@
     .cursor, .input-cursor { animation: none; }
   }
 
+  /* ---------- Header layout + nav ---------- */
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .site-nav { display: flex; align-items: center; gap: 18px; }
+
+  .nav-link {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 120ms ease;
+  }
+
+  .nav-link:hover { color: var(--text); }
+  .nav-link.is-active { color: var(--accent); }
+
+  /* ---------- Clickable project rows (terminal panel) ---------- */
+  button.project-row {
+    display: block;
+    width: 100%;
+    text-align: left;
+    transition: color 120ms ease;
+  }
+
+  button.project-row:hover { color: var(--accent); }
+  button.project-row:hover .desc { color: var(--accent-dim); }
+
+  .flavor-line .slash { cursor: pointer; }
+
+  /* ---------- Routed views ---------- */
+  .view { display: none; }
+  .view.is-active { display: block; }
+  .view:focus { outline: none; }
+
+  /* a routed page (case study / about / work / contact) takes over the whole screen — terminal hidden */
+  body.routed .hero { display: none; }
+  body.routed .view-inner { padding-top: 20px; }
+
+  .view-inner {
+    width: min(1160px, calc(100% - 96px));
+    margin: 0 auto;
+    padding: 48px 0 96px;
+  }
+
+  .crumb { font-size: 13px; color: var(--faint); margin-bottom: 10px; }
+
+  .view-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.01em;
+  }
+
+  .view-lead {
+    font-size: 14px;
+    line-height: 24px;
+    color: var(--text-body);
+    margin-top: 10px;
+    max-width: 60ch;
+  }
+
+  .view-lead .spark { color: var(--accent); }
+
+  /* work grid */
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-top: 32px;
+  }
+
+  .work-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+    text-decoration: none;
+    padding: 20px;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    background: var(--surface);
+    transition: border-color 120ms ease;
+  }
+
+  .work-card:hover { border-color: var(--accent-dim); }
+  .wc-title { font-size: 15px; font-weight: 700; color: var(--text); }
+  .wc-outcome { font-size: 13.5px; line-height: 21px; color: var(--muted); }
+  .wc-meta { font-size: 12.5px; color: var(--faint); margin-top: 4px; }
+  .wc-tag { color: var(--accent); }
+
+  /* case study */
+  .case-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin: 28px 0;
+    padding: 18px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .case-meta dt { font-size: 12px; color: var(--faint); }
+  .case-meta dd { font-size: 13.5px; color: var(--text-body); margin-top: 2px; }
+
+  .case-block { margin-top: 26px; max-width: 70ch; }
+
+  .case-block h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .case-block p { font-size: 14px; line-height: 24px; color: var(--text-body); }
+
+  .case-block .ai-note {
+    margin-top: 12px;
+    padding: 12px 14px;
+    border-left: 2px solid var(--accent-dim);
+    color: var(--muted);
+    font-size: 13.5px;
+  }
+
+  .back-link, .next-link {
+    display: inline-block;
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 120ms ease;
+  }
+
+  .back-link { margin-bottom: 18px; }
+  .next-link { margin-top: 40px; color: var(--accent); }
+  .back-link:hover, .next-link:hover { color: var(--accent); }
+
+  /* about + contact */
+  .about-lead {
+    font-size: 15px;
+    line-height: 25px;
+    color: var(--text-body);
+    margin-top: 12px;
+    max-width: 64ch;
+  }
+
+  .about-sub {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 30px 0 12px;
+  }
+
+  .tool-list { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
+
+  .tool-list li {
+    font-size: 13px;
+    color: var(--text-body);
+    border: 1px solid var(--rule);
+    border-radius: 5px;
+    padding: 5px 10px;
+  }
+
+  .about-copy2 { font-size: 14px; line-height: 24px; color: var(--text-body); max-width: 64ch; }
+
+  .contact-list {
+    list-style: none;
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .contact-list li { font-size: 14px; color: var(--text-body); }
+  .contact-list .ck { display: inline-block; width: 90px; color: var(--faint); }
+
+  .contact-list a {
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent-dim);
+  }
+
+  .contact-list a:hover { color: var(--accent); }
+
   /* ---------- Local-only text edit mode (inert unless served from localhost) ---------- */
   #editModeToggle {
     position: fixed;
@@ -352,18 +538,28 @@
   .is-editable:focus { outline-style: solid; outline-color: var(--accent); }
 
   @media (max-width: 980px) {
-    .site-header { padding: 24px 28px; }
+    .site-header { padding: 24px 28px; flex-wrap: wrap; gap: 10px; }
+    .site-nav { gap: 14px; }
     .hero { width: calc(100% - 56px); justify-content: flex-start; padding-top: 12px; }
     .term-box { flex-direction: column; }
     .term-divider { width: auto; height: 1px; align-self: stretch; }
     .term-left-info { margin-top: 6px; }
+    .view-inner { width: calc(100% - 56px); padding: 32px 0 72px; }
+    .work-grid { grid-template-columns: 1fr; }
+    .case-meta { gap: 16px; }
   }
 </style>
 </head>
 <body>
 
   <header class="site-header">
-    <a class="logo" href="#">Reese Ferguson</a>
+    <a class="logo" href="#/">Reese Ferguson</a>
+    <nav class="site-nav" aria-label="Primary">
+      <a class="nav-link" href="#/work">Work</a>
+      <a class="nav-link" href="#/about">About</a>
+      <a class="nav-link" href="#/contact">Contact</a>
+      <a class="nav-link" href="resume.pdf" target="_blank" rel="noopener">Résumé ↗</a>
+    </nav>
   </header>
 
   <section class="hero">
@@ -475,10 +671,10 @@
         <div class="h-rule"></div>
         <div>
           <h2 class="panel-heading">Recent projects</h2>
-          <p class="project-row">north-coast-bjj <span class="desc">— client project</span></p>
-          <p class="project-row">project-cadence <span class="desc">— case study, 2026</span></p>
-          <p class="project-row">databrew <span class="desc">— client project</span></p>
-          <p class="project-row">savr-app <span class="desc">— case study, 2026</span></p>
+          <button class="project-row" data-cmd="/north-coast-bjj">north-coast-bjj <span class="desc">— client project</span></button>
+          <button class="project-row" data-cmd="/project-cadence">project-cadence <span class="desc">— case study, 2026</span></button>
+          <button class="project-row" data-cmd="/databrew">databrew <span class="desc">— client project</span></button>
+          <button class="project-row" data-cmd="/savr-app">savr-app <span class="desc">— case study, 2026</span></button>
         </div>
       </div>
     </div>
@@ -513,6 +709,156 @@
 
     <p class="shortcuts-hint">? for shortcuts</p>
   </section>
+
+  <!-- ============ Routed content (revealed by nav / commands / clicks) ============ -->
+  <main class="views">
+
+    <!-- ---------- Work ---------- -->
+    <section class="view" id="work" aria-label="Selected work">
+      <div class="view-inner">
+        <p class="crumb">~/reese/work</p>
+        <h1 class="view-title">Selected work</h1>
+        <p class="view-lead">Four projects — product design with AI in the loop. Type a project below, or open one here.</p>
+        <div class="work-grid">
+          <a class="work-card" href="#/work/north-coast-bjj">
+            <span class="wc-title">north-coast-bjj</span>
+            <span class="wc-outcome">[TODO: one-line outcome — lead with a metric if you have one]</span>
+            <span class="wc-meta"><span class="wc-role">[TODO: role]</span> · <span class="wc-year">[TODO: year]</span> · <span class="wc-tag">Client</span></span>
+          </a>
+          <a class="work-card" href="#/work/project-cadence">
+            <span class="wc-title">project-cadence</span>
+            <span class="wc-outcome">[TODO: one-line outcome — lead with a metric if you have one]</span>
+            <span class="wc-meta"><span class="wc-role">[TODO: role]</span> · <span class="wc-year">2026</span> · <span class="wc-tag">Case study</span></span>
+          </a>
+          <a class="work-card" href="#/work/databrew">
+            <span class="wc-title">databrew</span>
+            <span class="wc-outcome">[TODO: one-line outcome — lead with a metric if you have one]</span>
+            <span class="wc-meta"><span class="wc-role">[TODO: role]</span> · <span class="wc-year">[TODO: year]</span> · <span class="wc-tag">Client</span></span>
+          </a>
+          <a class="work-card" href="#/work/savr-app">
+            <span class="wc-title">savr-app</span>
+            <span class="wc-outcome">[TODO: one-line outcome — lead with a metric if you have one]</span>
+            <span class="wc-meta"><span class="wc-role">[TODO: role]</span> · <span class="wc-year">2026</span> · <span class="wc-tag">Case study</span></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- About ---------- -->
+    <section class="view" id="about" aria-label="About">
+      <div class="view-inner">
+        <p class="crumb">~/reese/about</p>
+        <h1 class="view-title">About me</h1>
+        <p class="about-lead">I'm Reese — a UX designer and business graduate who designs with AI in the loop. I shape interfaces in Figma and Paper, pressure-test them with real flows, then ship them with Claude Code. Less deck, more demo.</p>
+        <h2 class="about-sub">Toolkit</h2>
+        <ul class="tool-list">
+          <li>Figma</li><li>Paper</li><li>Claude Code</li><li>Conductor</li><li>Framer</li><li>Linear</li>
+        </ul>
+        <h2 class="about-sub">Experience</h2>
+        <p class="about-copy2">[TODO: reverse-chronological experience — role, organization, dates. Add your business degree / education and any notable results.]</p>
+      </div>
+    </section>
+
+    <!-- ---------- Contact ---------- -->
+    <section class="view" id="contact" aria-label="Contact">
+      <div class="view-inner">
+        <p class="crumb">~/reese/contact</p>
+        <h1 class="view-title">Get in touch</h1>
+        <p class="view-lead"><span class="spark">✳</span> Open to opportunities — let's build something.</p>
+        <ul class="contact-list">
+          <li><span class="ck">email</span> <a href="mailto:reesefergie@gmail.com">reesefergie@gmail.com</a></li>
+          <li><span class="ck">linkedin</span> <a href="[TODO: LinkedIn URL]" target="_blank" rel="noopener">[TODO: /in/your-handle]</a></li>
+          <li><span class="ck">résumé</span> <a href="resume.pdf" target="_blank" rel="noopener">resume.pdf</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ---------- Case studies ---------- -->
+    <article class="view case" id="case-north-coast-bjj" aria-label="north-coast-bjj case study">
+      <div class="view-inner">
+        <a class="back-link" href="#/work">← back to work</a>
+        <p class="crumb">~/reese/work/north-coast-bjj</p>
+        <h1 class="view-title">north-coast-bjj</h1>
+        <p class="view-lead">[TODO: one-line summary of the project.]</p>
+        <dl class="case-meta">
+          <div><dt>Role</dt><dd>[TODO]</dd></div>
+          <div><dt>Timeline</dt><dd>[TODO]</dd></div>
+          <div><dt>Team</dt><dd>[TODO]</dd></div>
+          <div><dt>Tools</dt><dd>Figma · Paper · Claude Code</dd></div>
+        </dl>
+        <section class="case-block"><h2>Problem</h2><p>[TODO: what was broken, for whom, and why it mattered.]</p></section>
+        <section class="case-block"><h2>Process</h2><p>[TODO: research, flows, iteration — show the messy middle.]</p><p class="ai-note">AI in the loop: shaped screens in Figma/Paper, pressure-tested the real flows, then shipped with Claude Code. [TODO: make specific to this project.]</p></section>
+        <section class="case-block"><h2>Solution</h2><p>[TODO: what you shipped — key screens and decisions.]</p></section>
+        <section class="case-block"><h2>Outcome</h2><p>[TODO: a metric if you have one; otherwise an honest, delivery-focused result.]</p></section>
+        <section class="case-block"><h2>Reflection</h2><p>[TODO: what you learned / would do differently.]</p></section>
+        <a class="next-link" href="#/work/project-cadence">Next project → project-cadence</a>
+      </div>
+    </article>
+
+    <article class="view case" id="case-project-cadence" aria-label="project-cadence case study">
+      <div class="view-inner">
+        <a class="back-link" href="#/work">← back to work</a>
+        <p class="crumb">~/reese/work/project-cadence</p>
+        <h1 class="view-title">project-cadence</h1>
+        <p class="view-lead">[TODO: one-line summary of the project.]</p>
+        <dl class="case-meta">
+          <div><dt>Role</dt><dd>[TODO]</dd></div>
+          <div><dt>Timeline</dt><dd>2026</dd></div>
+          <div><dt>Team</dt><dd>[TODO]</dd></div>
+          <div><dt>Tools</dt><dd>Figma · Paper · Claude Code</dd></div>
+        </dl>
+        <section class="case-block"><h2>Problem</h2><p>[TODO: what was broken, for whom, and why it mattered.]</p></section>
+        <section class="case-block"><h2>Process</h2><p>[TODO: research, flows, iteration — show the messy middle.]</p><p class="ai-note">AI in the loop: shaped screens in Figma/Paper, pressure-tested the real flows, then shipped with Claude Code. [TODO: make specific to this project.]</p></section>
+        <section class="case-block"><h2>Solution</h2><p>[TODO: what you shipped — key screens and decisions.]</p></section>
+        <section class="case-block"><h2>Outcome</h2><p>[TODO: a metric if you have one; otherwise an honest, delivery-focused result.]</p></section>
+        <section class="case-block"><h2>Reflection</h2><p>[TODO: what you learned / would do differently.]</p></section>
+        <a class="next-link" href="#/work/databrew">Next project → databrew</a>
+      </div>
+    </article>
+
+    <article class="view case" id="case-databrew" aria-label="databrew case study">
+      <div class="view-inner">
+        <a class="back-link" href="#/work">← back to work</a>
+        <p class="crumb">~/reese/work/databrew</p>
+        <h1 class="view-title">databrew</h1>
+        <p class="view-lead">[TODO: one-line summary of the project.]</p>
+        <dl class="case-meta">
+          <div><dt>Role</dt><dd>[TODO]</dd></div>
+          <div><dt>Timeline</dt><dd>[TODO]</dd></div>
+          <div><dt>Team</dt><dd>[TODO]</dd></div>
+          <div><dt>Tools</dt><dd>Figma · Paper · Claude Code</dd></div>
+        </dl>
+        <section class="case-block"><h2>Problem</h2><p>[TODO: what was broken, for whom, and why it mattered.]</p></section>
+        <section class="case-block"><h2>Process</h2><p>[TODO: research, flows, iteration — show the messy middle.]</p><p class="ai-note">AI in the loop: shaped screens in Figma/Paper, pressure-tested the real flows, then shipped with Claude Code. [TODO: make specific to this project.]</p></section>
+        <section class="case-block"><h2>Solution</h2><p>[TODO: what you shipped — key screens and decisions.]</p></section>
+        <section class="case-block"><h2>Outcome</h2><p>[TODO: a metric if you have one; otherwise an honest, delivery-focused result.]</p></section>
+        <section class="case-block"><h2>Reflection</h2><p>[TODO: what you learned / would do differently.]</p></section>
+        <a class="next-link" href="#/work/savr-app">Next project → savr-app</a>
+      </div>
+    </article>
+
+    <article class="view case" id="case-savr-app" aria-label="savr-app case study">
+      <div class="view-inner">
+        <a class="back-link" href="#/work">← back to work</a>
+        <p class="crumb">~/reese/work/savr-app</p>
+        <h1 class="view-title">savr-app</h1>
+        <p class="view-lead">[TODO: one-line summary of the project.]</p>
+        <dl class="case-meta">
+          <div><dt>Role</dt><dd>[TODO]</dd></div>
+          <div><dt>Timeline</dt><dd>2026</dd></div>
+          <div><dt>Team</dt><dd>[TODO]</dd></div>
+          <div><dt>Tools</dt><dd>Figma · Paper · Claude Code</dd></div>
+        </dl>
+        <section class="case-block"><h2>Problem</h2><p>[TODO: what was broken, for whom, and why it mattered.]</p></section>
+        <section class="case-block"><h2>Process</h2><p>[TODO: research, flows, iteration — show the messy middle.]</p><p class="ai-note">AI in the loop: shaped screens in Figma/Paper, pressure-tested the real flows, then shipped with Claude Code. [TODO: make specific to this project.]</p></section>
+        <section class="case-block"><h2>Solution</h2><p>[TODO: what you shipped — key screens and decisions.]</p></section>
+        <section class="case-block"><h2>Outcome</h2><p>[TODO: a metric if you have one; otherwise an honest, delivery-focused result.]</p></section>
+        <section class="case-block"><h2>Reflection</h2><p>[TODO: what you learned / would do differently.]</p></section>
+        <a class="next-link" href="#/work/north-coast-bjj">Next project → north-coast-bjj</a>
+      </div>
+    </article>
+
+  </main>
 
 <script>
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -581,13 +927,13 @@
 
   /* ---------- Commands ---------- */
   const COMMANDS = [
-    { cmd: "/about",   desc: "who I am",           out: "about — coming soon. This section is being built. (v0.0.2)" },
-    { cmd: "/work",    desc: "selected projects",  out: "work — coming soon. Case studies are being written up. (v0.0.2)" },
-    { cmd: "/contact", desc: "get in touch",       out: "contact — coming soon. For now: reesefergie@gmail.com" },
-    { cmd: "/north-coast-bjj", desc: "client project",   out: "north-coast-bjj — coming soon. A deep dive is on the way." },
-    { cmd: "/project-cadence", desc: "case study, 2026", out: "project-cadence — coming soon. A deep dive is on the way." },
-    { cmd: "/databrew",        desc: "client project",   out: "databrew — coming soon. A deep dive is on the way." },
-    { cmd: "/savr-app",        desc: "case study, 2026", out: "savr-app — coming soon. A deep dive is on the way." },
+    { cmd: "/about",   desc: "who I am",           out: "opening about…",                      route: "#/about" },
+    { cmd: "/work",    desc: "selected projects",  out: "opening work — 4 selected projects",   route: "#/work" },
+    { cmd: "/contact", desc: "get in touch",       out: "opening contact — reesefergie@gmail.com", route: "#/contact" },
+    { cmd: "/north-coast-bjj", desc: "client project",   out: "opening north-coast-bjj…", route: "#/work/north-coast-bjj" },
+    { cmd: "/project-cadence", desc: "case study, 2026", out: "opening project-cadence…", route: "#/work/project-cadence" },
+    { cmd: "/databrew",        desc: "client project",   out: "opening databrew…",        route: "#/work/databrew" },
+    { cmd: "/savr-app",        desc: "case study, 2026", out: "opening savr-app…",        route: "#/work/savr-app" },
   ];
 
   const SHORTCUTS_TEXT = "shortcuts — /about, /work, /contact · /north-coast-bjj, /project-cadence, /databrew, /savr-app for project details · ↑↓ + enter picks an option above · click a tool name to re-theme the terminal";
@@ -631,12 +977,68 @@
     const match = COMMANDS.find(c => c.cmd.toLowerCase() === v.toLowerCase());
     if (match) {
       addLine("out-resp", "⏺", match.out);
+      if (match.route) navigate(match.route);
     } else if (v.startsWith("/")) {
       addLine("out-err", "✗", "command not found: " + v + " · try ? for shortcuts");
     } else {
       addLine("out-err", "✗", "not a command: " + v + " · commands start with /");
     }
   }
+
+  /* ---------- Router ---------- */
+  function currentRoute() {
+    const h = location.hash.replace(/^#/, "");   // "#/work/savr-app" -> "/work/savr-app"
+    return (h === "" || h === "/") ? "/" : h;
+  }
+
+  function render() {
+    const route = currentRoute();
+    document.querySelectorAll(".view").forEach(v => v.classList.remove("is-active"));
+
+    let target = null;
+    if (route === "/about")        target = document.getElementById("about");
+    else if (route === "/work")    target = document.getElementById("work");
+    else if (route === "/contact") target = document.getElementById("contact");
+    else if (route.startsWith("/work/")) target = document.getElementById("case-" + route.slice(6));
+
+    const behavior = reduced ? "auto" : "smooth";
+    if (target) {
+      target.classList.add("is-active");
+      document.body.classList.add("routed");    // hide terminal — full-page view
+      window.scrollTo({ top: 0, behavior });
+      target.setAttribute("tabindex", "-1");
+      target.focus({ preventScroll: true });
+    } else {
+      document.body.classList.remove("routed");  // home = terminal only
+      window.scrollTo({ top: 0, behavior });
+    }
+
+    document.querySelectorAll(".nav-link").forEach(a => {
+      const href = a.getAttribute("href");
+      const on = (href === "#/work" && route.startsWith("/work"))
+              || (href === "#/about" && route === "/about")
+              || (href === "#/contact" && route === "/contact");
+      a.classList.toggle("is-active", on);
+    });
+  }
+
+  function navigate(hash) {
+    if (location.hash === hash) render();   // same hash won't fire hashchange — re-scroll manually
+    else location.hash = hash;
+  }
+
+  window.addEventListener("hashchange", render);
+
+  // "Recent projects" rows behave exactly like typing the command (echo + navigate)
+  document.querySelectorAll("button.project-row").forEach(row => {
+    row.addEventListener("click", () => { if (!editPaused) execute(row.dataset.cmd); });
+  });
+
+  // the "/contact" hint in the flavor line
+  const flavorSlash = document.querySelector(".flavor-line .slash");
+  if (flavorSlash) flavorSlash.addEventListener("click", () => { if (!editPaused) execute("/contact"); });
+
+  render();   // honor a deep link on load (e.g. #/work/savr-app)
 
   /* ---------- Question block ---------- */
   const options = [...document.querySelectorAll(".ask-option")];
@@ -736,6 +1138,7 @@
   document.addEventListener("keydown", e => {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     if (document.activeElement && document.activeElement.isContentEditable) return;
+    if (document.querySelector(".view.is-active")) return;   // on a content page, leave keys (scroll, etc.) alone
     const inInput = document.activeElement === input;
 
     if (!inInput || (input.value === "" && !suggest.classList.contains("is-open"))) {
@@ -761,7 +1164,8 @@
     document.body.append(editBtn);
 
     const editableEls = document.querySelectorAll(
-      ".about-copy, .project-row, .panel-heading, .flavor-line, .term-box-title, .phrase, .path-line, .ask-label, .ask-desc"
+      ".about-copy, .project-row, .panel-heading, .flavor-line, .term-box-title, .phrase, .path-line, .ask-label, .ask-desc, " +
+      ".view-title, .view-lead, .wc-outcome, .about-lead, .about-copy2, .case-block p, .case-meta dd"
     );
 
     let editOn = false;
