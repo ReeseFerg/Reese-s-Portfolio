@@ -93,19 +93,22 @@ this unilaterally in either direction.
 Confirmed by Reese. **Anything not listed here does not exist and must not be written
 into a case study.**
 
-**north-coast-bjj** — the only project with a real client.
+**north-coast-bjj** — the only project with a real client, and the only one with primary
+user research.
 - Live, with a public URL. The URL itself is not yet recorded in the repo.
 - Built with Framer.
+- **Usability testing across multiple versions of the site**, with **interviews conducted
+  after the sessions**. Reese has notes from these. Testing more than one version is a
+  stronger method than most portfolios at this level can show, and it is the spine of the
+  Research chapter.
 - Notes and recollection from the stakeholder side: conversations with the club owner.
 - Reese's own first-hand experience of the old site.
-- Quantitative data available: Google Business Profile analytics and Framer analytics.
-  These are the realistic source of the three impact stats.
+- Quantitative data: Google Business Profile analytics and Framer analytics. These are the
+  realistic source of the three impact stats.
 
-**No user research sessions were run on this project.** There were no user interviews and
-no usability testing. Verbatim user quotes, affinity maps, research walls and participant
-counts do not exist. The existing case study scaffold and `CASE-STUDIES.md` were written
-assuming otherwise — that assumption is wrong and the chapter plan needs revising to
-match the evidence that does exist (stakeholder input, first-hand use, analytics).
+Participant count, session format, and whether the notes contain verbatim quotes are not
+yet recorded here — see Open Decisions. Write the Research chapter from the notes, not
+from memory of them.
 
 **databrew** — a private repository and working prototype. Not public, not installable,
 no store listing, no external users yet. Design and front end by Reese; back end by the
@@ -156,5 +159,9 @@ Recorded as undecided. Do not resolve these without Reese.
 - **Hosting and domain** — undecided. `SITE_URL` in `src/lib/site.ts` is a placeholder
   guess and drives every canonical URL, sitemap entry and social tag.
 - **Case study typeface** — four presets remain live behind the dev panel.
+- **north-coast-bjj research detail** — how many people took part, what the sessions
+  looked like, which versions were compared, and whether the notes hold verbatim quotes.
+  The research happened and the notes exist; the specifics just aren't written down here
+  yet, and the Research chapter needs them to name the method precisely.
 - **Unrecorded facts** — the data engineer's name, the north-coast-bjj live URL, the
   LinkedIn URL, and the real résumé.
