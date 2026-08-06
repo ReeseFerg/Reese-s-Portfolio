@@ -21,7 +21,61 @@
     --muted: #8e8e8e;
     --faint: #7a7a7a;
     --rule: #262626;
+    --rule-soft: #1b1b1b;
     --mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+
+    /* Document voice — swapped by the localhost font switcher, see [data-type] below.
+       Chrome (eyebrows, meta labels, captions, nav, terminal) always stays mono. */
+    --font-display: var(--mono);
+    --font-doc: var(--mono);
+
+    /* Type scale. The old page ran 13.5–15px end to end; the contrast is the point. */
+    --step-eyebrow: 11px;
+    --step-caption: 12px;
+    --step-body: 16px;
+    --step-lead: clamp(17px, 2vw, 20px);
+    --step-h3: clamp(17px, 1.6vw, 20px);
+    --step-h2: clamp(26px, 3.4vw, 38px);
+    --step-h1: clamp(36px, 6vw, 60px);
+    --step-stat: clamp(40px, 5vw, 56px);
+
+    --lh-body: 1.7;
+    --lh-lead: 1.55;
+    --lh-head: 1.18;
+
+    /* Vertical rhythm. Chapters used to sit 26px apart. */
+    --space-chapter: clamp(72px, 9vw, 128px);
+    --space-block: 28px;
+
+    --measure: 66ch;
+    --col-content: 720px;
+    --col-wide: 1040px;
+    --rail: 200px;
+
+    /* Media frame surface — compared live via the localhost switcher */
+    --media-surface: #0f0f0f;
+    --media-border: var(--rule);
+  }
+
+  /* Warm media frames: same dark page, warmer panels behind images and callouts */
+  html[data-media-surface="warm"] {
+    --media-surface: #17130f;
+    --media-border: #2a2118;
+  }
+
+  html[data-type="serif"] {
+    --font-display: "Newsreader", Georgia, "Times New Roman", serif;
+    --font-doc: "Newsreader", Georgia, "Times New Roman", serif;
+  }
+
+  html[data-type="grotesk"] {
+    --font-display: "Inter", system-ui, -apple-system, sans-serif;
+    --font-doc: "Inter", system-ui, -apple-system, sans-serif;
+  }
+
+  html[data-type="hybrid"] {
+    --font-display: "Space Grotesk", system-ui, -apple-system, sans-serif;
+    --font-doc: "Inter", system-ui, -apple-system, sans-serif;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -324,6 +378,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     .cursor, .input-cursor { animation: none; }
+    .reveal { opacity: 1; transform: none; transition: none; }
   }
 
   /* ---------- Header layout + nav ---------- */
@@ -419,51 +474,563 @@
   .wc-outcome { font-size: 13.5px; line-height: 21px; color: var(--muted); }
   .wc-meta { font-size: 12.5px; color: var(--faint); margin-top: 4px; }
   .wc-tag { color: var(--accent); }
+  .wc-lead { border-color: var(--accent-dim); }
 
-  /* case study */
-  .case-meta {
+  /* ---------- Shipped strip ----------
+     Live things, not case studies. For someone early in their career this is the
+     cheapest credibility on the site: proof that work leaves the Figma file. */
+  .shipped { margin-top: 64px; padding-top: 32px; border-top: 1px solid var(--rule); }
+
+  .shipped-title {
+    font-family: var(--mono);
+    font-size: var(--step-eyebrow);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--faint);
+    font-weight: 400;
+  }
+
+  .shipped-list { list-style: none; margin-top: 18px; display: flex; flex-direction: column; gap: 2px; }
+
+  .shipped-list a {
     display: flex;
     flex-wrap: wrap;
-    gap: 24px;
-    margin: 28px 0;
-    padding: 18px 0;
-    border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+    gap: 4px 12px;
+    padding: 11px 12px;
+    margin-left: -12px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 120ms ease;
   }
 
-  .case-meta dt { font-size: 12px; color: var(--faint); }
-  .case-meta dd { font-size: 13.5px; color: var(--text-body); margin-top: 2px; }
+  .shipped-list a:hover { background: var(--surface); }
+  .sh-name { font-size: 14px; font-weight: 700; color: var(--text); }
+  .sh-desc { font-size: 13px; color: var(--muted); flex: 1 1 240px; }
+  .sh-arrow { font-family: var(--mono); font-size: 12px; color: var(--faint); }
+  .shipped-list a:hover .sh-arrow { color: var(--accent); }
 
-  .case-block { margin-top: 26px; max-width: 70ch; }
+  /* ================= Case study ================= */
 
-  .case-block h2 {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--accent);
-    margin-bottom: 10px;
-  }
-
-  .case-block p { font-size: 14px; line-height: 24px; color: var(--text-body); }
-
-  .case-block .ai-note {
-    margin-top: 12px;
-    padding: 12px 14px;
-    border-left: 2px solid var(--accent-dim);
-    color: var(--muted);
-    font-size: 13.5px;
+  /* One shared container width for hero, body and footer so the page has a single left edge. */
+  .case-shell {
+    width: min(1296px, calc(100% - 96px));
+    margin: 0 auto;
   }
 
   .back-link, .next-link {
     display: inline-block;
+    font-family: var(--mono);
     font-size: 13px;
     color: var(--muted);
     text-decoration: none;
     transition: color 120ms ease;
   }
 
-  .back-link { margin-bottom: 18px; }
-  .next-link { margin-top: 40px; color: var(--accent); }
+  .back-link { margin-bottom: 22px; }
   .back-link:hover, .next-link:hover { color: var(--accent); }
+
+  /* the kicker above every headline — always mono, this is chrome, not prose */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: var(--step-eyebrow);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--faint);
+  }
+
+  .eyebrow .accent { color: var(--accent); }
+
+  /* ---------- Hero ---------- */
+  .case-hero { padding: 8px 0 0; }
+
+  .case-hero .crumb { margin-bottom: 14px; }
+
+  .case-title {
+    font-family: var(--font-display);
+    font-size: var(--step-h1);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 16px;
+    max-width: 22ch;
+  }
+
+  .case-lead {
+    font-family: var(--font-doc);
+    font-size: var(--step-lead);
+    line-height: var(--lh-lead);
+    color: var(--text-body);
+    margin-top: 20px;
+    max-width: 54ch;
+  }
+
+  .case-cover { margin-top: 48px; }
+
+  /* ---------- Body grid: sticky rail + content column ---------- */
+  .case-body {
+    display: grid;
+    grid-template-columns: var(--rail) minmax(0, var(--col-wide));
+    gap: 0 56px;
+    margin-top: 64px;
+  }
+
+  .case-main { min-width: 0; }
+
+  /* Short-form case studies drop the rail — four chapters don't need navigating,
+     and a two-item TOC advertises that there isn't much here. */
+  .case-body--brief { grid-template-columns: minmax(0, var(--col-wide)); }
+
+  .case-status {
+    display: inline-block;
+    padding: 2px 8px;
+    border: 1px solid var(--accent-dim);
+    border-radius: 999px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+
+  /* Prose sits at the readable column; media is free to run out to the full track.
+     Chapters stay full width so a --wide figure inside one can actually escape. */
+  .chapter > * { max-width: var(--col-content); }
+  .chapter > .media--wide { max-width: none; }
+
+  /* ---------- Sticky table of contents ---------- */
+  .case-toc {
+    position: sticky;
+    top: 32px;
+    align-self: start;
+    font-family: var(--mono);
+  }
+
+  .toc-label {
+    font-size: var(--step-eyebrow);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--faint);
+    margin-bottom: 14px;
+  }
+
+  .case-toc ol { list-style: none; display: flex; flex-direction: column; gap: 1px; }
+
+  .toc-link {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    text-align: left;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12.5px;
+    line-height: 1.4;
+    color: var(--muted);
+    transition: color 120ms ease, background-color 120ms ease;
+  }
+
+  .toc-link:hover { color: var(--text); }
+  .toc-link.is-active { color: var(--accent); background: var(--accent-glow); }
+  .toc-num { color: var(--faint); flex-shrink: 0; }
+  .toc-link.is-active .toc-num { color: var(--accent); }
+
+  .toc-top {
+    margin-top: 20px;
+    padding: 6px 10px;
+    font-size: 12.5px;
+    color: var(--faint);
+    transition: color 120ms ease;
+  }
+
+  .toc-top:hover { color: var(--accent); }
+
+  /* ---------- Meta strip ---------- */
+  .case-meta {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 28px;
+    padding: 26px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .case-meta dt {
+    font-family: var(--mono);
+    font-size: var(--step-eyebrow);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--faint);
+  }
+
+  .case-meta dd {
+    font-family: var(--font-doc);
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--text-body);
+    margin-top: 8px;
+  }
+
+  /* ---------- Impact stats ---------- */
+  .impact-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 32px;
+    padding: 44px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: var(--step-stat);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .stat-label {
+    font-family: var(--mono);
+    font-size: var(--step-caption);
+    line-height: 1.55;
+    color: var(--muted);
+    margin-top: 12px;
+    max-width: 24ch;
+  }
+
+  /* ---------- Chapter: eyebrow + statement headline + prose ---------- */
+  .chapter {
+    margin-top: var(--space-chapter);
+    scroll-margin-top: 40px;
+  }
+
+  .chapter h2 {
+    font-family: var(--font-display);
+    font-size: var(--step-h2);
+    line-height: var(--lh-head);
+    letter-spacing: -0.015em;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 16px;
+  }
+
+  .chapter h3 {
+    font-family: var(--font-display);
+    font-size: var(--step-h3);
+    line-height: 1.35;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 48px;
+  }
+
+  .chapter p {
+    font-family: var(--font-doc);
+    font-size: var(--step-body);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+    max-width: var(--measure);
+    margin-top: 20px;
+  }
+
+  .mark {
+    background: color-mix(in srgb, var(--accent) 24%, transparent);
+    color: var(--text);
+    padding: 1px 3px;
+    border-radius: 2px;
+  }
+
+  /* ---------- Media ---------- */
+  .media { margin-top: 36px; }
+  .media--wide { width: 100%; }
+
+  .media-frame {
+    padding: 20px;
+    border: 1px solid var(--media-border);
+    border-radius: 10px;
+    background: var(--media-surface);
+  }
+
+  .media-frame img,
+  .media-frame video { display: block; width: 100%; border-radius: 4px; }
+
+  /* Empty on purpose: a hatched slot that says what belongs here. */
+  .media-slot {
+    display: grid;
+    justify-items: center;
+    align-content: center;   /* pack the rows together, or auto rows stretch and split them apart */
+    gap: 4px;
+    aspect-ratio: 16 / 9;
+    padding: 20px;
+    border: 1px dashed var(--rule);
+    border-radius: 6px;
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent 0 7px,
+      rgba(255, 255, 255, 0.018) 7px 14px
+    );
+    font-family: var(--mono);
+    font-size: var(--step-caption);
+    line-height: 1.7;
+    color: var(--faint);
+    text-align: center;
+  }
+
+  .media-slot .slot-hint { color: var(--muted); display: block; }
+
+  .media--phone .media-slot { aspect-ratio: 9 / 19.5; }
+  .media--square .media-slot { aspect-ratio: 1; }
+  .media--tall .media-slot { aspect-ratio: 4 / 5; }
+
+  /* a play badge so video slots read as video, not stills */
+  .media--video .media-slot::after {
+    content: "▶";
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    margin-top: 14px;
+    border: 1px solid var(--accent-dim);
+    border-radius: 50%;
+    color: var(--accent);
+    font-size: 13px;
+  }
+
+  .media-grid { display: grid; gap: 16px; }
+  .media-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .media-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  .media figcaption {
+    font-family: var(--mono);
+    font-size: var(--step-caption);
+    line-height: 1.6;
+    color: var(--faint);
+    margin-top: 14px;
+    max-width: 62ch;
+  }
+
+  /* ---------- Callouts ---------- */
+  .callout {
+    margin-top: 44px;
+    padding: 28px 32px;
+    border-left: 2px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    background: var(--media-surface);
+  }
+
+  .callout p {
+    font-family: var(--font-display);
+    font-size: var(--step-h3);
+    line-height: 1.5;
+    color: var(--text);
+    max-width: 46ch;
+    margin: 0;
+  }
+
+  .callout cite {
+    display: block;
+    font-family: var(--mono);
+    font-size: var(--step-eyebrow);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-style: normal;
+    color: var(--faint);
+    margin-top: 18px;
+  }
+
+  /* research observations — the quote-bubble device */
+  .quote-stack { display: flex; flex-direction: column; gap: 16px; margin-top: 36px; }
+
+  .quote-user {
+    padding: 20px 22px;
+    border: 1px solid var(--media-border);
+    border-radius: 12px;
+    background: var(--media-surface);
+    max-width: 82%;
+  }
+
+  .quote-user:nth-child(even) { align-self: flex-end; }
+
+  .quote-user p {
+    font-family: var(--font-doc);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-body);
+    margin: 0;
+    max-width: none;
+  }
+
+  .quote-user .attr {
+    display: block;
+    font-family: var(--mono);
+    font-size: var(--step-eyebrow);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--faint);
+    margin-top: 14px;
+  }
+
+  /* ---------- Numbered findings ---------- */
+  .pain-list {
+    list-style: none;
+    counter-reset: pain;
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .pain-list li {
+    counter-increment: pain;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 12px;
+    padding: 18px 0;
+    border-top: 1px solid var(--rule-soft);
+    font-family: var(--font-doc);
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: var(--text-body);
+  }
+
+  .pain-list li::before {
+    content: counter(pain, decimal-leading-zero);
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    padding-top: 3px;
+  }
+
+  /* ---------- Insight / feature cards ---------- */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 16px;
+    margin-top: 36px;
+  }
+
+  .insight-card {
+    padding: 22px;
+    border: 1px solid var(--media-border);
+    border-radius: 10px;
+    background: var(--media-surface);
+  }
+
+  .insight-card h3 {
+    font-family: var(--font-display);
+    font-size: 16px;
+    line-height: 1.35;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0;
+  }
+
+  .insight-card p {
+    font-family: var(--font-doc);
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--muted);
+    margin-top: 10px;
+    max-width: none;
+  }
+
+  /* ---------- Footer: next project + closing line ---------- */
+  .case-footer {
+    margin-top: var(--space-chapter);
+    padding-top: 56px;
+    padding-bottom: 120px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .next-case {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 40px;
+    align-items: center;
+    margin-top: 22px;
+    padding: 28px;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    background: var(--media-surface);
+    text-decoration: none;
+    transition: border-color 120ms ease;
+  }
+
+  .next-case:hover { border-color: var(--accent-dim); }
+
+  .next-case-title {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 2.6vw, 30px);
+    line-height: 1.2;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 12px;
+  }
+
+  .next-case-desc {
+    font-family: var(--font-doc);
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+
+  .next-case .media-slot { aspect-ratio: 16 / 10; }
+
+  .case-closing {
+    font-family: var(--font-display);
+    font-size: clamp(20px, 2.8vw, 32px);
+    line-height: 1.35;
+    color: var(--muted);
+    margin-top: 72px;
+    max-width: 24ch;
+  }
+
+  .case-closing .accent { color: var(--accent); }
+
+  /* a reader who finishes a case study is the one most likely to write to you —
+     don't make them go find the contact route */
+  .case-contact {
+    font-family: var(--mono);
+    font-size: 13.5px;
+    color: var(--muted);
+    margin-top: 20px;
+  }
+
+  .case-contact a {
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    transition: color 120ms ease, border-color 120ms ease;
+  }
+
+  .case-contact a:hover { color: var(--accent); border-color: var(--accent-dim); }
+  .case-contact .sep { color: var(--faint); padding: 0 6px; }
+
+  /* ---------- Reading progress ---------- */
+  .read-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    z-index: 60;
+    display: none;
+  }
+
+  body.on-case .read-progress { display: block; }
+
+  .read-progress span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: var(--accent);
+  }
+
+  /* ---------- Scroll reveal (class is added by JS, so no-JS keeps content visible) ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 520ms ease, transform 520ms ease;
+  }
+
+  .reveal.is-in { opacity: 1; transform: none; }
 
   /* about + contact */
   .about-lead {
@@ -512,22 +1079,45 @@
 
   .contact-list a:hover { color: var(--accent); }
 
-  /* ---------- Local-only text edit mode (inert unless served from localhost) ---------- */
-  #editModeToggle {
+  /* ---------- Local-only dev panel (inert unless served from localhost) ---------- */
+  .dev-panel {
     position: fixed;
     right: 16px;
     bottom: 16px;
-    z-index: 50;
-    padding: 8px 14px;
+    z-index: 70;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 12px;
     border: 1px solid var(--rule);
-    border-radius: 6px;
-    background: var(--surface);
-    color: var(--muted);
-    font-size: 12px;
+    border-radius: 8px;
+    background: rgba(8, 8, 8, 0.92);
+    backdrop-filter: blur(6px);
+    font-family: var(--mono);
   }
 
-  #editModeToggle:hover { color: var(--text); border-color: var(--accent-dim); }
-  #editModeToggle.is-on { color: var(--accent); border-color: var(--accent); }
+  .dev-row { display: flex; align-items: center; gap: 6px; }
+
+  .dev-row-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--faint);
+    margin-right: 4px;
+  }
+
+  .dev-chip, #editModeToggle {
+    padding: 5px 10px;
+    border: 1px solid var(--rule);
+    border-radius: 5px;
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 11px;
+  }
+
+  .dev-chip:hover, #editModeToggle:hover { color: var(--text); border-color: var(--accent-dim); }
+  .dev-chip.is-on, #editModeToggle.is-on { color: var(--accent); border-color: var(--accent); }
 
   .is-editable {
     outline: 1px dashed var(--accent-faint);
@@ -536,6 +1126,12 @@
   }
 
   .is-editable:focus { outline-style: solid; outline-color: var(--accent); }
+
+  /* below this the sticky rail has nowhere to live — case study goes single column */
+  @media (max-width: 1100px) {
+    .case-body { grid-template-columns: minmax(0, 1fr); gap: 0; margin-top: 48px; }
+    .case-toc { display: none; }
+  }
 
   @media (max-width: 980px) {
     .site-header { padding: 24px 28px; flex-wrap: wrap; gap: 10px; }
@@ -546,11 +1142,25 @@
     .term-left-info { margin-top: 6px; }
     .view-inner { width: calc(100% - 56px); padding: 32px 0 72px; }
     .work-grid { grid-template-columns: 1fr; }
-    .case-meta { gap: 16px; }
+    .case-shell { width: calc(100% - 56px); }
+    .case-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+    .impact-row { grid-template-columns: minmax(0, 1fr); gap: 28px; padding: 32px 0; }
+    .next-case { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  }
+
+  @media (max-width: 640px) {
+    .case-meta { grid-template-columns: minmax(0, 1fr); }
+    .media-grid--2, .media-grid--3 { grid-template-columns: minmax(0, 1fr); }
+    .media-frame { padding: 12px; }
+    .callout { padding: 22px 20px; }
+    .quote-user { max-width: 100%; }
+    .quote-user:nth-child(even) { align-self: stretch; }
   }
 </style>
 </head>
 <body>
+
+  <div class="read-progress" aria-hidden="true"><span id="readBar"></span></div>
 
   <header class="site-header">
     <a class="logo" href="#/">Reese Ferguson</a>
@@ -671,10 +1281,10 @@
         <div class="h-rule"></div>
         <div>
           <h2 class="panel-heading">Recent projects</h2>
-          <button class="project-row" data-cmd="/north-coast-bjj">north-coast-bjj <span class="desc">— client project</span></button>
-          <button class="project-row" data-cmd="/project-cadence">project-cadence <span class="desc">— case study, 2026</span></button>
-          <button class="project-row" data-cmd="/databrew">databrew <span class="desc">— client project</span></button>
-          <button class="project-row" data-cmd="/savr-app">savr-app <span class="desc">— case study, 2026</span></button>
+          <button class="project-row" data-cmd="/north-coast-bjj">north-coast-bjj <span class="desc">— client project, live</span></button>
+          <button class="project-row" data-cmd="/databrew">databrew <span class="desc">— extension, shipping</span></button>
+          <button class="project-row" data-cmd="/savr-app">savr-app <span class="desc">— course project, 2026</span></button>
+          <button class="project-row" data-cmd="/project-cadence">project-cadence <span class="desc">— in progress</span></button>
         </div>
       </div>
     </div>
@@ -718,29 +1328,60 @@
       <div class="view-inner">
         <p class="crumb">~/reese/work</p>
         <h1 class="view-title">Selected work</h1>
-        <p class="view-lead">Four projects — product design with AI in the loop. Type a project below, or open one here.</p>
+        <p class="view-lead">I design interfaces and then build them — Figma and Paper for the thinking, Claude Code for the shipping. Start with north-coast-bjj; it's the one that went all the way.</p>
+
+        <!-- Ordered strongest first. north-coast-bjj is the only one with a real client,
+             real research and a finished product, so it leads and it's the only one that
+             gets the full-depth treatment. -->
         <div class="work-grid">
-          <a class="work-card" href="#/work/north-coast-bjj">
+          <a class="work-card wc-lead" href="#/work/north-coast-bjj">
             <span class="wc-title">north-coast-bjj</span>
-            <span class="wc-outcome">[TODO: one-line outcome — lead with a metric if you have one]</span>
-            <span class="wc-meta"><span class="wc-role">[TODO: role]</span> · <span class="wc-year">[TODO: year]</span> · <span class="wc-tag">Client</span></span>
-          </a>
-          <a class="work-card" href="#/work/project-cadence">
-            <span class="wc-title">project-cadence</span>
-            <span class="wc-outcome">[TODO: one-line outcome — lead with a metric if you have one]</span>
-            <span class="wc-meta"><span class="wc-role">[TODO: role]</span> · <span class="wc-year">2026</span> · <span class="wc-tag">Case study</span></span>
+            <span class="wc-outcome">[TODO: one line — real client, real users, live site. Lead with what changed for the club.]</span>
+            <span class="wc-meta"><span class="wc-role">[TODO: role]</span> · <span class="wc-year">[TODO: year]</span> · <span class="wc-tag">Client · full case study</span></span>
           </a>
           <a class="work-card" href="#/work/databrew">
             <span class="wc-title">databrew</span>
-            <span class="wc-outcome">[TODO: one-line outcome — lead with a metric if you have one]</span>
-            <span class="wc-meta"><span class="wc-role">[TODO: role]</span> · <span class="wc-year">[TODO: year]</span> · <span class="wc-tag">Client</span></span>
+            <span class="wc-outcome">[TODO: one line — a Chromium extension people will actually install. Say what it saves them.]</span>
+            <span class="wc-meta"><span class="wc-role">Design &amp; front end</span> · <span class="wc-year">[TODO: year]</span> · <span class="wc-tag">Shipping</span></span>
           </a>
           <a class="work-card" href="#/work/savr-app">
             <span class="wc-title">savr-app</span>
-            <span class="wc-outcome">[TODO: one-line outcome — lead with a metric if you have one]</span>
-            <span class="wc-meta"><span class="wc-role">[TODO: role]</span> · <span class="wc-year">2026</span> · <span class="wc-tag">Case study</span></span>
+            <span class="wc-outcome">[TODO: one line — lead with what user testing changed, not with the concept.]</span>
+            <span class="wc-meta"><span class="wc-role">Solo</span> · <span class="wc-year">2026</span> · <span class="wc-tag">Course project</span></span>
+          </a>
+          <a class="work-card" href="#/work/project-cadence">
+            <span class="wc-title">project-cadence</span>
+            <span class="wc-outcome">[TODO: one line on the idea. It's early — the interesting part is the open question.]</span>
+            <span class="wc-meta"><span class="wc-role">Design &amp; front end</span> · <span class="wc-year">2026</span> · <span class="wc-tag">In progress</span></span>
           </a>
         </div>
+
+        <section class="shipped">
+          <h2 class="shipped-title">Things that are live</h2>
+          <ul class="shipped-list">
+            <li>
+              <a href="[TODO: north coast bjj URL]" target="_blank" rel="noopener">
+                <span class="sh-name">north-coast-bjj</span>
+                <span class="sh-desc">[TODO: one line — the site, in the wild]</span>
+                <span class="sh-arrow">↗</span>
+              </a>
+            </li>
+            <li>
+              <a href="[TODO: databrew repo or store listing]" target="_blank" rel="noopener">
+                <span class="sh-name">databrew</span>
+                <span class="sh-desc">[TODO: v1 of the extension — link the repo if it isn't listed yet]</span>
+                <span class="sh-arrow">↗</span>
+              </a>
+            </li>
+            <li>
+              <a href="[TODO: this repo's URL]" target="_blank" rel="noopener">
+                <span class="sh-name">this site</span>
+                <span class="sh-desc">Hand-built — routing, terminal and all. Designed in Figma and Paper, shipped with Claude Code.</span>
+                <span class="sh-arrow">↗</span>
+              </a>
+            </li>
+          </ul>
+        </section>
       </div>
     </section>
 
@@ -773,90 +1414,574 @@
       </div>
     </section>
 
-    <!-- ---------- Case studies ---------- -->
+    <!-- ---------- Case studies ----------
+
+         Write the copy in CASE-STUDIES.md first, then paste it in here. Content before
+         layout — that's the whole point of the doc. Rules distilled from Semplice's
+         case study and about-page guides (links at the top of the doc):
+
+         1. THREE MINUTES, TOPS. ~700 words of body copy per case study:
+              lead 40 · context 70 · problem 90 · research 110 · solution 150
+              craft 80 · outcome 70 · reflection 60 · captions ~15 each
+            Over budget means cut a point, not shrink the type.
+
+         2. THE CAPTION TEST. People scan, they don't read. Read only the eyebrows,
+            headlines and captions from top to bottom — if that alone doesn't explain
+            the project, the captions aren't pulling their weight. Never write a caption
+            that names the artefact ("wireframes"); say what it shows.
+
+         3. NAME THE WORK TYPE. "Ecommerce experience", not just the client's name. It
+            lives in the eyebrow so the title stays free to be a claim.
+
+         4. CREDIT HONESTLY. Say what you owned and what you didn't — including which
+            parts the AI carried. Vagueness about your role is what interviewers screen
+            for, and it's the cheapest thing on this page to get right.
+
+         5. YOUR VOICE. No acronyms, no buzzwords, no lofty language. Write it the way
+            you'd say it out loud. Brag where you've earned it — portfolios are the one
+            place you get a free pass.
+
+         6. EACH STORY IS ITS OWN SHAPE. These seven chapters are a default, not a
+            template. Drop, rename or reorder them per project — the TOC and scroll-spy
+            read whatever .chapter sections they find inside the article, so varying the
+            structure costs nothing but the TOC list beside it.
+    -->
+    <!-- north-coast-bjj is the deep one: real client, real research, shipped product.
+         It uses every component in the kit. The other three are deliberately brief —
+         one case study that goes all the way beats four that stop halfway. -->
     <article class="view case" id="case-north-coast-bjj" aria-label="north-coast-bjj case study">
-      <div class="view-inner">
-        <a class="back-link" href="#/work">← back to work</a>
+
+      <header class="case-hero case-shell">
+        <a class="back-link" href="#/work">❮ back to work</a>
         <p class="crumb">~/reese/work/north-coast-bjj</p>
-        <h1 class="view-title">north-coast-bjj</h1>
-        <p class="view-lead">[TODO: one-line summary of the project.]</p>
-        <dl class="case-meta">
-          <div><dt>Role</dt><dd>[TODO]</dd></div>
-          <div><dt>Timeline</dt><dd>[TODO]</dd></div>
-          <div><dt>Team</dt><dd>[TODO]</dd></div>
-          <div><dt>Tools</dt><dd>Figma · Paper · Claude Code</dd></div>
-        </dl>
-        <section class="case-block"><h2>Problem</h2><p>[TODO: what was broken, for whom, and why it mattered.]</p></section>
-        <section class="case-block"><h2>Process</h2><p>[TODO: research, flows, iteration — show the messy middle.]</p><p class="ai-note">AI in the loop: shaped screens in Figma/Paper, pressure-tested the real flows, then shipped with Claude Code. [TODO: make specific to this project.]</p></section>
-        <section class="case-block"><h2>Solution</h2><p>[TODO: what you shipped — key screens and decisions.]</p></section>
-        <section class="case-block"><h2>Outcome</h2><p>[TODO: a metric if you have one; otherwise an honest, delivery-focused result.]</p></section>
-        <section class="case-block"><h2>Reflection</h2><p>[TODO: what you learned / would do differently.]</p></section>
-        <a class="next-link" href="#/work/project-cadence">Next project → project-cadence</a>
+        <p class="eyebrow">[TODO: work type — e.g. Booking site] <span class="accent">·</span> Client project <span class="accent">·</span> [TODO: year]</p>
+        <!-- Title: 40–60 characters, a claim rather than a label.
+             Lead: ~40 words. Between the eyebrow, the title and this, a stranger should
+             know what kind of thing this is before they scroll. -->
+        <h1 class="case-title">[TODO: a statement, not the slug.]</h1>
+        <p class="case-lead">[TODO: two sentences. What the club needed, and what changed because you worked on it. This is the only project where you had a real client, real users and a finished product — say so early.]</p>
+
+        <figure class="media case-cover">
+          <div class="media-frame">
+            <div class="media-slot">
+              <span class="slot-hint">cover — 1600×900</span>
+              hero shot of the finished, live site
+            </div>
+          </div>
+        </figure>
+      </header>
+
+      <div class="case-body case-shell">
+
+        <!-- Buttons, not anchors: the site is hash-routed, so an in-page #anchor
+             would be read as a route and bounce you back to the terminal. -->
+        <aside class="case-toc" aria-label="Contents">
+          <p class="toc-label">Contents</p>
+          <ol>
+            <li><button class="toc-link" data-target="bjj-context"><span class="toc-num">01</span> Context</button></li>
+            <li><button class="toc-link" data-target="bjj-problem"><span class="toc-num">02</span> Problem</button></li>
+            <li><button class="toc-link" data-target="bjj-research"><span class="toc-num">03</span> Research</button></li>
+            <li><button class="toc-link" data-target="bjj-solution"><span class="toc-num">04</span> Solution</button></li>
+            <li><button class="toc-link" data-target="bjj-craft"><span class="toc-num">05</span> Craft</button></li>
+            <li><button class="toc-link" data-target="bjj-outcome"><span class="toc-num">06</span> Outcome</button></li>
+            <li><button class="toc-link" data-target="bjj-reflection"><span class="toc-num">07</span> Reflection</button></li>
+          </ol>
+          <button class="toc-top" data-target="top">↑ back to top</button>
+        </aside>
+
+        <div class="case-main">
+
+          <dl class="case-meta">
+            <div><dt>Role</dt><dd>[TODO: what you owned, listed — e.g. Research, UI, build]</dd></div>
+            <div><dt>Timeline</dt><dd>[TODO: e.g. Sep – Nov 2025, 8 weeks]</dd></div>
+            <div><dt>Team</dt><dd>[TODO: who else, and what they did. "Solo, with the club owner as stakeholder" is a real answer.]</dd></div>
+            <div><dt>Tools</dt><dd>Figma · Paper · Claude Code</dd></div>
+          </dl>
+
+          <div class="impact-row">
+            <div>
+              <p class="stat-value">[00%]</p>
+              <p class="stat-label">[TODO: what it measures — the headline result]</p>
+            </div>
+            <div>
+              <p class="stat-value">[0→0]</p>
+              <p class="stat-label">[TODO: a before/after you compressed]</p>
+            </div>
+            <div>
+              <p class="stat-value">[0×]</p>
+              <p class="stat-label">[TODO: speed, reach, or scale. No number? Use scope — "3 pages, 1 booking flow, 12 members onboarded".]</p>
+            </div>
+          </div>
+
+          <section class="chapter" id="bjj-context">
+            <p class="eyebrow">01 — Context</p>
+            <!-- ~70 words -->
+            <h2>[TODO: set the scene in one claim.]</h2>
+            <p>[TODO: who the club is and where things stood when you arrived. An interviewer needs the stakes before they'll care about the problem.]</p>
+            <p>[TODO: your remit. What were you actually asked to do, and what did you decide to do instead?]</p>
+          </section>
+
+          <section class="chapter" id="bjj-problem">
+            <p class="eyebrow">02 — Problem</p>
+            <!-- ~90 words including the list. e.g. "The cracks were small, but they were everywhere." -->
+            <h2>[TODO: the problem as a sentence someone would say out loud.]</h2>
+            <p>[TODO: what was broken, for whom, and what it cost the club — enquiries lost, questions answered twice, people who never walked in.]</p>
+
+            <ol class="pain-list">
+              <li>[TODO: first pain point, stated concretely.]</li>
+              <li>[TODO: second pain point.]</li>
+              <li>[TODO: third pain point.]</li>
+            </ol>
+
+            <blockquote class="callout">
+              <p>[TODO: the single quote or data point that made the problem undeniable.]</p>
+              <cite>[TODO: source — member interview, the owner, enquiry log]</cite>
+            </blockquote>
+          </section>
+
+          <section class="chapter" id="bjj-research">
+            <p class="eyebrow">03 — Research</p>
+            <!-- ~110 words including the insight cards. Quotes don't count against it.
+                 This chapter is your edge over every other junior portfolio — you talked
+                 to actual users of an actual business. Most course projects didn't. -->
+            <h2>[TODO: what you went looking for, and the thing you didn't expect to find.]</h2>
+            <p>[TODO: method and sample in one line — "6 member interviews, 2 sessions watching people try to book." Then what it told you.]</p>
+
+            <div class="quote-stack">
+              <div class="quote-user">
+                <p>[TODO: verbatim quote. Leave the grammar messy — it reads as real.]</p>
+                <span class="attr">[TODO: e.g. member, 8 months training]</span>
+              </div>
+              <div class="quote-user">
+                <p>[TODO: a second quote that contradicts the first, if you have one. Tension is more interesting than consensus.]</p>
+                <span class="attr">[TODO: e.g. prospective member, never trained]</span>
+              </div>
+            </div>
+
+            <div class="card-grid">
+              <div class="insight-card">
+                <h3>[TODO: insight one]</h3>
+                <p>[TODO: one or two lines on what it meant for the design.]</p>
+              </div>
+              <div class="insight-card">
+                <h3>[TODO: insight two]</h3>
+                <p>[TODO: one or two lines.]</p>
+              </div>
+              <div class="insight-card">
+                <h3>[TODO: insight three]</h3>
+                <p>[TODO: one or two lines.]</p>
+              </div>
+            </div>
+
+            <figure class="media media--wide">
+              <div class="media-frame">
+                <div class="media-grid media-grid--2">
+                  <div class="media-slot"><span class="slot-hint">1200×900</span>affinity map / research wall</div>
+                  <div class="media-slot"><span class="slot-hint">1200×900</span>journey map or current-state flow</div>
+                </div>
+              </div>
+              <figcaption>[TODO: caption — what this shows and what it settled. It has to stand on its own for someone who read nothing else.]</figcaption>
+            </figure>
+          </section>
+
+          <section class="chapter" id="bjj-solution">
+            <p class="eyebrow">04 — Solution</p>
+            <!-- ~150 words — the longest chapter, and the only one that earns it.
+                 Frame it around what it does for the user, not what you built.
+                 Answer "why" at every turn: why this shape, why not the obvious one. -->
+            <h2>[TODO: the solution in one claim.]</h2>
+            <p>[TODO: the idea in three sentences. If you can't explain it without a screenshot, it isn't clear yet.]</p>
+
+            <figure class="media media--wide">
+              <div class="media-frame">
+                <div class="media-slot"><span class="slot-hint">2000×1250</span>the key screen, full width</div>
+              </div>
+              <figcaption>[TODO: point at the one decision this screen is evidence of.]</figcaption>
+            </figure>
+
+            <h3>[TODO: first key flow or feature]</h3>
+            <p>[TODO: what the user does, what the interface does back, and the decision you made here. <span class="mark">Highlight the phrase you want remembered</span> — sparingly, once or twice a page.]</p>
+
+            <figure class="media media--phone">
+              <div class="media-frame">
+                <div class="media-grid media-grid--3">
+                  <div class="media-slot"><span class="slot-hint">1179×2556</span>step 1</div>
+                  <div class="media-slot"><span class="slot-hint">1179×2556</span>step 2</div>
+                  <div class="media-slot"><span class="slot-hint">1179×2556</span>step 3</div>
+                </div>
+              </div>
+              <figcaption>[TODO: the flow, in three states.]</figcaption>
+            </figure>
+
+            <h3>[TODO: second key flow or feature]</h3>
+            <p>[TODO: same shape — action, response, decision.]</p>
+
+            <figure class="media">
+              <div class="media-frame">
+                <div class="media-slot"><span class="slot-hint">1440×900</span>supporting screen or component detail</div>
+              </div>
+              <figcaption>[TODO: caption — what this shows and what it settled. It has to stand on its own for someone who read nothing else.]</figcaption>
+            </figure>
+          </section>
+
+          <section class="chapter" id="bjj-craft">
+            <p class="eyebrow">05 — Craft</p>
+            <!-- ~80 words. This is the section that separates you from other candidates —
+                 be specific, and be straight about which parts the AI carried. -->
+            <h2>[TODO: how it actually got built.]</h2>
+            <p>[TODO: AI in the loop, specifically. Which parts did you shape in Figma or Paper, what did you pressure-test, and what did you ship with Claude Code? Name the trade-off you made to move faster.]</p>
+
+            <figure class="media media--wide media--video">
+              <div class="media-frame">
+                <div class="media-slot">
+                  <span class="slot-hint">screen recording — 1600×1000</span>
+                  the live site being used, or the build in progress
+                </div>
+              </div>
+              <figcaption>[TODO: what to watch for in the recording.]</figcaption>
+            </figure>
+          </section>
+
+          <section class="chapter" id="bjj-outcome">
+            <p class="eyebrow">06 — Outcome</p>
+            <!-- ~70 words. Didn't succeed? Say so, then say what made it worth doing anyway. -->
+            <h2>[TODO: what actually changed.]</h2>
+            <p>[TODO: results against the stats at the top. If you don't have numbers, say what shipped, who uses it, and what the owner said — honest beats inflated, and interviewers can tell. A live URL is worth more here than a percentage you can't source.]</p>
+
+            <figure class="media">
+              <div class="media-frame">
+                <div class="media-slot"><span class="slot-hint">1440×900</span>shipped site, in context</div>
+              </div>
+              <figcaption>[TODO: caption — what this shows and what it settled. It has to stand on its own for someone who read nothing else.]</figcaption>
+            </figure>
+          </section>
+
+          <section class="chapter" id="bjj-reflection">
+            <p class="eyebrow">07 — Reflection</p>
+            <!-- ~60 words including the cards. -->
+            <h2>[TODO: what you'd do differently.]</h2>
+            <p>[TODO: one real regret and one thing you'd keep. Specific beats humble.]</p>
+
+            <div class="card-grid">
+              <div class="insight-card">
+                <h3>[TODO: what worked]</h3>
+                <p>[TODO: and why you'd do it again.]</p>
+              </div>
+              <div class="insight-card">
+                <h3>[TODO: what didn't]</h3>
+                <p>[TODO: and what you'd change.]</p>
+              </div>
+              <div class="insight-card">
+                <h3>[TODO: what's next]</h3>
+                <p>[TODO: where you'd take it with more time.]</p>
+              </div>
+            </div>
+          </section>
+
+        </div>
       </div>
+
+      <footer class="case-footer case-shell">
+        <a class="next-case" href="#/work/databrew">
+          <div>
+            <p class="eyebrow">Next project</p>
+            <p class="next-case-title">databrew</p>
+            <p class="next-case-desc">[TODO: one line on why someone who read this should read that one.]</p>
+          </div>
+          <div class="media-slot"><span class="slot-hint">800×500</span>thumbnail</div>
+        </a>
+        <p class="case-closing">[TODO: a closing line with some personality.] <span class="accent">Let's build something.</span></p>
+        <p class="case-contact">
+          <a href="mailto:reesefergie@gmail.com">reesefergie@gmail.com</a>
+          <span class="sep">·</span>
+          <a href="#/contact">more ways to reach me</a>
+        </p>
+      </footer>
+
     </article>
 
-    <article class="view case" id="case-project-cadence" aria-label="project-cadence case study">
-      <div class="view-inner">
-        <a class="back-link" href="#/work">← back to work</a>
-        <p class="crumb">~/reese/work/project-cadence</p>
-        <h1 class="view-title">project-cadence</h1>
-        <p class="view-lead">[TODO: one-line summary of the project.]</p>
-        <dl class="case-meta">
-          <div><dt>Role</dt><dd>[TODO]</dd></div>
-          <div><dt>Timeline</dt><dd>2026</dd></div>
-          <div><dt>Team</dt><dd>[TODO]</dd></div>
-          <div><dt>Tools</dt><dd>Figma · Paper · Claude Code</dd></div>
-        </dl>
-        <section class="case-block"><h2>Problem</h2><p>[TODO: what was broken, for whom, and why it mattered.]</p></section>
-        <section class="case-block"><h2>Process</h2><p>[TODO: research, flows, iteration — show the messy middle.]</p><p class="ai-note">AI in the loop: shaped screens in Figma/Paper, pressure-tested the real flows, then shipped with Claude Code. [TODO: make specific to this project.]</p></section>
-        <section class="case-block"><h2>Solution</h2><p>[TODO: what you shipped — key screens and decisions.]</p></section>
-        <section class="case-block"><h2>Outcome</h2><p>[TODO: a metric if you have one; otherwise an honest, delivery-focused result.]</p></section>
-        <section class="case-block"><h2>Reflection</h2><p>[TODO: what you learned / would do differently.]</p></section>
-        <a class="next-link" href="#/work/databrew">Next project → databrew</a>
-      </div>
-    </article>
-
+    <!-- Brief form: no sticky rail, no impact stats, four short chapters.
+         A real tool that isn't finished is still stronger evidence than a polished
+         concept — the job here is to be honest about what stage it's at. -->
     <article class="view case" id="case-databrew" aria-label="databrew case study">
-      <div class="view-inner">
-        <a class="back-link" href="#/work">← back to work</a>
+
+      <header class="case-hero case-shell">
+        <a class="back-link" href="#/work">❮ back to work</a>
         <p class="crumb">~/reese/work/databrew</p>
-        <h1 class="view-title">databrew</h1>
-        <p class="view-lead">[TODO: one-line summary of the project.]</p>
-        <dl class="case-meta">
-          <div><dt>Role</dt><dd>[TODO]</dd></div>
-          <div><dt>Timeline</dt><dd>[TODO]</dd></div>
-          <div><dt>Team</dt><dd>[TODO]</dd></div>
-          <div><dt>Tools</dt><dd>Figma · Paper · Claude Code</dd></div>
-        </dl>
-        <section class="case-block"><h2>Problem</h2><p>[TODO: what was broken, for whom, and why it mattered.]</p></section>
-        <section class="case-block"><h2>Process</h2><p>[TODO: research, flows, iteration — show the messy middle.]</p><p class="ai-note">AI in the loop: shaped screens in Figma/Paper, pressure-tested the real flows, then shipped with Claude Code. [TODO: make specific to this project.]</p></section>
-        <section class="case-block"><h2>Solution</h2><p>[TODO: what you shipped — key screens and decisions.]</p></section>
-        <section class="case-block"><h2>Outcome</h2><p>[TODO: a metric if you have one; otherwise an honest, delivery-focused result.]</p></section>
-        <section class="case-block"><h2>Reflection</h2><p>[TODO: what you learned / would do differently.]</p></section>
-        <a class="next-link" href="#/work/savr-app">Next project → savr-app</a>
+        <p class="eyebrow">Chromium extension <span class="accent">·</span> Shipping <span class="accent">·</span> [TODO: year]</p>
+        <h1 class="case-title">[TODO: a statement, not the slug.]</h1>
+        <p class="case-lead">[TODO: two sentences. What databrew does, who it's for, and what state it's in. Say "v1" out loud — a real tool in progress beats a finished-looking concept, but only if you're straight about it.]</p>
+
+        <figure class="media case-cover">
+          <div class="media-frame">
+            <div class="media-slot">
+              <span class="slot-hint">cover — 1600×900</span>
+              the extension open in a browser
+            </div>
+          </div>
+        </figure>
+      </header>
+
+      <div class="case-body case-body--brief case-shell">
+        <div class="case-main">
+
+          <dl class="case-meta">
+            <div><dt>Role</dt><dd>[TODO: front end and UI — name it exactly. e.g. Product design, UI, front-end build]</dd></div>
+            <div><dt>Timeline</dt><dd>[TODO: e.g. Ongoing since Mar 2026]</dd></div>
+            <div><dt>Team</dt><dd>[TODO: you on design + front end, and your data engineer on the back end — credit them by name.]</dd></div>
+            <div><dt>Tools</dt><dd>Figma · Paper · Claude Code</dd></div>
+          </dl>
+
+          <section class="chapter" id="databrew-what">
+            <p class="eyebrow">01 — What it is</p>
+            <!-- ~60 words -->
+            <h2>[TODO: what it does, in one claim.]</h2>
+            <p>[TODO: the tool in three sentences. Who asked for it and why it needed to exist.]</p>
+          </section>
+
+          <section class="chapter" id="databrew-problem">
+            <p class="eyebrow">02 — The problem</p>
+            <!-- ~70 words -->
+            <h2>[TODO: the problem as a sentence someone would say out loud.]</h2>
+            <p>[TODO: what the manual version cost — the time, the tab-switching, the thing that got missed. You have a real user sitting next to you; quote them.]</p>
+          </section>
+
+          <section class="chapter" id="databrew-design">
+            <p class="eyebrow">03 — What I designed</p>
+            <!-- ~110 words. This is the chapter that earns the page — go deeper here
+                 than anywhere else in this case study. -->
+            <h2>[TODO: the design decision you're proudest of.]</h2>
+            <p>[TODO: the constraints an extension puts on you — small surface, no attention to spare, someone mid-task. What did you cut to fit, and why that and not something else?]</p>
+
+            <figure class="media media--wide">
+              <div class="media-frame">
+                <div class="media-slot"><span class="slot-hint">2000×1250</span>the main view, full width</div>
+              </div>
+              <figcaption>[TODO: caption — what this shows and what it settled. It has to stand on its own for someone who read nothing else.]</figcaption>
+            </figure>
+
+            <figure class="media">
+              <div class="media-frame">
+                <div class="media-grid media-grid--2">
+                  <div class="media-slot"><span class="slot-hint">1200×900</span>a state worth explaining — empty, loading, error</div>
+                  <div class="media-slot"><span class="slot-hint">1200×900</span>a detail you sweated</div>
+                </div>
+              </div>
+              <figcaption>[TODO: caption — say what it shows, not what it is.]</figcaption>
+            </figure>
+          </section>
+
+          <section class="chapter" id="databrew-next">
+            <p class="eyebrow">04 — Where it's going</p>
+            <!-- ~60 words -->
+            <h2>[TODO: what happens next.]</h2>
+            <p>[TODO: what's built, what isn't, and what "done" looks like. Naming what's left reads as judgement, not as an excuse.]</p>
+          </section>
+
+        </div>
       </div>
+
+      <footer class="case-footer case-shell">
+        <a class="next-case" href="#/work/savr-app">
+          <div>
+            <p class="eyebrow">Next project</p>
+            <p class="next-case-title">savr-app</p>
+            <p class="next-case-desc">[TODO: one line on why someone who read this should read that one.]</p>
+          </div>
+          <div class="media-slot"><span class="slot-hint">800×500</span>thumbnail</div>
+        </a>
+        <p class="case-closing">[TODO: a closing line with some personality.] <span class="accent">Let's build something.</span></p>
+        <p class="case-contact">
+          <a href="mailto:reesefergie@gmail.com">reesefergie@gmail.com</a>
+          <span class="sep">·</span>
+          <a href="#/contact">more ways to reach me</a>
+        </p>
+      </footer>
+
     </article>
 
+    <!-- Course project. Label it as one, prominently. Interviewers recognise Google UX
+         Certificate work on sight, and a huge number of applicants have something very
+         like it — pretending otherwise is the one thing that can actively cost you.
+         Owned and stated, it's fine: it's where your documented research process lives. -->
     <article class="view case" id="case-savr-app" aria-label="savr-app case study">
-      <div class="view-inner">
-        <a class="back-link" href="#/work">← back to work</a>
+
+      <header class="case-hero case-shell">
+        <a class="back-link" href="#/work">❮ back to work</a>
         <p class="crumb">~/reese/work/savr-app</p>
-        <h1 class="view-title">savr-app</h1>
-        <p class="view-lead">[TODO: one-line summary of the project.]</p>
-        <dl class="case-meta">
-          <div><dt>Role</dt><dd>[TODO]</dd></div>
-          <div><dt>Timeline</dt><dd>2026</dd></div>
-          <div><dt>Team</dt><dd>[TODO]</dd></div>
-          <div><dt>Tools</dt><dd>Figma · Paper · Claude Code</dd></div>
-        </dl>
-        <section class="case-block"><h2>Problem</h2><p>[TODO: what was broken, for whom, and why it mattered.]</p></section>
-        <section class="case-block"><h2>Process</h2><p>[TODO: research, flows, iteration — show the messy middle.]</p><p class="ai-note">AI in the loop: shaped screens in Figma/Paper, pressure-tested the real flows, then shipped with Claude Code. [TODO: make specific to this project.]</p></section>
-        <section class="case-block"><h2>Solution</h2><p>[TODO: what you shipped — key screens and decisions.]</p></section>
-        <section class="case-block"><h2>Outcome</h2><p>[TODO: a metric if you have one; otherwise an honest, delivery-focused result.]</p></section>
-        <section class="case-block"><h2>Reflection</h2><p>[TODO: what you learned / would do differently.]</p></section>
-        <a class="next-link" href="#/work/north-coast-bjj">Next project → north-coast-bjj</a>
+        <p class="eyebrow">Mobile app concept <span class="accent">·</span> Course project <span class="accent">·</span> 2026</p>
+        <h1 class="case-title">[TODO: a statement, not the slug.]</h1>
+        <p class="case-lead">[TODO: two sentences. What the app is and who it's for. Then say plainly that it's a self-directed concept from the Google UX Design Certificate, taken to high-fidelity Figma prototype and user-tested — not shipped.]</p>
+
+        <figure class="media case-cover">
+          <div class="media-frame">
+            <div class="media-slot">
+              <span class="slot-hint">cover — 1600×900</span>
+              hero shot of the prototype
+            </div>
+          </div>
+        </figure>
+      </header>
+
+      <div class="case-body case-body--brief case-shell">
+        <div class="case-main">
+
+          <dl class="case-meta">
+            <div><dt>Role</dt><dd>[TODO: solo — research, IA, UI, prototype]</dd></div>
+            <div><dt>Timeline</dt><dd>[TODO: e.g. 6 weeks, 2026]</dd></div>
+            <div><dt>Team</dt><dd>Solo — self-directed course project</dd></div>
+            <div><dt>Tools</dt><dd>Figma</dd></div>
+          </dl>
+
+          <section class="chapter" id="savr-brief">
+            <p class="eyebrow">01 — The brief</p>
+            <!-- ~60 words -->
+            <h2>[TODO: the problem you chose, in one claim.]</h2>
+            <p>[TODO: the brief was yours to set — so say why you picked this one. The choice is the signal here, more than the execution.]</p>
+          </section>
+
+          <section class="chapter" id="savr-research">
+            <p class="eyebrow">02 — Research and testing</p>
+            <!-- ~100 words. The strongest part of this project — you have documented
+                 process here that the client work may not. Lead with what changed. -->
+            <h2>[TODO: what the testing changed about your design.]</h2>
+            <p>[TODO: method and sample in one line, then the specific thing a participant did that made you go back and redraw something. A design that survived testing unchanged is a design that wasn't really tested.]</p>
+
+            <blockquote class="callout">
+              <p>[TODO: the quote or observation that forced a change.]</p>
+              <cite>[TODO: source — usability test, participant 03]</cite>
+            </blockquote>
+          </section>
+
+          <section class="chapter" id="savr-design">
+            <p class="eyebrow">03 — What I designed</p>
+            <!-- ~100 words -->
+            <h2>[TODO: the solution in one claim.]</h2>
+            <p>[TODO: the idea in three sentences, framed around what it does for the user.]</p>
+
+            <figure class="media media--phone">
+              <div class="media-frame">
+                <div class="media-grid media-grid--3">
+                  <div class="media-slot"><span class="slot-hint">1179×2556</span>step 1</div>
+                  <div class="media-slot"><span class="slot-hint">1179×2556</span>step 2</div>
+                  <div class="media-slot"><span class="slot-hint">1179×2556</span>step 3</div>
+                </div>
+              </div>
+              <figcaption>[TODO: the core flow, in three states. Say what each one decides.]</figcaption>
+            </figure>
+
+            <figure class="media media--wide">
+              <div class="media-frame">
+                <div class="media-grid media-grid--2">
+                  <div class="media-slot"><span class="slot-hint">1200×900</span>before — the version testing killed</div>
+                  <div class="media-slot"><span class="slot-hint">1200×900</span>after</div>
+                </div>
+              </div>
+              <figcaption>[TODO: a before/after is the most persuasive image in this whole case study. Say what moved and why.]</figcaption>
+            </figure>
+          </section>
+
+          <section class="chapter" id="savr-reflection">
+            <p class="eyebrow">04 — What I'd change</p>
+            <!-- ~60 words -->
+            <h2>[TODO: what you'd do differently now.]</h2>
+            <p>[TODO: you've done real client work since this. Say what you'd approach differently with that behind you — that contrast is the most useful thing this project can do for you now.]</p>
+          </section>
+
+        </div>
       </div>
+
+      <footer class="case-footer case-shell">
+        <a class="next-case" href="#/work/north-coast-bjj">
+          <div>
+            <p class="eyebrow">Next project</p>
+            <p class="next-case-title">north-coast-bjj</p>
+            <p class="next-case-desc">[TODO: one line — this is the one you most want them to read, so make it pull.]</p>
+          </div>
+          <div class="media-slot"><span class="slot-hint">800×500</span>thumbnail</div>
+        </a>
+        <p class="case-closing">[TODO: a closing line with some personality.] <span class="accent">Let's build something.</span></p>
+        <p class="case-contact">
+          <a href="mailto:reesefergie@gmail.com">reesefergie@gmail.com</a>
+          <span class="sep">·</span>
+          <a href="#/contact">more ways to reach me</a>
+        </p>
+      </footer>
+
     </article>
+
+    <!-- Earliest-stage project. Two chapters and a status chip is the right size for it.
+         Framed as "currently building" it invites a question in an interview; framed as
+         a thin case study it invites "why does this one stop halfway?" -->
+    <article class="view case" id="case-project-cadence" aria-label="project-cadence case study">
+
+      <header class="case-hero case-shell">
+        <a class="back-link" href="#/work">❮ back to work</a>
+        <p class="crumb">~/reese/work/project-cadence</p>
+        <p class="eyebrow">[TODO: work type] <span class="accent">·</span> <span class="case-status">In progress</span> <span class="accent">·</span> 2026</p>
+        <h1 class="case-title">[TODO: a statement, not the slug.]</h1>
+        <p class="case-lead">[TODO: two sentences on what it is and who it's for — then say where it actually is. "Early. I paused it to build this site" is a perfectly good sentence and a better one than an implied finish.]</p>
+
+        <figure class="media case-cover">
+          <div class="media-frame">
+            <div class="media-slot">
+              <span class="slot-hint">cover — 1600×900</span>
+              whatever exists — early screens, a flow, even the sketch
+            </div>
+          </div>
+        </figure>
+      </header>
+
+      <div class="case-body case-body--brief case-shell">
+        <div class="case-main">
+
+          <dl class="case-meta">
+            <div><dt>Role</dt><dd>[TODO: design and front end]</dd></div>
+            <div><dt>Status</dt><dd>[TODO: e.g. Early — direction set, build not started]</dd></div>
+            <div><dt>Team</dt><dd>[TODO: you on design + front end, your data engineer on the back end — credit them by name.]</dd></div>
+            <div><dt>Tools</dt><dd>Figma · Paper · Claude Code</dd></div>
+          </dl>
+
+          <section class="chapter" id="cadence-what">
+            <p class="eyebrow">01 — What it is</p>
+            <!-- ~70 words -->
+            <h2>[TODO: the idea in one claim.]</h2>
+            <p>[TODO: what it does and why it's worth building. An early project is judged on whether the thinking is good, so put the thinking here.]</p>
+          </section>
+
+          <section class="chapter" id="cadence-where">
+            <p class="eyebrow">02 — Where it's at</p>
+            <!-- ~70 words -->
+            <h2>[TODO: what's decided and what isn't.]</h2>
+            <p>[TODO: what exists today, what you're weighing next, and what you'll know once you've built it. Naming the open question is the whole point of showing an unfinished project — it's the thing you can talk about for ten minutes in an interview.]</p>
+          </section>
+
+        </div>
+      </div>
+
+      <footer class="case-footer case-shell">
+        <a class="next-case" href="#/work/north-coast-bjj">
+          <div>
+            <p class="eyebrow">Next project</p>
+            <p class="next-case-title">north-coast-bjj</p>
+            <p class="next-case-desc">[TODO: one line — this is the one you most want them to read, so make it pull.]</p>
+          </div>
+          <div class="media-slot"><span class="slot-hint">800×500</span>thumbnail</div>
+        </a>
+        <p class="case-closing">[TODO: a closing line with some personality.] <span class="accent">Let's build something.</span></p>
+        <p class="case-contact">
+          <a href="mailto:reesefergie@gmail.com">reesefergie@gmail.com</a>
+          <span class="sep">·</span>
+          <a href="#/contact">more ways to reach me</a>
+        </p>
+      </footer>
+
+    </article>
+
+
+
+    <!-- savr-app is the reference implementation: it uses every component in the kit.
+         Copy blocks out of here into the other case studies as their content earns them. -->
 
   </main>
 
@@ -985,6 +2110,95 @@
     }
   }
 
+  /* ---------- Case study reading chrome ---------- */
+  const readBar = document.getElementById("readBar");
+  let activeCase = null;
+  let spyChapters = [];
+  let tocLinks = [];
+  let ticking = false;
+
+  // Reveal once, then stop watching. Skipped entirely under reduced motion, which
+  // also means the .reveal class (opacity: 0) is never applied in that case.
+  const revealObserver = "IntersectionObserver" in window && !reduced
+    ? new IntersectionObserver((entries, obs) => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          e.target.classList.add("is-in");
+          obs.unobserve(e.target);
+        });
+      }, { rootMargin: "0px 0px -12% 0px" })
+    : null;
+
+  function updateCaseChrome() {
+    ticking = false;
+    if (!activeCase) return;
+
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+    readBar.style.width = (pct * 100).toFixed(2) + "%";
+
+    // active chapter = the last one whose top has passed the reading band
+    let current = spyChapters[0] || null;
+    for (const c of spyChapters) {
+      if (c.getBoundingClientRect().top <= 140) current = c;
+    }
+    tocLinks.forEach(l => {
+      const on = !!current && l.dataset.target === current.id;
+      l.classList.toggle("is-active", on);
+      if (on) l.setAttribute("aria-current", "true");
+      else l.removeAttribute("aria-current");
+    });
+  }
+
+  function onCaseScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(updateCaseChrome);
+  }
+
+  window.addEventListener("scroll", onCaseScroll, { passive: true });
+  window.addEventListener("resize", onCaseScroll, { passive: true });
+
+  function enterCase(article) {
+    activeCase = article;
+    spyChapters = [...article.querySelectorAll(".chapter")];
+    tocLinks = [...article.querySelectorAll(".toc-link")];
+
+    if (revealObserver && !article.dataset.revealed) {
+      article.querySelectorAll(".case-cover, .impact-row, .chapter, .next-case").forEach(el => {
+        el.classList.add("reveal");
+        revealObserver.observe(el);
+      });
+      article.dataset.revealed = "1";   // the classes persist, so only wire each case once
+    }
+
+    // we're always scrolled to the top on entry; let the scroll handler take it from there
+    readBar.style.width = "0%";
+    tocLinks.forEach((l, i) => {
+      l.classList.toggle("is-active", i === 0);
+      if (i === 0) l.setAttribute("aria-current", "true");
+      else l.removeAttribute("aria-current");
+    });
+  }
+
+  function exitCase() {
+    activeCase = null;
+    spyChapters = [];
+    tocLinks = [];
+    readBar.style.width = "0%";
+  }
+
+  // TOC entries are buttons, not anchors — an in-page #hash would be read as a route
+  document.querySelectorAll(".toc-link, .toc-top").forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (editPaused) return;
+      const behavior = reduced ? "auto" : "smooth";
+      if (btn.dataset.target === "top") return window.scrollTo({ top: 0, behavior });
+      const el = document.getElementById(btn.dataset.target);
+      if (el) el.scrollIntoView({ behavior, block: "start" });
+    });
+  });
+
   /* ---------- Router ---------- */
   function currentRoute() {
     const h = location.hash.replace(/^#/, "");   // "#/work/savr-app" -> "/work/savr-app"
@@ -1012,6 +2226,12 @@
       document.body.classList.remove("routed");  // home = terminal only
       window.scrollTo({ top: 0, behavior });
     }
+
+    // case studies get the reading chrome: progress bar, scroll-spy, reveal
+    const isCase = !!target && target.classList.contains("case");
+    document.body.classList.toggle("on-case", isCase);
+    if (isCase) enterCase(target);
+    else exitCase();
 
     document.querySelectorAll(".nav-link").forEach(a => {
       const href = a.getAttribute("href");
@@ -1154,18 +2374,80 @@
     }
   });
 
-  /* ---------- Local-only text edit mode ---------- */
-  /* Gated on hostname, not a build flag, so this never ships live on the real domain. */
+  /* ---------- Local-only dev panel: font presets, panel surface, text editing ---------- */
+  /* Gated on hostname, not a build flag, so this never ships live on the real domain.
+     The candidate font families are injected here rather than linked in <head>, so
+     production only ever downloads JetBrains Mono. Once a preset wins, hardcode it
+     in :root and delete the rest. */
   if (["localhost", "127.0.0.1"].includes(location.hostname)) {
-    const editBtn = document.createElement("button");
-    editBtn.id = "editModeToggle";
-    editBtn.type = "button";
-    editBtn.textContent = "✎ edit text";
-    document.body.append(editBtn);
+    const root = document.documentElement;
+
+    const FONT_PRESETS = {
+      mono:    { families: [] },   // the control — current design, no extra download
+      serif:   { families: ["Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600"] },
+      grotesk: { families: ["Inter:wght@400;500;600;700"] },
+      hybrid:  { families: ["Space+Grotesk:wght@400;500;600;700", "Inter:wght@400;500;600;700"] },
+    };
+
+    const fetched = new Set();
+    function loadFonts(preset) {
+      FONT_PRESETS[preset].families.forEach(spec => {
+        if (fetched.has(spec)) return;
+        fetched.add(spec);
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = "https://fonts.googleapis.com/css2?family=" + spec + "&display=swap";
+        document.head.append(link);
+      });
+    }
+
+    const panel = document.createElement("div");
+    panel.className = "dev-panel";
+    panel.innerHTML =
+      '<div class="dev-row"><span class="dev-row-label">type</span>' +
+        Object.keys(FONT_PRESETS)
+          .map(k => '<button class="dev-chip" type="button" data-type-preset="' + k + '">' + k + "</button>")
+          .join("") +
+      "</div>" +
+      '<div class="dev-row"><span class="dev-row-label">panels</span>' +
+        '<button class="dev-chip" type="button" data-surface="dark">dark</button>' +
+        '<button class="dev-chip" type="button" data-surface="warm">warm</button>' +
+      "</div>" +
+      '<div class="dev-row"><button id="editModeToggle" type="button">✎ edit text</button></div>';
+    document.body.append(panel);
+
+    function applyType(name) {
+      loadFonts(name);
+      root.dataset.type = name;                  // "mono" matches no override, so it falls back to :root
+      localStorage.setItem("rf-type", name);
+      panel.querySelectorAll("[data-type-preset]")
+        .forEach(b => b.classList.toggle("is-on", b.dataset.typePreset === name));
+    }
+
+    function applySurface(name) {
+      root.dataset.mediaSurface = name;
+      localStorage.setItem("rf-media-surface", name);
+      panel.querySelectorAll("[data-surface]")
+        .forEach(b => b.classList.toggle("is-on", b.dataset.surface === name));
+    }
+
+    panel.querySelectorAll("[data-type-preset]")
+      .forEach(b => b.addEventListener("click", () => applyType(b.dataset.typePreset)));
+    panel.querySelectorAll("[data-surface]")
+      .forEach(b => b.addEventListener("click", () => applySurface(b.dataset.surface)));
+
+    applyType(localStorage.getItem("rf-type") || "mono");
+    applySurface(localStorage.getItem("rf-media-surface") || "dark");
+
+    const editBtn = panel.querySelector("#editModeToggle");
 
     const editableEls = document.querySelectorAll(
       ".about-copy, .project-row, .panel-heading, .flavor-line, .term-box-title, .phrase, .path-line, .ask-label, .ask-desc, " +
-      ".view-title, .view-lead, .wc-outcome, .about-lead, .about-copy2, .case-block p, .case-meta dd"
+      ".view-title, .view-lead, .wc-outcome, .about-lead, .about-copy2, " +
+      ".case-title, .case-lead, .case-meta dd, .eyebrow, .stat-value, .stat-label, " +
+      ".chapter h2, .chapter h3, .chapter p, .media figcaption, .callout p, .callout cite, " +
+      ".quote-user p, .quote-user .attr, .pain-list li, .insight-card h3, .insight-card p, " +
+      ".next-case-title, .next-case-desc, .case-closing"
     );
 
     let editOn = false;
