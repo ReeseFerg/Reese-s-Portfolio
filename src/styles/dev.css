@@ -1,0 +1,52 @@
+/* Localhost-only dev panel: font presets, media surface, text editing.
+   Only mounted when import.meta.env.DEV is true. */
+
+/* ---------- Local-only dev panel (inert unless served from localhost) ---------- */
+.dev-panel {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: rgba(8, 8, 8, 0.92);
+  backdrop-filter: blur(6px);
+  font-family: var(--mono);
+}
+
+.dev-row { display: flex; align-items: center; gap: 6px; }
+
+.dev-row-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--faint);
+  margin-right: 4px;
+}
+
+.dev-chip, #editModeToggle {
+  padding: 5px 10px;
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.dev-chip:hover, #editModeToggle:hover { color: var(--text); border-color: var(--accent-dim); }
+.dev-chip.is-on, #editModeToggle.is-on { color: var(--accent); border-color: var(--accent); }
+
+.is-editable {
+  outline: 1px dashed var(--accent-faint);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+.is-editable:focus { outline-style: solid; outline-color: var(--accent); }
+
+/* below this the sticky rail has nowhere to live — case study goes single column */

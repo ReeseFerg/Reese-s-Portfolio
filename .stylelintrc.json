@@ -1,0 +1,32 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "comments": [
+    "Two groups of rules are switched off here.",
+    "",
+    "Formatting: this CSS was hand-written in a compact one-rule-per-line idiom,",
+    "with tokens grouped by blank lines and a couple of selectors deliberately",
+    "reopened in a later section. Reformatting all of it would churn ~1,100 lines",
+    "to satisfy taste, not correctness.",
+    "",
+    "media-feature-range-notation: (width <= 980px) needs Safari 16.4+, and this",
+    "is a portfolio recruiters may open on an old work machine. max-width works",
+    "everywhere, so the mobile layout should not depend on a newer browser."
+  ],
+  "rules": {
+    "selector-class-pattern": null,
+    "selector-id-pattern": null,
+    "custom-property-pattern": null,
+    "custom-property-empty-line-before": null,
+    "comment-empty-line-before": null,
+    "declaration-block-single-line-max-declarations": null,
+    "declaration-block-no-redundant-longhand-properties": null,
+    "no-duplicate-selectors": null,
+    "no-descending-specificity": null,
+    "color-function-notation": null,
+    "color-function-alias-notation": null,
+    "color-hex-length": null,
+    "alpha-value-notation": null,
+    "value-keyword-case": null,
+    "media-feature-range-notation": null
+  }
+}

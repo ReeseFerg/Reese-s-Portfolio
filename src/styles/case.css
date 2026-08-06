@@ -1,0 +1,541 @@
+/* Case study reading surface: hero, sticky rail, TOC, stats, chapters,
+   media, callouts, findings, cards, footer, progress bar and reveal. */
+
+/* ---------- Hero ---------- */
+.case-hero { padding: 8px 0 0; }
+
+.case-hero .crumb { margin-bottom: 14px; }
+
+.case-title {
+  font-family: var(--font-display);
+  font-size: var(--step-h1);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  color: var(--text);
+  margin-top: 16px;
+  max-width: 22ch;
+}
+
+.case-lead {
+  font-family: var(--font-doc);
+  font-size: var(--step-lead);
+  line-height: var(--lh-lead);
+  color: var(--text-body);
+  margin-top: 20px;
+  max-width: 54ch;
+}
+
+.case-cover { margin-top: 48px; }
+
+/* ---------- Body grid: sticky rail + content column ---------- */
+.case-body {
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, var(--col-wide));
+  gap: 0 56px;
+  margin-top: 64px;
+}
+
+.case-main { min-width: 0; }
+
+/* Short-form case studies drop the rail — four chapters don't need navigating,
+   and a two-item TOC advertises that there isn't much here. */
+.case-body--brief { grid-template-columns: minmax(0, var(--col-wide)); }
+
+.case-status {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 1px solid var(--accent-dim);
+  border-radius: 999px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+/* Prose sits at the readable column; media is free to run out to the full track.
+   Chapters stay full width so a --wide figure inside one can actually escape. */
+.chapter > * { max-width: var(--col-content); }
+.chapter > .media--wide { max-width: none; }
+
+/* ---------- Sticky table of contents ---------- */
+.case-toc {
+  position: sticky;
+  top: 32px;
+  align-self: start;
+  font-family: var(--mono);
+}
+
+.toc-label {
+  font-size: var(--step-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--faint);
+  margin-bottom: 14px;
+}
+
+.case-toc ol { list-style: none; display: flex; flex-direction: column; gap: 1px; }
+
+.toc-link {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--muted);
+  transition: color 120ms ease, background-color 120ms ease;
+}
+
+.toc-link:hover { color: var(--text); }
+.toc-link.is-active { color: var(--accent); background: var(--accent-glow); }
+.toc-num { color: var(--faint); flex-shrink: 0; }
+.toc-link.is-active .toc-num { color: var(--accent); }
+
+.toc-top {
+  margin-top: 20px;
+  padding: 6px 10px;
+  font-size: 12.5px;
+  color: var(--faint);
+  transition: color 120ms ease;
+}
+
+.toc-top:hover { color: var(--accent); }
+
+/* ---------- Meta strip ---------- */
+.case-meta {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 28px;
+  padding: 26px 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.case-meta dt {
+  font-family: var(--mono);
+  font-size: var(--step-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--faint);
+}
+
+.case-meta dd {
+  font-family: var(--font-doc);
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--text-body);
+  margin-top: 8px;
+}
+
+/* ---------- Impact stats ---------- */
+.impact-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+  padding: 44px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: var(--step-stat);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.stat-label {
+  font-family: var(--mono);
+  font-size: var(--step-caption);
+  line-height: 1.55;
+  color: var(--muted);
+  margin-top: 12px;
+  max-width: 24ch;
+}
+
+/* ---------- Chapter: eyebrow + statement headline + prose ---------- */
+.chapter {
+  margin-top: var(--space-chapter);
+  scroll-margin-top: 40px;
+}
+
+.chapter h2 {
+  font-family: var(--font-display);
+  font-size: var(--step-h2);
+  line-height: var(--lh-head);
+  letter-spacing: -0.015em;
+  font-weight: 600;
+  color: var(--text);
+  margin-top: 16px;
+}
+
+.chapter h3 {
+  font-family: var(--font-display);
+  font-size: var(--step-h3);
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--text);
+  margin-top: 48px;
+}
+
+.chapter p {
+  font-family: var(--font-doc);
+  font-size: var(--step-body);
+  line-height: var(--lh-body);
+  color: var(--text-body);
+  max-width: var(--measure);
+  margin-top: 20px;
+}
+
+.mark {
+  background: color-mix(in srgb, var(--accent) 24%, transparent);
+  color: var(--text);
+  padding: 1px 3px;
+  border-radius: 2px;
+}
+
+/* ---------- Media ---------- */
+.media { margin-top: 36px; }
+.media--wide { width: 100%; }
+
+.media-frame {
+  padding: 20px;
+  border: 1px solid var(--media-border);
+  border-radius: 10px;
+  background: var(--media-surface);
+}
+
+.media-frame img,
+.media-frame video { display: block; width: 100%; border-radius: 4px; }
+
+/* Empty on purpose: a hatched slot that says what belongs here. */
+.media-slot {
+  display: grid;
+  justify-items: center;
+  align-content: center;   /* pack the rows together, or auto rows stretch and split them apart */
+  gap: 4px;
+  aspect-ratio: 16 / 9;
+  padding: 20px;
+  border: 1px dashed var(--rule);
+  border-radius: 6px;
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent 0 7px,
+    rgba(255, 255, 255, 0.018) 7px 14px
+  );
+  font-family: var(--mono);
+  font-size: var(--step-caption);
+  line-height: 1.7;
+  color: var(--faint);
+  text-align: center;
+}
+
+.media-slot .slot-hint { color: var(--muted); display: block; }
+
+.media--phone .media-slot { aspect-ratio: 9 / 19.5; }
+.media--square .media-slot { aspect-ratio: 1; }
+.media--tall .media-slot { aspect-ratio: 4 / 5; }
+
+/* a play badge so video slots read as video, not stills */
+.media--video .media-slot::after {
+  content: "▶";
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin-top: 14px;
+  border: 1px solid var(--accent-dim);
+  border-radius: 50%;
+  color: var(--accent);
+  font-size: 13px;
+}
+
+.media-grid { display: grid; gap: 16px; }
+.media-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.media-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.media figcaption {
+  font-family: var(--mono);
+  font-size: var(--step-caption);
+  line-height: 1.6;
+  color: var(--faint);
+  margin-top: 14px;
+  max-width: 62ch;
+}
+
+/* ---------- Callouts ---------- */
+.callout {
+  margin-top: 44px;
+  padding: 28px 32px;
+  border-left: 2px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+  background: var(--media-surface);
+}
+
+.callout p {
+  font-family: var(--font-display);
+  font-size: var(--step-h3);
+  line-height: 1.5;
+  color: var(--text);
+  max-width: 46ch;
+  margin: 0;
+}
+
+.callout cite {
+  display: block;
+  font-family: var(--mono);
+  font-size: var(--step-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-style: normal;
+  color: var(--faint);
+  margin-top: 18px;
+}
+
+/* research observations — the quote-bubble device */
+.quote-stack { display: flex; flex-direction: column; gap: 16px; margin-top: 36px; }
+
+.quote-user {
+  padding: 20px 22px;
+  border: 1px solid var(--media-border);
+  border-radius: 12px;
+  background: var(--media-surface);
+  max-width: 82%;
+}
+
+.quote-user:nth-child(even) { align-self: flex-end; }
+
+.quote-user p {
+  font-family: var(--font-doc);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-body);
+  margin: 0;
+  max-width: none;
+}
+
+.quote-user .attr {
+  display: block;
+  font-family: var(--mono);
+  font-size: var(--step-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--faint);
+  margin-top: 14px;
+}
+
+/* ---------- Numbered findings ---------- */
+.pain-list {
+  list-style: none;
+  counter-reset: pain;
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pain-list li {
+  counter-increment: pain;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 12px;
+  padding: 18px 0;
+  border-top: 1px solid var(--rule-soft);
+  font-family: var(--font-doc);
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--text-body);
+}
+
+.pain-list li::before {
+  content: counter(pain, decimal-leading-zero);
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+  padding-top: 3px;
+}
+
+/* ---------- Insight / feature cards ---------- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+  margin-top: 36px;
+}
+
+.insight-card {
+  padding: 22px;
+  border: 1px solid var(--media-border);
+  border-radius: 10px;
+  background: var(--media-surface);
+}
+
+.insight-card h3 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+
+.insight-card p {
+  font-family: var(--font-doc);
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--muted);
+  margin-top: 10px;
+  max-width: none;
+}
+
+/* ---------- Footer: next project + closing line ---------- */
+.case-footer {
+  margin-top: var(--space-chapter);
+  padding-top: 56px;
+  padding-bottom: 120px;
+  border-top: 1px solid var(--rule);
+}
+
+.next-case {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 40px;
+  align-items: center;
+  margin-top: 22px;
+  padding: 28px;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  background: var(--media-surface);
+  text-decoration: none;
+  transition: border-color 120ms ease;
+}
+
+.next-case:hover { border-color: var(--accent-dim); }
+
+.next-case-title {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.6vw, 30px);
+  line-height: 1.2;
+  font-weight: 600;
+  color: var(--text);
+  margin-top: 12px;
+}
+
+.next-case-desc {
+  font-family: var(--font-doc);
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin-top: 10px;
+}
+
+.next-case .media-slot { aspect-ratio: 16 / 10; }
+
+.case-closing {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.8vw, 32px);
+  line-height: 1.35;
+  color: var(--muted);
+  margin-top: 72px;
+  max-width: 24ch;
+}
+
+.case-closing .accent { color: var(--accent); }
+
+/* a reader who finishes a case study is the one most likely to write to you —
+   don't make them go find the contact route */
+.case-contact {
+  font-family: var(--mono);
+  font-size: 13.5px;
+  color: var(--muted);
+  margin-top: 20px;
+}
+
+.case-contact a {
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  transition: color 120ms ease, border-color 120ms ease;
+}
+
+.case-contact a:hover { color: var(--accent); border-color: var(--accent-dim); }
+.case-contact .sep { color: var(--faint); padding: 0 6px; }
+
+/* ---------- Reading progress ---------- */
+.read-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 60;
+  display: none;
+}
+
+body.on-case .read-progress { display: block; }
+
+.read-progress span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+}
+
+/* ---------- Scroll reveal (class is added by JS, so no-JS keeps content visible) ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 520ms ease, transform 520ms ease;
+}
+
+.reveal.is-in { opacity: 1; transform: none; }
+
+/* about + contact */
+.about-lead {
+  font-size: 15px;
+  line-height: 25px;
+  color: var(--text-body);
+  margin-top: 12px;
+  max-width: 64ch;
+}
+
+.about-sub {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 30px 0 12px;
+}
+
+.tool-list { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
+
+.tool-list li {
+  font-size: 13px;
+  color: var(--text-body);
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+.about-copy2 { font-size: 14px; line-height: 24px; color: var(--text-body); max-width: 64ch; }
+
+.contact-list {
+  list-style: none;
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-list li { font-size: 14px; color: var(--text-body); }
+.contact-list .ck { display: inline-block; width: 90px; color: var(--faint); }
+
+.contact-list a {
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-dim);
+}
+
+.contact-list a:hover { color: var(--accent); }
+
