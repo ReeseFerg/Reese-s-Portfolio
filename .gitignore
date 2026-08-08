@@ -1,0 +1,17 @@
+node_modules
+dist
+.DS_Store
+
+# devbox
+.devbox
+
+# playwright MCP scratch output
+.playwright-mcp
+
+# impeccable per-developer config
+.impeccable/config.local.json
+
+# local env
+.env
+.env.local
+*.local

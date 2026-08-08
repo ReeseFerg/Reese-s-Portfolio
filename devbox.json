@@ -1,0 +1,12 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.17.5/.schema/devbox.schema.json",
+  "packages": ["nodejs@24"],
+  "shell": {
+    "init_hook": ["echo '· portfolio · node '$(node -v)' · run: npm install && npm run dev'"],
+    "scripts": {
+      "setup": ["npm install"],
+      "dev": ["npm run dev"],
+      "check": ["npm run check"]
+    }
+  }
+}

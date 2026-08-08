@@ -1,0 +1,13 @@
+dist
+node_modules
+.context
+.playwright-mcp
+package-lock.json
+devbox.lock
+*.md
+
+# CSS is owned by Stylelint, not Prettier. The styles were ported verbatim from
+# the single-file build in a compact one-rule-per-line idiom; letting Prettier
+# reformat them would explode ~1,100 lines and undo that. Keeping the two tools
+# off each other's turf also stops them fighting over the same files.
+*.css
