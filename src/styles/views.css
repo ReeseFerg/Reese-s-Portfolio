@@ -1,0 +1,128 @@
+/* Routed full-page views: work grid, shipped strip, about, contact. */
+
+/* ---------- Routed views ---------- */
+.view { display: none; }
+.view.is-active { display: block; }
+.view:focus { outline: none; }
+
+/* a routed page (case study / about / work / contact) takes over the whole screen — terminal hidden */
+body.routed .hero { display: none; }
+body.routed .view-inner { padding-top: 20px; }
+
+.view-inner {
+  width: min(1160px, calc(100% - 96px));
+  margin: 0 auto;
+  padding: 48px 0 96px;
+}
+
+.crumb { font-size: 13px; color: var(--faint); margin-bottom: 10px; }
+
+.view-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.01em;
+}
+
+.view-lead {
+  font-size: 14px;
+  line-height: 24px;
+  color: var(--text-body);
+  margin-top: 10px;
+  max-width: 60ch;
+}
+
+.view-lead .spark { color: var(--accent); }
+
+/* work grid */
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-top: 32px;
+}
+
+.work-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  text-decoration: none;
+  padding: 20px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--surface);
+  transition: border-color 120ms ease;
+}
+
+.work-card:hover { border-color: var(--accent-dim); }
+.wc-title { font-size: 15px; font-weight: 700; color: var(--text); }
+.wc-outcome { font-size: 13.5px; line-height: 21px; color: var(--muted); }
+.wc-meta { font-size: 12.5px; color: var(--faint); margin-top: 4px; }
+.wc-tag { color: var(--accent); }
+.wc-lead { border-color: var(--accent-dim); }
+
+/* ---------- Shipped strip ----------
+   Live things, not case studies. For someone early in their career this is the
+   cheapest credibility on the site: proof that work leaves the Figma file. */
+.shipped { margin-top: 64px; padding-top: 32px; border-top: 1px solid var(--rule); }
+
+.shipped-title {
+  font-family: var(--mono);
+  font-size: var(--step-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--faint);
+  font-weight: 400;
+}
+
+.shipped-list { list-style: none; margin-top: 18px; display: flex; flex-direction: column; gap: 2px; }
+
+.shipped-list a {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  padding: 11px 12px;
+  margin-left: -12px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color 120ms ease;
+}
+
+.shipped-list a:hover { background: var(--surface); }
+.sh-name { font-size: 14px; font-weight: 700; color: var(--text); }
+.sh-desc { font-size: 13px; color: var(--muted); flex: 1 1 240px; }
+.sh-arrow { font-family: var(--mono); font-size: 12px; color: var(--faint); }
+.shipped-list a:hover .sh-arrow { color: var(--accent); }
+
+/* ================= Case study ================= */
+
+/* One shared container width for hero, body and footer so the page has a single left edge. */
+.case-shell {
+  width: min(1296px, calc(100% - 96px));
+  margin: 0 auto;
+}
+
+.back-link, .next-link {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 120ms ease;
+}
+
+.back-link { margin-bottom: 22px; }
+.back-link:hover, .next-link:hover { color: var(--accent); }
+
+/* the kicker above every headline — always mono, this is chrome, not prose */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: var(--step-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--faint);
+}
+
+.eyebrow .accent { color: var(--accent); }

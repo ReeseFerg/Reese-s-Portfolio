@@ -1,0 +1,325 @@
+/* Hero terminal: header, nav, the box itself, question block, output log,
+   command input and suggestions. */
+
+/* ---------- Header (name only, no nav) ---------- */
+.site-header { padding: 28px 48px; }
+
+.logo {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- Hero terminal ---------- */
+.hero {
+  flex: 1;
+  width: min(1160px, calc(100% - 96px));
+  margin: 0 auto;
+  padding: 24px 0 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.term-line { font-size: 13px; line-height: 22px; color: var(--muted); }
+.term-line .cmd { color: var(--text); }
+
+.term-box {
+  position: relative;
+  display: flex;
+  margin-top: 14px;
+  border: 1px solid var(--accent-dim);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.term-box-title {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  transform: translateY(-50%);
+  padding: 0 10px;
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  /* top half matches the page, bottom half the box, so the chip reads as a break in the border line */
+  background: linear-gradient(to bottom, var(--bg) 50%, var(--surface) 50%);
+}
+
+.term-left {
+  flex: 1.15;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  padding: 34px 32px 22px;
+  text-align: center;
+}
+
+.welcome {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 26px;
+}
+
+.welcome .phrase { color: var(--accent); }
+
+.cursor {
+  display: inline-block;
+  width: 10px;
+  height: 19px;
+  vertical-align: -3px;
+  background: var(--accent);
+  animation: blink 1.1s steps(1) infinite;
+}
+
+.avatar {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent); /* single-color pixel logos inherit the active theme via currentColor */
+}
+
+.avatar svg { display: block; }
+.avatar svg[hidden] { display: none; }
+
+.term-left-info { margin-top: auto; }
+
+.tools-line { font-size: 13.5px; line-height: 24px; color: var(--muted); }
+.tools-line .sep { color: var(--faint); padding: 0 2px; }
+
+.tool {
+  color: var(--muted);
+  padding: 1px 2px;
+  transition: color 120ms ease;
+}
+
+.tool:hover { color: var(--text); }
+.tool.is-active { color: var(--accent); font-weight: 700; }
+
+.path-line { font-size: 13px; color: var(--faint); margin-top: 2px; }
+
+.term-divider {
+  width: 1px;
+  align-self: stretch;
+  background: var(--accent-faint);
+}
+
+.term-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 32px;
+}
+
+/* horizontal rule between right-column sections, edge to edge like the real TUI */
+.h-rule {
+  height: 1px;
+  background: var(--accent-faint);
+  margin: 20px -32px;
+}
+
+.panel-heading {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.about-copy {
+  font-size: 13.5px;
+  line-height: 22px;
+  color: var(--text-body);
+}
+
+.project-row {
+  font-size: 13.5px;
+  line-height: 24px;
+  color: var(--text);
+  white-space: pre-wrap;
+}
+
+.project-row .desc { color: var(--muted); }
+
+/* ---------- Below the box ---------- */
+.flavor-line {
+  margin-top: 26px;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+.flavor-line .spark { color: var(--accent); }
+.flavor-line .slash { color: var(--text); }
+
+/* ---------- Question block ---------- */
+.ask-box {
+  position: relative;
+  margin-top: 26px;
+  border: 1px solid var(--accent-dim);
+  border-radius: 8px;
+  padding: 16px 10px 10px;
+}
+
+.ask-title {
+  position: absolute;
+  top: 0;
+  left: 14px;
+  transform: translateY(-50%);
+  padding: 0 8px;
+  font-size: 13px;
+  color: var(--accent);
+  background: var(--bg);
+}
+
+.ask-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  padding: 7px 10px;
+  border-radius: 4px;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+.ask-caret { width: 12px; color: transparent; flex-shrink: 0; }
+.ask-label { color: inherit; }
+.ask-desc { color: var(--faint); }
+
+.ask-option.is-selected { background: var(--accent-glow); color: var(--text); }
+.ask-option.is-selected .ask-caret { color: var(--accent); }
+.ask-option.is-selected .ask-desc { color: var(--muted); }
+
+/* ---------- Output log ---------- */
+.term-output {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13.5px;
+  line-height: 22px;
+}
+
+.term-output:not(:empty) { margin-top: 20px; }
+
+.out-line { display: flex; gap: 10px; }
+.out-line .marker { flex-shrink: 0; }
+.out-echo { color: var(--faint); }
+.out-resp { color: var(--text-body); }
+.out-resp .marker { color: var(--accent); }
+.out-err { color: var(--muted); }
+.out-err .marker { color: var(--accent); }
+
+/* ---------- Input ---------- */
+.input-area { margin-top: 22px; }
+
+.input-rule { height: 1px; background: var(--rule); }
+
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 4px;
+}
+
+.input-row .chevron { color: var(--accent); font-size: 15px; flex-shrink: 0; }
+
+#cmd {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+  caret-color: var(--accent);
+}
+
+#cmd::placeholder { color: var(--faint); }
+#cmd:not(:focus)::placeholder { color: transparent; }
+
+.input-cursor {
+  display: inline-block;
+  width: 9px;
+  height: 17px;
+  background: var(--text);
+  animation: blink 1.1s steps(1) infinite;
+}
+
+.input-row:focus-within .input-cursor, .input-area.has-text .input-cursor { display: none; }
+
+.suggest {
+  display: none;
+  margin-top: 8px;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--surface);
+  padding: 6px;
+}
+
+.suggest.is-open { display: block; }
+
+.suggest-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  width: 100%;
+  text-align: left;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 13.5px;
+}
+
+.suggest-row .s-cmd { color: var(--text); }
+.suggest-row .s-desc { color: var(--muted); }
+.suggest-row.is-selected { background: var(--accent-glow); }
+.suggest-row.is-selected .s-cmd { color: var(--accent); }
+
+.shortcuts-hint {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--faint);
+}
+
+@keyframes blink { 50% { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor, .input-cursor { animation: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---------- Header layout + nav ---------- */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.site-nav { display: flex; align-items: center; gap: 18px; }
+
+.nav-link {
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 120ms ease;
+}
+
+.nav-link:hover { color: var(--text); }
+.nav-link.is-active { color: var(--accent); }
+
+/* ---------- Clickable project rows (terminal panel) ---------- */
+button.project-row {
+  display: block;
+  width: 100%;
+  text-align: left;
+  transition: color 120ms ease;
+}
+
+button.project-row:hover { color: var(--accent); }
+button.project-row:hover .desc { color: var(--accent-dim); }
+
+.flavor-line .slash { cursor: pointer; }

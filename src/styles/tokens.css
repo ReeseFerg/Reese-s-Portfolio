@@ -1,0 +1,71 @@
+/* Design tokens. Ported verbatim from the single-file build — the palette,
+   type scale and rhythm are the source of truth for the whole site. */
+
+:root {
+  --bg: #000000;
+  --surface: #0f0f0f;
+  --accent: #d97757;
+  --accent-dim: color-mix(in srgb, var(--accent) 55%, transparent);
+  --accent-faint: color-mix(in srgb, var(--accent) 30%, transparent);
+  --accent-glow: color-mix(in srgb, var(--accent) 9%, transparent);
+  --text: #faf9f5;
+  --text-body: #dedad1;
+  --muted: #8e8e8e;
+  --faint: #7a7a7a;
+  --rule: #262626;
+  --rule-soft: #1b1b1b;
+  --mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+
+  /* Document voice — swapped by the localhost font switcher, see [data-type] below.
+     Chrome (eyebrows, meta labels, captions, nav, terminal) always stays mono. */
+  --font-display: var(--mono);
+  --font-doc: var(--mono);
+
+  /* Type scale. The old page ran 13.5–15px end to end; the contrast is the point. */
+  --step-eyebrow: 11px;
+  --step-caption: 12px;
+  --step-body: 16px;
+  --step-lead: clamp(17px, 2vw, 20px);
+  --step-h3: clamp(17px, 1.6vw, 20px);
+  --step-h2: clamp(26px, 3.4vw, 38px);
+  --step-h1: clamp(36px, 6vw, 60px);
+  --step-stat: clamp(40px, 5vw, 56px);
+
+  --lh-body: 1.7;
+  --lh-lead: 1.55;
+  --lh-head: 1.18;
+
+  /* Vertical rhythm. Chapters used to sit 26px apart. */
+  --space-chapter: clamp(72px, 9vw, 128px);
+  --space-block: 28px;
+
+  --measure: 66ch;
+  --col-content: 720px;
+  --col-wide: 1040px;
+  --rail: 200px;
+
+  /* Media frame surface — compared live via the localhost switcher */
+  --media-surface: #0f0f0f;
+  --media-border: var(--rule);
+}
+
+/* Warm media frames: same dark page, warmer panels behind images and callouts */
+html[data-media-surface="warm"] {
+  --media-surface: #17130f;
+  --media-border: #2a2118;
+}
+
+html[data-type="serif"] {
+  --font-display: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-doc: "Newsreader", Georgia, "Times New Roman", serif;
+}
+
+html[data-type="grotesk"] {
+  --font-display: "Inter", system-ui, -apple-system, sans-serif;
+  --font-doc: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+html[data-type="hybrid"] {
+  --font-display: "Space Grotesk", system-ui, -apple-system, sans-serif;
+  --font-doc: "Inter", system-ui, -apple-system, sans-serif;
+}
