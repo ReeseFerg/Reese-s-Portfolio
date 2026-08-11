@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-
 export default function ProjectCadence() {
   return (
     <article
@@ -8,9 +6,9 @@ export default function ProjectCadence() {
       aria-label="project-cadence case study"
     >
       <header className="case-hero case-shell">
-        <Link className="back-link" to="/work">
+        <a className="back-link" href="/work">
           ❮ back to work
-        </Link>
+        </a>
         <p className="crumb">~/reese/work/project-cadence</p>
         <p className="eyebrow">
           [TODO: work type] <span className="accent">·</span>{' '}
@@ -83,7 +81,7 @@ export default function ProjectCadence() {
       </div>
 
       <footer className="case-footer case-shell">
-        <Link className="next-case" to="/work/north-coast-bjj">
+        <a className="next-case" href="/work/north-coast-bjj">
           <div>
             <p className="eyebrow">Next project</p>
             <p className="next-case-title">north-coast-bjj</p>
@@ -94,14 +92,14 @@ export default function ProjectCadence() {
           <div className="media-slot">
             <span className="slot-hint">800×500</span>thumbnail
           </div>
-        </Link>
+        </a>
         <p className="case-closing">
           [TODO: a closing line with some personality.]{' '}
           <span className="accent">Let's build something.</span>
         </p>
         <p className="case-contact">
           <a href="mailto:reesefergie@gmail.com">reesefergie@gmail.com</a>{' '}
-          <span className="sep">·</span> <Link to="/contact">more ways to reach me</Link>
+          <span className="sep">·</span> <a href="/contact">more ways to reach me</a>
         </p>
       </footer>
     </article>

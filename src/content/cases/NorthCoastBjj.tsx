@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-
 import MediaFrame from '../../components/case/MediaFrame';
 
 export default function NorthCoastBjj() {
@@ -10,9 +8,9 @@ export default function NorthCoastBjj() {
       aria-label="north-coast-bjj case study"
     >
       <header className="case-hero case-shell">
-        <Link className="back-link" to="/work">
+        <a className="back-link" href="/work">
           ❮ back to work
-        </Link>
+        </a>
         <p className="crumb">~/reese/work/north-coast-bjj</p>
         <p className="eyebrow">
           [TODO: work type — e.g. Booking site] <span className="accent">·</span> Client project{' '}
@@ -352,7 +350,7 @@ export default function NorthCoastBjj() {
       </div>
 
       <footer className="case-footer case-shell">
-        <Link className="next-case" to="/work/databrew">
+        <a className="next-case" href="/work/databrew">
           <div>
             <p className="eyebrow">Next project</p>
             <p className="next-case-title">databrew</p>
@@ -363,14 +361,14 @@ export default function NorthCoastBjj() {
           <div className="media-slot">
             <span className="slot-hint">800×500</span>thumbnail
           </div>
-        </Link>
+        </a>
         <p className="case-closing">
           [TODO: a closing line with some personality.]{' '}
           <span className="accent">Let's build something.</span>
         </p>
         <p className="case-contact">
           <a href="mailto:reesefergie@gmail.com">reesefergie@gmail.com</a>{' '}
-          <span className="sep">·</span> <Link to="/contact">more ways to reach me</Link>
+          <span className="sep">·</span> <a href="/contact">more ways to reach me</a>
         </p>
       </footer>
     </article>
