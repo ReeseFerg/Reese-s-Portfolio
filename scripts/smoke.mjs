@@ -2,11 +2,11 @@
  * Functional smoke test for the things a screenshot can't see: the typewriter,
  * theme switching, the command input, keyboard navigation and routing.
  *
- *   node .context/smoke.mjs <baseUrl>
+ *   node .context/smoke.mjs [baseUrl]   # defaults to http://localhost:4321
  */
 import { chromium } from 'playwright';
 
-const baseUrl = process.argv[2] ?? 'http://localhost:4322';
+const baseUrl = process.argv[2] ?? 'http://localhost:4321';
 const browser = await chromium.launch(
   process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {},
 );
