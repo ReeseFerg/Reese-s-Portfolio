@@ -15,3 +15,6 @@ dist
 .env
 .env.local
 *.local
+
+# subagent-driven-development scratch
+.superpowers
