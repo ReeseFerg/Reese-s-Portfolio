@@ -1,0 +1,25 @@
+---
+const NAV = [
+  { to: '/work', label: 'Work' },
+  { to: '/about', label: 'About' },
+  { to: '/contact', label: 'Contact' },
+];
+
+const pathname = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <a class="logo" href="/">Reese Ferguson</a>
+  <nav class="site-nav" aria-label="Primary">
+    {
+      NAV.map(({ to, label }) => (
+        <a class={'nav-link' + (pathname === to ? ' is-active' : '')} href={to}>
+          {label}
+        </a>
+      ))
+    }
+    <a class="nav-link" href="/resume.pdf" target="_blank" rel="noopener">
+      Résumé ↗
+    </a>
+  </nav>
+</header>
