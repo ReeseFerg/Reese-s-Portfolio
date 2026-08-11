@@ -10,9 +10,17 @@ download to every fresh `npm install`:
 npm i --no-save playwright && npx playwright install chromium
 ```
 
+`pixeldiff.mjs` additionally needs `pixelmatch` and `pngjs`, installed the same way and
+for the same reason — kept out of `package.json`:
+
+```bash
+npm i --no-save pixelmatch pngjs
+```
+
 | Script | What it does |
 |---|---|
 | `capture.mjs <url> <outDir>` | Screenshots all 8 routes at desktop and mobile |
+| `pixeldiff.mjs <beforeDir> <afterDir> [name...]` | Diffs two `capture.mjs` output dirs pixel-by-pixel; reports counts, and for anything non-zero, the bounding box and y-bands of the differing rows |
 | `smoke.mjs <url>` | 17 behaviour checks — typewriter, themes, commands, keyboard nav, routing, TOC scroll-spy |
 | `make-og.mjs` | Regenerates `public/og.png`, the social preview card |
 | `make-resume-placeholder.mjs` | Regenerates the placeholder `public/resume.pdf` |
@@ -24,7 +32,8 @@ npm run build && npx vite preview --port 4322 &
 node scripts/capture.mjs http://localhost:4322 before   # current design
 # ...make changes, rebuild...
 node scripts/capture.mjs http://localhost:4322 after
+node scripts/pixeldiff.mjs before after
 ```
 
-Then compare the two folders. This is how the React port was verified against the
-single-file build it replaced: 18 differing pixels out of 48.5M, all antialiasing.
+This is how the React port was verified against the single-file build it replaced:
+18 differing pixels out of 48.5M, all antialiasing.

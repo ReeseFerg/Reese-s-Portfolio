@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout path="/404" bodyClass="routed">
+  <section class="view is-active" id="not-found" aria-label="Page not found">
+    <div class="view-inner">
+      <p class="crumb">~/reese</p>
+      <h1 class="view-title">404 — no such path</h1>
+      <p class="view-lead">
+        That page doesn't exist. Nothing broke — the address just doesn't point anywhere.
+      </p>
+      <ul class="contact-list">
+        <li>
+          <span class="ck">work</span> <a href="/work">selected projects</a>
+        </li>
+        <li>
+          <span class="ck">about</span> <a href="/about">who I am</a>
+        </li>
+        <li>
+          <span class="ck">contact</span> <a href="/contact">get in touch</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

@@ -7,7 +7,9 @@ import jsxA11y from 'eslint-plugin-jsx-a11y';
 import prettier from 'eslint-config-prettier';
 
 export default tseslint.config(
-  { ignores: ['dist', 'node_modules', '.context', '.playwright-mcp'] },
+  // .astro holds Astro's generated content/route types (astro:content, astro:content.d.ts) —
+  // gitignored build output, not source we own, so it's excluded the same way dist/ is.
+  { ignores: ['dist', 'node_modules', '.context', '.playwright-mcp', '.astro'] },
   {
     files: ['**/*.{ts,tsx}'],
     extends: [

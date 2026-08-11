@@ -6,6 +6,12 @@ const NAV = [
 ];
 
 const pathname = Astro.url.pathname;
+
+// React Router's NavLink matches descendant paths by default (end={false}),
+// so /work stayed active on /work/savr-app. Match that: exact match or a
+// path segment prefix, not a bare string prefix (so /work doesn't light up
+// on a hypothetical /workshop).
+const isActive = (to: string) => pathname === to || pathname.startsWith(to + '/');
 ---
 
 <header class="site-header">
@@ -13,7 +19,7 @@ const pathname = Astro.url.pathname;
   <nav class="site-nav" aria-label="Primary">
     {
       NAV.map(({ to, label }) => (
-        <a class={'nav-link' + (pathname === to ? ' is-active' : '')} href={to}>
+        <a class={'nav-link' + (isActive(to) ? ' is-active' : '')} href={to}>
           {label}
         </a>
       ))
