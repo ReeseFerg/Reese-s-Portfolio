@@ -143,6 +143,91 @@ await check('the dev panel is absent from the production build', async () => {
   assert((await page.locator('.dev-panel').count()) === 0, 'dev panel shipped to production');
 });
 
+// The regression test for double-bound listeners under <ClientRouter />: today
+// the scroll-spy is only ever exercised via a deep link (a real document load),
+// so a listener that fails to rebind — or rebinds twice — after a swap would
+// go uncaught. This drives client-side navigation through a case study twice,
+// with a stop at a case that honestly has no sidebar in between (only
+// north-coast-bjj gets one — see src/pages/work/index.astro), and checks the
+// DOM invariant a broken bind/teardown cycle would violate either direction:
+// never more than one active TOC link, and never zero once scrolled past the
+// first chapter.
+await check(
+  'navigating home → work → case → back → another case keeps exactly one active TOC link',
+  async () => {
+    await page.goto(baseUrl, { waitUntil: 'networkidle' });
+    await page.click('a.nav-link[href="/work"]');
+    await page.waitForURL('**/work', { timeout: 3000 });
+
+    await page.click('.work-card.wc-lead'); // north-coast-bjj — the only case with a TOC
+    await page.waitForURL('**/work/north-coast-bjj', { timeout: 3000 });
+    await page.waitForSelector('.toc-link', { timeout: 3000 });
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight * 0.5));
+    await page.waitForTimeout(500);
+    let active = await page.locator('.toc-link.is-active').count();
+    assert(
+      active === 1,
+      `case A (north-coast-bjj): expected exactly 1 active TOC link, got ${active}`,
+    );
+
+    await page.click('.back-link');
+    await page.waitForURL('**/work', { timeout: 3000 });
+
+    // databrew, savr-app and project-cadence don't have a TOC sidebar at all —
+    // assert that honestly rather than pretending they do.
+    await page.click('a.work-card[href="/work/databrew"]');
+    await page.waitForURL('**/work/databrew', { timeout: 3000 });
+    await page.waitForSelector('#case-databrew', { timeout: 3000 });
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight * 0.5));
+    await page.waitForTimeout(300);
+    assert(
+      (await page.locator('.toc-link').count()) === 0,
+      'databrew unexpectedly rendered a TOC sidebar',
+    );
+
+    // Back to the work index, then a second visit to the TOC-bearing case —
+    // the scroll-spy has to rebind cleanly on a revisit, not just once.
+    await page.click('.back-link');
+    await page.waitForURL('**/work', { timeout: 3000 });
+    await page.click('.work-card.wc-lead');
+    await page.waitForURL('**/work/north-coast-bjj', { timeout: 3000 });
+    await page.waitForSelector('.toc-link', { timeout: 3000 });
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight * 0.5));
+    await page.waitForTimeout(500);
+    active = await page.locator('.toc-link.is-active').count();
+    assert(
+      active === 1,
+      `case A revisit (north-coast-bjj): expected exactly 1 active TOC link, got ${active}`,
+    );
+  },
+);
+
+await check('--accent survives a client-side swap', async () => {
+  await page.goto(baseUrl, { waitUntil: 'networkidle' });
+  await page.click('.tool:has-text("Figma")');
+  const before = await page.evaluate(() =>
+    document.documentElement.style.getPropertyValue('--accent').trim(),
+  );
+  assert(before === '#f24e1e', `accent was "${before}" before navigating`);
+
+  await page.click('a.nav-link[href="/work"]');
+  await page.waitForURL('**/work', { timeout: 3000 });
+  // astro:after-swap fires before paint, but give the assertion a beat anyway.
+  await page.waitForTimeout(200);
+  const after = await page.evaluate(() =>
+    document.documentElement.style.getPropertyValue('--accent').trim(),
+  );
+  assert(after === '#f24e1e', `accent was "${after}" after the swap, expected it to survive`);
+});
+
+await check('case pages ship no astro-island element at all', async () => {
+  for (const slug of ['north-coast-bjj', 'databrew', 'savr-app', 'project-cadence']) {
+    await page.goto(`${baseUrl}/work/${slug}`, { waitUntil: 'networkidle' });
+    const count = await page.locator('astro-island').count();
+    assert(count === 0, `/work/${slug} shipped ${count} astro-island element(s)`);
+  }
+});
+
 await check('no console errors anywhere', async () => {
   const errors = [];
   page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));

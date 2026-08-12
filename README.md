@@ -2,8 +2,8 @@
 
 My UX portfolio. A terminal-styled homepage, a work index, and case studies.
 
-Built with [Vite](https://vite.dev) + React + TypeScript, styled with plain CSS and
-custom properties, and deployed as static files.
+Built with [Astro](https://astro.build) + React (one island, the terminal) + TypeScript,
+styled with plain CSS and custom properties, and deployed as static files.
 
 ---
 
@@ -25,9 +25,9 @@ works too — you just have to supply Node 22+ yourself.
 |---|---|
 | `npm run dev` | Dev server with hot reload |
 | `npm run build` | Production build into `dist/` |
-| `npm run preview` | Serve the built site locally, exactly as deployed |
+| `npm run preview` | Serve the built site locally, exactly as deployed (`http://localhost:4321`) |
 | `npm run check` | Everything below, in one go — run before pushing |
-| `npm run typecheck` | TypeScript |
+| `npm run typecheck` | `astro check` |
 | `npm run lint` | ESLint, including accessibility rules |
 | `npm run lint:css` | Stylelint |
 | `npm run format` | Prettier, writing fixes |
@@ -37,37 +37,54 @@ works too — you just have to supply Node 22+ yourself.
 ## How it's laid out
 
 ```
-index.html              page shell — <head> and the mount point, nothing else
 src/
-  main.tsx              entry: mounts React, imports the stylesheets in order
-  App.tsx               routes, per-page <title>/meta, focus and scroll on navigation
-  lib/
-    site.ts             every route and its title/description — the one list
-    seo.ts              builds the meta tags, sitemap and robots.txt
-    commands.ts         the terminal's slash commands
-    themes.ts           the six tool accent colours
-    useTypewriter.ts    the "Reese is …" cycle
-    useReducedMotion.ts respects the OS "reduce motion" setting
+  pages/                 one file per route — Astro renders each to real HTML at build time
+    index.astro          the terminal homepage
+    work/index.astro     the work index
+    work/[slug].astro    case studies — getStaticPaths() over CASE_SLUGS
+    about.astro, contact.astro, 404.astro
+    sitemap.xml.ts, robots.txt.ts
+  layouts/
+    BaseLayout.astro     <head>/SEO tags, ClientRouter, stylesheet imports, page chrome
   components/
-    SiteHeader.tsx
-    Terminal/           the homepage terminal — logos, output log, command input
-    case/               MediaFrame, ReadProgress
-    dev/DevPanel.tsx    localhost-only font and surface switcher
-  routes/               Home, Work, About, Contact, CaseStudy, NotFound
-  content/cases/        the four case studies, as markup
-  styles/               tokens, base, terminal, views, case, dev, responsive
-  assets/               case study screenshots go here (see src/assets/README.md)
-public/                 files served as-is: resume.pdf, og.png, favicon.svg
+    SiteHeader.astro
+    Terminal/            the homepage terminal — the site's only island (client:load)
+    case/MediaFrame.tsx
+    dev/DevPanel.tsx     localhost-only font and surface switcher (client:only)
+  scripts/
+    case-chrome.ts       TOC scroll-spy, reveal-on-scroll, read-progress bar
+    route-focus.ts        focuses <main> after an in-app navigation
+  lib/
+    site.ts              every route and its title/description — the one list
+    seo.ts               builds the meta tags, sitemap and robots.txt
+    commands.ts          the terminal's slash commands
+    themes.ts             the six tool accent colours
+    useTypewriter.ts      the "Reese is …" cycle
+    useReducedMotion.ts   respects the OS "reduce motion" setting
+  content/cases/         the four case studies, as markup (React components, zero client JS)
+  styles/                tokens, base, terminal, views, case, dev, responsive
+  assets/                 case study screenshots go here (see src/assets/README.md)
+public/                  files served as-is: resume.pdf, og.png, favicon.svg
 ```
 
 **Styles are global CSS, not CSS Modules.** They were ported from the previous
 single-file build unchanged, and several rules deliberately reach across
 components (`body.routed .hero`, `html[data-type]`). Splitting them into modules
-would have meant renaming every class for no real gain. `tokens.css` holds the
-palette, type scale and spacing — start there for any visual change.
+would have meant renaming every class for no real gain. `BaseLayout.astro` imports
+them in a fixed order — self-hosted JetBrains Mono, then tokens, base, terminal,
+views, case, dev, responsive last — and `tokens.css` holds the palette, type scale
+and spacing; start there for any visual change.
 
 **Stylelint owns CSS, Prettier owns everything else.** Prettier is set to ignore
 `.css` so the two don't fight over the same files.
+
+**Case studies ship zero client-side JavaScript.** `src/content/cases/*.tsx` are React
+components, but they're rendered to plain HTML at build time and never hydrated — the
+only script on a case page is `src/scripts/case-chrome.ts`, a small vanilla module for
+the TOC scroll-spy and read-progress bar.
+
+See `CLAUDE.md` for the architectural detail that matters for making changes safely —
+in particular how scripts have to be written to survive Astro's view-transition swaps.
 
 ---
 
@@ -90,27 +107,14 @@ The case studies are still full of `[TODO: …]` markers. Write the copy in
 
 ## Deploying
 
-The build produces plain static files, so any host works. Two free options:
-
-**Vercel** — import the repo; `vercel.json` already has the settings. You get a
-preview URL per branch, which is useful for looking at a design change before
-merging it.
-
-**GitHub Pages** — `.github/workflows/deploy.yml` builds and publishes on every push
-to `dev`. Turn it on under Settings → Pages → Source: "GitHub Actions". Delete the
-workflow if you go with Vercel.
+The build produces plain static files, so any host works. `vercel.json` already has
+the right settings (`cleanUrls`, `trailingSlash: false`) — import the repo into
+Vercel and it just works, with a preview URL per branch.
 
 Each route is written to its own `index.html` at build time with its own `<title>`
 and `og:` tags, because link scrapers read the HTML without running JavaScript. That
 also means real URLs work on any static host without rewrite rules — `/work/index.html`
 is genuinely there on disk. Old `#/work/…` links still redirect to the new paths.
-
-### `npm audit` reports a React Router advisory
-
-It will, and it can't currently be cleared: every published version is flagged by
-something. The one on the installed version concerns React Router's RSC mode, which
-needs a server runtime and server actions. This site is static and has neither, so
-it isn't reachable here. Worth re-checking when a clean version ships.
 
 ---
 
@@ -130,4 +134,4 @@ entry points:
 
 `scripts/` has the tooling used to verify this codebase against its previous
 single-file version, and it works the same way for a redesign — screenshot every
-route before and after, plus 17 behaviour checks. See `scripts/README.md`.
+route before and after, plus 20 behaviour checks. See `scripts/README.md`.
