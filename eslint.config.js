@@ -49,9 +49,14 @@ export default tseslint.config(
     },
   },
   // Astro components — SiteHeader.astro carries the site nav, which used to be
-  // .tsx and got jsx-a11y linting for free. `recommended`'s config objects are
-  // self-scoped to *.astro via eslint-plugin-astro's own `files` glob, so they
-  // don't affect the .ts/.tsx block above. `jsx-a11y-recommended`'s last object
+  // .tsx and got jsx-a11y linting for free. `recommended` is 5 config objects:
+  // a bare plugin registration, 3 scoped to *.astro (and its virtual .js/.ts
+  // script blocks) via eslint-plugin-astro's own `files` glob, and one
+  // (the 8 `astro/*` rules themselves) with no `files` of its own, so it's
+  // technically registered repo-wide. That's harmless here — every one of
+  // those rules only matches Astro-parser AST node types, so it's inert on
+  // .ts/.tsx — but it doesn't affect the .ts/.tsx block above either way.
+  // `jsx-a11y-recommended`'s last object
   // (the actual plugin+rules registration) ships with no `files` of its own —
   // it would otherwise apply repo-wide and collide with the jsx-a11y instance
   // already registered above for .tsx (a different object identity, since

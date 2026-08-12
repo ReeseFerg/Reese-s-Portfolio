@@ -11,19 +11,3 @@ devbox.lock
 # reformat them would explode ~1,100 lines and undo that. Keeping the two tools
 # off each other's turf also stops them fighting over the same files.
 *.css
-
-# prettier-plugin-astro always splits a <span>…</span> <a>…</a> sibling pair
-# onto separate lines, even when the source is already a tight one-liner that
-# fits printWidth. Astro's compressHTML deletes newline-adjacent whitespace
-# between sibling tags entirely (Global Constraint 12), so that reformat
-# silently deletes the rendered space between "work" and "selected projects"
-# (and the other contact-list rows) — a real, confirmed pixel regression, not
-# a hypothetical one. The usual escape hatch, `<!-- prettier-ignore -->`, is
-# not safe here either: it has a byte-offset/UTF-16 conversion bug in this
-# plugin version that corrupts the following markup whenever a multi-byte
-# character (em dash, accented letter, arrow glyph) appears anywhere earlier
-# in the document — verified with a minimal repro — and both files are full of
-# them. Excluding the two files is the only reformat-stable, pixel-safe
-# option; hand-format them if they ever need to change.
-src/pages/404.astro
-src/pages/contact.astro
