@@ -3,14 +3,29 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 import reactHooks from 'eslint-plugin-react-hooks';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
+import eslintPluginAstro from 'eslint-plugin-astro';
 import prettier from 'eslint-config-prettier';
 
 export default tseslint.config(
-  // .astro holds Astro's generated content/route types (astro:content, astro:content.d.ts) —
-  // gitignored build output, not source we own, so it's excluded the same way dist/ is.
+  // .astro (no wildcard) holds Astro's generated content/route types
+  // (astro:content, astro:content.d.ts) — gitignored build output, not source we
+  // own, so it's excluded the same way dist/ is. This is a literal directory-name
+  // match, not a `*.astro` glob, so it does not touch our hand-written .astro
+  // source files under src/.
   { ignores: ['dist', 'node_modules', '.context', '.playwright-mcp', '.astro'] },
   {
     files: ['**/*.{ts,tsx}'],
+    // eslint-plugin-astro's client-side-ts processor gives every <script> block
+    // inside a .astro file a virtual filename ending in .ts (foo.astro/0.ts),
+    // even for plain `is:inline` scripts with no TS syntax. Without this
+    // exclusion those virtual files would match this glob too and pull in the
+    // full TS ruleset (no-var, @typescript-eslint/no-unused-vars, ...) for
+    // hand-tuned inline scripts that were never meant to be linted as app code
+    // — see BaseLayout.astro's `is:inline` scripts, which deliberately use
+    // `var` and unused `catch (e)` bindings for maximal, untranspiled
+    // compatibility. eslint-plugin-astro's own config for these blocks is a
+    // no-op (just turns prettier/prettier off), which is the coverage we want.
+    ignores: ['**/*.astro/**'],
     extends: [
       js.configs.recommended,
       ...tseslint.configs.recommended,
@@ -32,6 +47,23 @@ export default tseslint.config(
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
     },
+  },
+  // Astro components — SiteHeader.astro carries the site nav, which used to be
+  // .tsx and got jsx-a11y linting for free. `recommended`'s config objects are
+  // self-scoped to *.astro via eslint-plugin-astro's own `files` glob, so they
+  // don't affect the .ts/.tsx block above. `jsx-a11y-recommended`'s last object
+  // (the actual plugin+rules registration) ships with no `files` of its own —
+  // it would otherwise apply repo-wide and collide with the jsx-a11y instance
+  // already registered above for .tsx (a different object identity, since
+  // eslint-plugin-jsx-a11y's own flatConfigs embed a self-import that isn't
+  // reference-equal to a fresh require of the package — ESLint's flat config
+  // rejects two different objects registered under the same plugin key for the
+  // same file). Pin it to *.astro explicitly so the two never overlap.
+  ...eslintPluginAstro.configs.recommended,
+  ...eslintPluginAstro.configs['jsx-a11y-recommended'].slice(0, -1),
+  {
+    ...eslintPluginAstro.configs['jsx-a11y-recommended'].at(-1),
+    files: ['**/*.astro'],
   },
   {
     files: ['*.config.{js,ts}', '.context/**/*.mjs'],
