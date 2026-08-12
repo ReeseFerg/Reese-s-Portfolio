@@ -33,6 +33,28 @@ const ogImage = `${SITE_URL}/og.png`;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <ClientRouter />
 
+    <!-- Restores the terminal's `--accent` theme onto <html> before first paint
+         and again after every view-transition swap. Astro's default swap syncs
+         documentElement's attributes from the incoming document, which would
+         otherwise wipe the inline style Terminal.tsx sets; Terminal.tsx mirrors
+         it to localStorage so this can put it back. Must be is:inline: a
+         bundled module script runs after CSS and after the swap, which is too
+         late to avoid a flicker. astro:after-swap fires before paint. -->
+    <script is:inline>
+      (function () {
+        function restoreAccent() {
+          try {
+            var accent = localStorage.getItem('rf-accent');
+            if (accent) document.documentElement.style.setProperty('--accent', accent);
+          } catch (e) {
+            // Storage can be unavailable (private mode) — the default accent stands.
+          }
+        }
+        restoreAccent();
+        document.addEventListener('astro:after-swap', restoreAccent);
+      })();
+    </script>
+
     <!-- Per-route <title>, description and og: tags used to be spliced into the
          built HTML by the routeShells Vite plugin, because link scrapers
          (LinkedIn, Slack, iMessage, Twitter) fetch a page's HTML and read its

@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { navigate } from 'astro:transitions/client';
 
 import { COMMANDS, SHORTCUTS_TEXT, ASK_OPTIONS } from '../../lib/commands';
 import { THEMES, TOOLS, type ThemeName } from '../../lib/themes';
+import { useReducedMotion } from '../../lib/useReducedMotion';
 import { useTypewriter } from '../../lib/useTypewriter';
 import PixelLogos from './PixelLogos';
 import OutputLog, { type LogLine } from './OutputLog';
@@ -10,6 +11,11 @@ import CommandInput from './CommandInput';
 
 const PHRASES = ['a UX designer', 'a business graduate', 'futureproof'];
 const MAX_LINES = 8;
+// Astro's default swap resyncs <html>'s attributes from the incoming document,
+// wiping the inline `--accent` style set below. Mirroring it to localStorage
+// lets BaseLayout.astro's is:inline restore script put it back on
+// astro:after-swap (and on first paint) before the swap can flicker.
+const ACCENT_STORAGE_KEY = 'rf-accent';
 
 const PROJECT_ROWS = [
   { cmd: '/north-coast-bjj', name: 'north-coast-bjj', desc: '— client project, live' },
@@ -18,8 +24,8 @@ const PROJECT_ROWS = [
   { cmd: '/project-cadence', name: 'project-cadence', desc: '— in progress' },
 ];
 
-export default function Terminal({ reduced }: { reduced: boolean }) {
-  const navigate = useNavigate();
+export default function Terminal() {
+  const reduced = useReducedMotion();
   const [theme, setTheme] = useState<ThemeName>('claude');
   const [lines, setLines] = useState<LogLine[]>([]);
   const [selected, setSelected] = useState(0);
@@ -30,6 +36,12 @@ export default function Terminal({ reduced }: { reduced: boolean }) {
 
   useEffect(() => {
     document.documentElement.style.setProperty('--accent', THEMES[theme]);
+    try {
+      localStorage.setItem(ACCENT_STORAGE_KEY, THEMES[theme]);
+    } catch {
+      // Storage can be unavailable (private mode, quota) — the re-theme still
+      // works for the current page, it just won't survive a swap or reload.
+    }
   }, [theme]);
 
   const addLine = useCallback((kind: LogLine['kind'], marker: string, text: string) => {
@@ -59,7 +71,7 @@ export default function Terminal({ reduced }: { reduced: boolean }) {
         addLine('out-err', '✗', 'not a command: ' + v + ' · commands start with /');
       }
     },
-    [addLine, navigate],
+    [addLine],
   );
 
   // Arrow keys move through the question block, number keys pick an option, and
@@ -104,8 +116,20 @@ export default function Terminal({ reduced }: { reduced: boolean }) {
       }
     };
 
+    // Astro doesn't unmount this component on a view-transition swap — it just
+    // discards the old DOM node, so this effect's own cleanup never runs and
+    // the listener would otherwise survive on `document` across navigations.
+    // Tearing down on astro:before-swap (and removing that listener here too,
+    // so re-running this effect for a `selected` change doesn't stack copies)
+    // closes that leak.
+    const detach = () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('astro:before-swap', detach);
+    };
+
     document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
+    document.addEventListener('astro:before-swap', detach);
+    return detach;
   }, [execute, selected]);
 
   return (

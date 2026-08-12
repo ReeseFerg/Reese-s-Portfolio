@@ -110,7 +110,7 @@ export default function App() {
       <ReadProgress active={isCase} reduced={reduced} />
       <SiteHeader />
 
-      {isHome && <Terminal reduced={reduced} />}
+      {isHome && <Terminal />}
 
       <main className="views" id="main" ref={mainRef} tabIndex={-1}>
         <Routes>
