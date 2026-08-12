@@ -12,9 +12,11 @@ import CommandInput from './CommandInput';
 const PHRASES = ['a UX designer', 'a business graduate', 'futureproof'];
 const MAX_LINES = 8;
 // Astro's default swap resyncs <html>'s attributes from the incoming document,
-// wiping the inline `--accent` style set below. Mirroring it to localStorage
-// lets BaseLayout.astro's is:inline restore script put it back on
-// astro:after-swap (and on first paint) before the swap can flicker.
+// wiping the inline `--accent` style set below. Mirroring it to
+// sessionStorage lets BaseLayout.astro's is:inline script restore it on
+// astro:after-swap. sessionStorage (not localStorage): a hard reload must
+// still reset to the default accent, matching the pre-migration site — the
+// restore script only ever reads this on a swap, never on a real load.
 const ACCENT_STORAGE_KEY = 'rf-accent';
 
 const PROJECT_ROWS = [
@@ -37,7 +39,7 @@ export default function Terminal() {
   useEffect(() => {
     document.documentElement.style.setProperty('--accent', THEMES[theme]);
     try {
-      localStorage.setItem(ACCENT_STORAGE_KEY, THEMES[theme]);
+      sessionStorage.setItem(ACCENT_STORAGE_KEY, THEMES[theme]);
     } catch {
       // Storage can be unavailable (private mode, quota) — the re-theme still
       // works for the current page, it just won't survive a swap or reload.
@@ -119,17 +121,14 @@ export default function Terminal() {
     // Astro doesn't unmount this component on a view-transition swap — it just
     // discards the old DOM node, so this effect's own cleanup never runs and
     // the listener would otherwise survive on `document` across navigations.
-    // Tearing down on astro:before-swap (and removing that listener here too,
-    // so re-running this effect for a `selected` change doesn't stack copies)
-    // closes that leak.
-    const detach = () => {
-      document.removeEventListener('keydown', onKeyDown);
-      document.removeEventListener('astro:before-swap', detach);
-    };
-
-    document.addEventListener('keydown', onKeyDown);
-    document.addEventListener('astro:before-swap', detach);
-    return detach;
+    // Aborting on astro:before-swap (also wired through `signal`, so it only
+    // ever fires once) closes that gap the same way case-chrome.ts's
+    // controller-per-bind teardown does for the case-study chrome.
+    const controller = new AbortController();
+    const { signal } = controller;
+    document.addEventListener('keydown', onKeyDown, { signal });
+    document.addEventListener('astro:before-swap', () => controller.abort(), { signal });
+    return () => controller.abort();
   }, [execute, selected]);
 
   return (
