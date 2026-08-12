@@ -85,7 +85,7 @@ const ogImage = `${SITE_URL}/og.png`;
     </script>
 
     <!-- Per-route <title>, description and og: tags used to be spliced into the
-         built HTML by the routeShells Vite plugin, because link scrapers
+         built HTML by the old Vite SPA's build-time SEO shell generator, because link scrapers
          (LinkedIn, Slack, iMessage, Twitter) fetch a page's HTML and read its
          meta tags without running JavaScript — a plain SPA shell would preview
          every URL with the homepage's title. Astro renders this per-route at

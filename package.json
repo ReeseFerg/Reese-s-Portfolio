@@ -18,30 +18,26 @@
     "check": "npm run typecheck && npm run lint && npm run lint:css && npm run format:check"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.10",
-    "@astrojs/react": "^6.0.2",
-    "astro": "^7.2.0",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "react-router-dom": "^7.18.2"
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/react": "^6.0.2",
     "@eslint/js": "^9.39.0",
     "@types/node": "^26.1.2",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
-    "@vitejs/plugin-react": "^6.0.5",
+    "astro": "^7.2.0",
     "eslint": "^9.39.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
     "prettier": "^3.6.2",
     "stylelint": "^17.14.1",
     "stylelint-config-standard": "^40.0.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.2",
-    "vite": "^8.2.0"
+    "typescript-eslint": "^8.46.2"
   }
 }
