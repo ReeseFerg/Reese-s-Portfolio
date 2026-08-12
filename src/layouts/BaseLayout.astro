@@ -2,6 +2,7 @@
 import { ClientRouter } from 'astro:transitions';
 
 import SiteHeader from '../components/SiteHeader.astro';
+import DevPanel from '../components/dev/DevPanel';
 import { metaForPath, SITE_NAME, SITE_URL } from '../lib/site.ts';
 
 // Fixed cascade order — tokens, base, terminal, views, case, dev, then
@@ -32,6 +33,22 @@ const ogImage = `${SITE_URL}/og.png`;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <ClientRouter />
+
+    <!-- The site used to run on hash routes (`/#/work/savr-app`). Anything
+         shared before the move — a link in a job application, a message to a
+         recruiter — still arrives with that hash, so translate it to the real
+         path once on load. Fragments never reach the server, so this can't be
+         done at build time or by the host, and it must be is:inline and first:
+         a bundled module script runs after CSS, which would flash the
+         homepage before redirecting. -->
+    <script is:inline>
+      (function () {
+        var hash = window.location.hash;
+        if (hash.indexOf('#/') === 0) {
+          window.location.replace(hash.slice(1));
+        }
+      })();
+    </script>
 
     <!-- Restores the terminal's `--accent` theme onto <html> after every
          view-transition swap. Astro's default swap syncs documentElement's
@@ -106,6 +123,7 @@ const ogImage = `${SITE_URL}/og.png`;
         <slot />
       </main>
     </div>
+    {import.meta.env.DEV && <DevPanel client:only="react" />}
     <script src="../scripts/route-focus.ts"></script>
   </body>
 </html>
