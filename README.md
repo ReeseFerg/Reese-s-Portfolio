@@ -78,10 +78,13 @@ and spacing; start there for any visual change.
 **Stylelint owns CSS, Prettier owns everything else.** Prettier is set to ignore
 `.css` so the two don't fight over the same files.
 
-**Case studies ship zero client-side JavaScript.** `src/content/cases/*.tsx` are React
-components, but they're rendered to plain HTML at build time and never hydrated — the
-only script on a case page is `src/scripts/case-chrome.ts`, a small vanilla module for
-the TOC scroll-spy and read-progress bar.
+**Case studies ship zero React.** `src/content/cases/*.tsx` are React components, but
+they're rendered to plain HTML at build time and never hydrated — no `astro-island`, no
+React runtime, ships on a case page. The page isn't JS-free, though: a built case page
+loads Astro's view-transition router (`ClientRouter…js` + `client…js`, ~15.8 KB across 2
+requests) plus two small vanilla modules, `src/scripts/case-chrome.ts` (TOC scroll-spy,
+read-progress bar) and `src/scripts/route-focus.ts` (focuses `<main>` after an in-app
+navigation).
 
 See `CLAUDE.md` for the architectural detail that matters for making changes safely —
 in particular how scripts have to be written to survive Astro's view-transition swaps.

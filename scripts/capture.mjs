@@ -4,7 +4,7 @@
  * Screenshots every route at desktop and mobile so the React port can be diffed
  * against the single-file build it replaces.
  *
- *   node .context/capture.mjs <baseUrl> <outDir> [--hash]
+ *   node scripts/capture.mjs <baseUrl> <outDir> [--hash]
  *
  * --hash uses the legacy `#/work` routes; without it, real paths (`/work`).
  */
@@ -15,7 +15,7 @@ const [baseUrl, outDir] = process.argv.slice(2);
 const useHash = process.argv.includes('--hash');
 
 if (!baseUrl || !outDir) {
-  console.error('usage: node .context/capture.mjs <baseUrl> <outDir> [--hash]');
+  console.error('usage: node scripts/capture.mjs <baseUrl> <outDir> [--hash]');
   process.exit(1);
 }
 

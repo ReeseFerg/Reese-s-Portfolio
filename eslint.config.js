@@ -71,7 +71,16 @@ export default tseslint.config(
     files: ['**/*.astro'],
   },
   {
-    files: ['*.config.{js,ts}', '.context/**/*.mjs'],
-    languageOptions: { globals: globals.node },
+    // Config files and the verification/asset scripts under scripts/ — plain
+    // Node, not app code, so they get the base JS ruleset plus Node globals
+    // rather than the TS/browser setup above. scripts/*.mjs also pass callback
+    // bodies to Playwright's page.evaluate()/waitForFunction(), which are
+    // serialized and run inside the browser page, not in this Node process —
+    // so `window`/`document` are legitimately in scope there even though the
+    // file as a whole is Node. Browser globals are added alongside Node's for
+    // that reason, not because these files run in a browser themselves.
+    files: ['*.config.{js,mjs,ts}', 'scripts/**/*.mjs'],
+    extends: [js.configs.recommended],
+    languageOptions: { globals: { ...globals.node, ...globals.browser } },
   },
 );

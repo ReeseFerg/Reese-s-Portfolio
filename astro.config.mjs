@@ -7,7 +7,9 @@ import { SITE_URL } from './src/lib/site.ts';
 export default defineConfig({
   site: SITE_URL,
   output: 'static',
-  // No adapter: this is a static SPA-shell build, deployed as plain files.
+  // No adapter: every route is prerendered to its own complete HTML document
+  // and deployed as plain static files — there is no client router deciding
+  // what to serve.
   build: {
     // Emits dist/work/north-coast-bjj/index.html, the same on-disk shape the old
     // Vite SPA's build-time SEO shell generator produced, so vercel.json's

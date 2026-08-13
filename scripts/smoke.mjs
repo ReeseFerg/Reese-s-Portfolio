@@ -2,7 +2,7 @@
  * Functional smoke test for the things a screenshot can't see: the typewriter,
  * theme switching, the command input, keyboard navigation and routing.
  *
- *   node .context/smoke.mjs [baseUrl]   # defaults to http://localhost:4321
+ *   node scripts/smoke.mjs [baseUrl]   # defaults to http://localhost:4321
  */
 import { chromium } from 'playwright';
 
