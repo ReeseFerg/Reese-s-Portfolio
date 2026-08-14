@@ -56,4 +56,8 @@
 .is-saved { outline-style: solid; outline-color: #4ade80; }
 .is-failed { outline: 2px solid #f87171; outline-offset: 3px; }
 
+/* Placeholders accept a dropped screenshot or clip while edit mode is on. */
+.is-drop-target { cursor: copy; }
+.is-drop-target:hover { outline: 2px dashed var(--accent); outline-offset: 2px; }
+
 /* below this the sticky rail has nowhere to live — case study goes single column */

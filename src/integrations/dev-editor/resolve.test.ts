@@ -5,6 +5,7 @@ import {
   findUniqueMatch,
   validateReplacement,
   isInsideAllowedRoot,
+  findPlaceholderBlock,
 } from './resolve.ts';
 
 describe('slugToCaseFile', () => {
@@ -80,6 +81,42 @@ describe('findUniqueMatch', () => {
       before,
     );
     expect(result).toEqual({ ok: false, reason: 'ambiguous', count: 2 });
+  });
+});
+
+describe('findPlaceholderBlock', () => {
+  const multiline = `      <MediaFrame className="case-cover" hint="cover — 1600×900">
+        hero shot of the finished, live site
+      </MediaFrame>`;
+
+  it('finds a multi-line placeholder and keeps its className', () => {
+    const found = findPlaceholderBlock(`<div>\n${multiline}\n</div>`, 'cover — 1600×900');
+    expect(found?.block).toBe(multiline.trim());
+    expect(found?.className).toBe('case-cover');
+  });
+
+  it('finds a self-closing placeholder', () => {
+    const text = `<div><MediaFrame hint="1600×900" /></div>`;
+    const found = findPlaceholderBlock(text, '1600×900');
+    expect(found?.block).toBe('<MediaFrame hint="1600×900" />');
+    expect(found?.className).toBeNull();
+  });
+
+  it('picks the right one when a file has several placeholders', () => {
+    const text = `<MediaFrame hint="one" />\n<MediaFrame hint="two">x</MediaFrame>`;
+    expect(findPlaceholderBlock(text, 'one')?.block).toBe('<MediaFrame hint="one" />');
+    expect(findPlaceholderBlock(text, 'two')?.block).toBe(
+      '<MediaFrame hint="two">x</MediaFrame>',
+    );
+  });
+
+  it('refuses a hint that appears twice rather than replacing the wrong figure', () => {
+    const text = `<MediaFrame hint="same" />\n<MediaFrame hint="same" />`;
+    expect(findPlaceholderBlock(text, 'same')).toBeNull();
+  });
+
+  it('returns null for a hint that is not there', () => {
+    expect(findPlaceholderBlock('<div />', 'nope')).toBeNull();
   });
 });
 

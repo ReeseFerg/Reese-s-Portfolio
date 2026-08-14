@@ -1,3 +1,5 @@
+import type { ImageMetadata } from 'astro';
+
 type Shape = 'wide' | 'phone' | 'square' | 'tall' | 'video';
 
 type Props = {
@@ -5,8 +7,12 @@ type Props = {
    * Imported image, e.g. `import cover from '../../assets/bjj-cover.png'`.
    * Importing rather than using a string path is what lets Vite hash, compress
    * and cache-bust the file. Leave it out to keep the placeholder box.
+   *
+   * Astro types an image import as ImageMetadata — an object carrying `src`,
+   * `width` and `height` — not the bare string Vite gave us before the
+   * migration. Both are accepted: a string for anything already in public/.
    */
-  src?: string;
+  src?: ImageMetadata | string;
   /** What the image shows, for anyone who can't see it. Required with `src`. */
   alt?: string;
   /** Intrinsic pixel size. Used to reserve exact space before the file loads. */
@@ -64,6 +70,12 @@ export default function MediaFrame({
 }: Props) {
   const figureClass = ['media', SHAPE_CLASS[shape], className].filter(Boolean).join(' ');
 
+  // An ImageMetadata import already knows its own dimensions, so fall back to
+  // them rather than making every call site repeat what the file states.
+  const imgSrc = typeof src === 'string' ? src : src?.src;
+  const imgWidth = width ?? (typeof src === 'object' ? src.width : undefined);
+  const imgHeight = height ?? (typeof src === 'object' ? src.height : undefined);
+
   return (
     <figure className={figureClass}>
       <div className="media-frame">
@@ -96,18 +108,25 @@ export default function MediaFrame({
               />
             )}
           </>
-        ) : src ? (
+        ) : imgSrc ? (
           <img
-            src={src}
+            src={imgSrc}
             alt={alt ?? ''}
-            width={width}
-            height={height}
+            width={imgWidth}
+            height={imgHeight}
             loading="lazy"
             decoding="async"
-            style={width && height ? { aspectRatio: `${width} / ${height}` } : undefined}
+            style={
+              imgWidth && imgHeight
+                ? { aspectRatio: `${imgWidth} / ${imgHeight}` }
+                : undefined
+            }
           />
         ) : (
-          <div className="media-slot">
+          // data-hint is how the dev editor identifies which placeholder a
+          // dropped file belongs to — the browser can't see the JSX source, so
+          // the hint is the handle. Dev-only, so it never reaches production.
+          <div className="media-slot" data-hint={import.meta.env.DEV ? hint : undefined}>
             {hint && <span className="slot-hint">{hint}</span>}
             {children}
           </div>

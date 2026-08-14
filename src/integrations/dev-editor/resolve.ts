@@ -92,6 +92,45 @@ export function findUniqueMatch(
   return { ok: true, file: found as string };
 }
 
+export type PlaceholderBlock = { block: string; className: string | null };
+
+/**
+ * Finds the whole `<MediaFrame …>…</MediaFrame>` element carrying `hint`.
+ *
+ * The browser can't send the source text of a placeholder — it only sees the
+ * rendered DOM, and the source is multi-line JSX with attributes and children
+ * the DOM doesn't preserve. So the drop sends the hint, which is unique per
+ * placeholder, and the block is located here.
+ *
+ * Returns `null` if the hint isn't found or appears more than once, so an
+ * ambiguous drop is refused rather than replacing the wrong figure. Any
+ * `className` on the element is handed back so the replacement can keep it —
+ * losing `case-cover` would silently change a case study's layout.
+ */
+export function findPlaceholderBlock(text: string, hint: string): PlaceholderBlock | null {
+  const needle = `hint="${hint}"`;
+  const first = text.indexOf(needle);
+  if (first === -1 || text.indexOf(needle, first + needle.length) !== -1) return null;
+
+  const open = text.lastIndexOf('<MediaFrame', first);
+  if (open === -1) return null;
+
+  // MediaFrame placeholders never nest, so the next terminator after the
+  // opening tag is this element's own.
+  const selfClose = text.indexOf('/>', first);
+  const pairClose = text.indexOf('</MediaFrame>', first);
+
+  let end: number;
+  if (pairClose === -1 && selfClose === -1) return null;
+  else if (pairClose === -1) end = selfClose + 2;
+  else if (selfClose === -1 || pairClose < selfClose) end = pairClose + '</MediaFrame>'.length;
+  else end = selfClose + 2;
+
+  const block = text.slice(open, end);
+  const className = block.match(/className="([^"]*)"/)?.[1] ?? null;
+  return { block, className };
+}
+
 export type Validation = { ok: true } | { ok: false; reason: string };
 
 export function validateReplacement(after: string): Validation {
