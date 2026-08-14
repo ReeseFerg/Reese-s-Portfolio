@@ -12,6 +12,14 @@ type Props = {
   /** Intrinsic pixel size. Used to reserve exact space before the file loads. */
   width?: number;
   height?: number;
+  /**
+   * Public path to a silent looping clip, e.g. "/media/bjj-booking.mp4".
+   * Video lives in public/ rather than being imported: these are multi-megabyte
+   * binaries that gain nothing from Vite's image pipeline.
+   */
+  video?: string;
+  /** Public path to the still shown before play and under reduced motion. */
+  poster?: string;
   shape?: Shape;
   /** Placeholder only: the dimensions hint, e.g. "1600×900". */
   hint?: string;
@@ -46,6 +54,8 @@ export default function MediaFrame({
   alt,
   width,
   height,
+  video,
+  poster,
   shape = 'wide',
   hint,
   children,
@@ -57,7 +67,36 @@ export default function MediaFrame({
   return (
     <figure className={figureClass}>
       <div className="media-frame">
-        {src ? (
+        {video ? (
+          // Prototype walkthroughs, so no controls and no sound. Under reduced
+          // motion CSS hides the video and shows the poster instead, so nothing
+          // moves — matching how the rest of the site treats motion.
+          <>
+            <video
+              className="media-video"
+              src={video}
+              poster={poster}
+              width={width}
+              height={height}
+              autoPlay
+              loop
+              muted
+              playsInline
+              aria-label={alt}
+              style={width && height ? { aspectRatio: `${width} / ${height}` } : undefined}
+            />
+            {poster && (
+              <img
+                className="media-video-still"
+                src={poster}
+                alt={alt ?? ''}
+                width={width}
+                height={height}
+                style={width && height ? { aspectRatio: `${width} / ${height}` } : undefined}
+              />
+            )}
+          </>
+        ) : src ? (
           <img
             src={src}
             alt={alt ?? ''}

@@ -210,6 +210,18 @@
 .media-frame img,
 .media-frame video { display: block; width: 100%; border-radius: 4px; }
 
+/* Clips autoplay silently on loop, so under reduced motion the poster stands in
+   as a still and the video never plays. Swapped in CSS rather than JS so it is
+   correct on the very first paint, with no island needed on a case page. */
+/* Scoped to .media-frame to outrank `.media-frame img` above, which would
+   otherwise win on specificity and show the still alongside the video. */
+.media-frame .media-video-still { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .media-frame .media-video { display: none; }
+  .media-frame .media-video-still { display: block; }
+}
+
 /* Empty on purpose: a hatched slot that says what belongs here. */
 .media-slot {
   display: grid;
