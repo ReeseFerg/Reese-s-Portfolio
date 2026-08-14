@@ -60,17 +60,31 @@ export default function DevPanel() {
     localStorage.setItem('rf-media-surface', surface);
   }, [surface]);
 
+  // Only touches the DOM while editing is on. The previous version set
+  // contentEditable="false" on mount regardless, so the terminal hydrated
+  // against attributes React had not rendered and warned about a mismatch on
+  // every dev page load.
+  //
+  // Loaded through a DEV-guarded dynamic import rather than a static one.
+  // Astro folds this component into Rollup's entry set whatever the guard says
+  // (withastro/astro#8659), so a static import would carry the editor client
+  // into dist/_astro/DevPanel.*.js — orphaned and never executed, but still
+  // published. Vite replaces import.meta.env.DEV with false in a build, which
+  // makes this branch dead code and drops the module entirely.
   useEffect(() => {
-    const els = [...document.querySelectorAll<HTMLElement>(EDITABLE)];
-    els.forEach((el) => {
-      el.contentEditable = String(editing);
-      el.classList.toggle('is-editable', editing);
+    if (!import.meta.env.DEV || !editing) return;
+
+    let teardown: (() => void) | undefined;
+    let cancelled = false;
+
+    void import('./editor-client.ts').then(({ attachEditor }) => {
+      if (cancelled) return;
+      teardown = attachEditor(EDITABLE);
     });
+
     return () => {
-      els.forEach((el) => {
-        el.contentEditable = 'false';
-        el.classList.remove('is-editable');
-      });
+      cancelled = true;
+      teardown?.();
     };
   }, [editing]);
 
