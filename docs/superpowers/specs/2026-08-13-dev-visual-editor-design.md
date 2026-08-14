@@ -18,6 +18,13 @@ Scope was deliberately cut to **text and media**. Font and colour presets alread
 `DevPanel.tsx`; layout editing was considered and dropped as a page-builder-sized project that
 would consume the time the portfolio itself needs.
 
+**The goal behind the goal:** an MVP portfolio good enough to apply for jobs with, with content
+added over time after that. `north-coast-bjj` carries the weight — 58 of the 120 markers, and
+`CASE-STUDIES.md` says it is deliberately the only one getting full-depth treatment. So the
+editor is tuned for drafting **one long, demanding document reliably**, not for breadth: save
+reliability, clear failure states and keyboard flow matter far more than being able to edit the
+terminal copy, which is four edits in total.
+
 ## Constraints this design is shaped by
 
 1. **Case studies are markup, not data.** `CLAUDE.md` and `CASE-STUDIES.md` are explicit: each
@@ -143,6 +150,41 @@ Images are imported so Vite hashes, compresses and cache-busts them —
 `MediaFrame.tsx:5-8` already documents this as the intended contract. Videos are multi-megabyte
 binaries that gain nothing from the image pipeline, so they stay plain paths in `public/`.
 
+### 6. Draft flag for unpublished case studies
+
+Serves the MVP goal directly: Reese is drafting `north-coast-bjj` first (58 of the 120 markers)
+and applying for jobs while the other three fill in over time. Shipping those three live with
+visible `[TODO: …]` text would read as abandoned rather than in-progress, on the exact page
+arguing he ships finished work.
+
+`src/lib/site.ts` gains a published/draft distinction alongside `CASE_SLUGS`. Effects:
+
+| Surface | Behaviour |
+|---|---|
+| `work/[slug].astro` `getStaticPaths()` | builds drafts in dev, excludes them in production, so a draft URL 404s publicly but is fully workable locally |
+| `sitemap.xml` | drafts excluded — follows automatically once the route doesn't exist |
+| `/work` index cards | draft cards not rendered |
+
+**Two wrinkles this must handle, both discovered by reading the tree:**
+
+**The case studies form a `next-case` chain.** `NorthCoastBjj.tsx:353` → `/work/databrew`,
+`Databrew.tsx:132` → `/work/savr-app`, `SavrApp.tsx:140` and `ProjectCadence.tsx:84` →
+`/work/north-coast-bjj`. Publishing only `north-coast-bjj` therefore leaves the one finished case
+study ending in a link to a 404.
+
+Resolution: **a build-time assertion that fails the build when a published case links to a draft
+one**, naming the file and the href. Rewriting the link automatically would mean editing content
+files, which is out of bounds; failing loudly costs one manual edit per re-ordering and makes a
+broken public link impossible to ship by accident.
+
+**The work cards are hand-written, not generated.** `work/index.astro` has four literal
+`<a class="work-card">` blocks. Hiding one means conditional rendering inside whitespace-sensitive
+`.astro` markup (constraint 2), so the conditional must not introduce or remove whitespace at
+element edges. The screenshot diff is what proves it didn't.
+
+Note the `.shipped-list` entries are unaffected — they link to external URLs (the live site, the
+repo), not to case-study routes.
+
 ## Data flow
 
 ```
@@ -193,6 +235,16 @@ not exist. It structurally cannot cover the editor.
    `npm run check` still passes.
 7. `git checkout` the touched files to clean up.
 
+**Draft flag:**
+
+8. A draft case builds and is reachable under `astro dev`.
+9. A draft case is absent from the production build, from `/work`'s cards, and from
+   `sitemap.xml`.
+10. The build **fails** when a published case's `next-case` link points at a draft one, naming
+    the file and href.
+11. The 16-shot pixel diff is unchanged, proving the conditional card rendering did not disturb
+    `.astro` whitespace.
+
 **Proof the editor does not ship:**
 
 - `grep -r "__edit" dist/` returns nothing
@@ -204,7 +256,8 @@ not exist. It structurally cannot cover the editor.
 ## Out of scope
 
 Layout editing, font and colour editing beyond the existing `DevPanel` presets, undo beyond
-git, multi-user or remote editing, and any production editing surface.
+git, multi-user or remote editing, and any production editing surface. Writing the copy itself
+is Reese's — the editor is the tool, not the content.
 
 ## Known caveat to document
 

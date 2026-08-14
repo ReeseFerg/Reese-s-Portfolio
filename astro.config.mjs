@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 
+import devEditor from './src/integrations/dev-editor/index.ts';
 import { SITE_URL } from './src/lib/site.ts';
 
 // https://astro.build/config
@@ -18,7 +19,9 @@ export default defineConfig({
   },
   // Matches vercel.json's trailingSlash: false.
   trailingSlash: 'never',
-  integrations: [react()],
+  // devEditor only mounts from astro:server:setup, which never runs in a build,
+  // so listing it here is inert in production.
+  integrations: [react(), devEditor()],
   vite: {
     resolve: {
       alias: {

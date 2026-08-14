@@ -49,4 +49,15 @@
 
 .is-editable:focus { outline-style: solid; outline-color: var(--accent); }
 
+/* Save feedback. Dev-only, so these two literals don't belong in tokens.css —
+   the palette there is the one visitors actually see. A failed save keeps its
+   outline until the next edit, and carries the server's reason as a title. */
+.is-saving { outline-style: solid; outline-color: var(--muted); opacity: 0.65; }
+.is-saved { outline-style: solid; outline-color: #4ade80; }
+.is-failed { outline: 2px solid #f87171; outline-offset: 3px; }
+
+/* Placeholders accept a dropped screenshot or clip while edit mode is on. */
+.is-drop-target { cursor: copy; }
+.is-drop-target:hover { outline: 2px dashed var(--accent); outline-offset: 2px; }
+
 /* below this the sticky rail has nowhere to live — case study goes single column */

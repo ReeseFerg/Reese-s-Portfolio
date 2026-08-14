@@ -1,13 +1,39 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { CASE_SLUGS, type CaseSlug } from '../../lib/site.ts';
+import { CASE_SLUGS, publishedCaseSlugs, type CaseSlug } from '../../lib/site.ts';
+import { deadLinkMessage, findDeadDraftLinks } from '../../lib/draft-links.ts';
 import NorthCoastBjj from '../../content/cases/NorthCoastBjj';
 import Databrew from '../../content/cases/Databrew';
 import SavrApp from '../../content/cases/SavrApp';
 import ProjectCadence from '../../content/cases/ProjectCadence';
 
+// Read at build time so a published case can't ship a link to a draft one.
+// eager + ?raw gives the source text without pulling the components in twice.
+const CASE_SOURCE = import.meta.glob('../../content/cases/*.tsx', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>;
+
+if (!import.meta.env.DEV) {
+  const sources = Object.entries(CASE_SOURCE).map(([file, text]) => ({
+    slug:
+      CASE_SLUGS.find((s) => slugToFile(s) === file.split('/').pop()) ?? '',
+    text,
+  }));
+  const dead = findDeadDraftLinks(sources, publishedCaseSlugs());
+  if (dead.length > 0) throw new Error(deadLinkMessage(dead));
+}
+
+function slugToFile(slug: string): string {
+  return `${slug.split('-').map((p) => p[0].toUpperCase() + p.slice(1)).join('')}.tsx`;
+}
+
 export function getStaticPaths() {
-  return CASE_SLUGS.map((slug) => ({ params: { slug } }));
+  // Drafts build in dev so they can be written, and are absent from the
+  // production build so their [TODO: …] markers are never public.
+  const slugs = import.meta.env.DEV ? CASE_SLUGS : publishedCaseSlugs();
+  return slugs.map((slug) => ({ params: { slug } }));
 }
 
 const CASES: Record<CaseSlug, () => React.JSX.Element> = {

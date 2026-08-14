@@ -350,7 +350,10 @@ export default function NorthCoastBjj() {
       </div>
 
       <footer className="case-footer case-shell">
-        <a className="next-case" href="/work/databrew">
+        {/* Points at /work while databrew is still a draft — see draft: true in
+            src/lib/site.ts. The build refuses to ship a link to an unpublished
+            case, so change this back to /work/databrew when that one goes live. */}
+        <a className="next-case" href="/work">
           <div>
             <p className="eyebrow">Next project</p>
             <p className="next-case-title">databrew</p>
