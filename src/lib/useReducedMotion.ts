@@ -17,6 +17,6 @@ export function useReducedMotion(): boolean {
   return useSyncExternalStore(
     subscribe,
     () => window.matchMedia(QUERY).matches,
-    () => true, // prerendered HTML assumes reduced — never animate before hydration
+    () => false, // SSR'd HTML assumes motion on — matches the pre-typing state, so client:load hydration is a no-op instead of flashing the reduced state
   );
 }

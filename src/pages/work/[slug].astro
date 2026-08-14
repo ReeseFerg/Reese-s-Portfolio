@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { CASE_SLUGS, type CaseSlug } from '../../lib/site.ts';
+import NorthCoastBjj from '../../content/cases/NorthCoastBjj';
+import Databrew from '../../content/cases/Databrew';
+import SavrApp from '../../content/cases/SavrApp';
+import ProjectCadence from '../../content/cases/ProjectCadence';
+
+export function getStaticPaths() {
+  return CASE_SLUGS.map((slug) => ({ params: { slug } }));
+}
+
+const CASES: Record<CaseSlug, () => React.JSX.Element> = {
+  'north-coast-bjj': NorthCoastBjj,
+  databrew: Databrew,
+  'savr-app': SavrApp,
+  'project-cadence': ProjectCadence,
+};
+
+const { slug } = Astro.params as { slug: CaseSlug };
+const Body = CASES[slug];
+---
+
+<BaseLayout path={'/work/' + slug} bodyClass="routed on-case">
+  <div id="case-root" data-case-root>
+    <Body />
+  </div>
+  <script src="../../scripts/case-chrome.ts"></script>
+</BaseLayout>

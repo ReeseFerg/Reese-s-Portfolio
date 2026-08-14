@@ -2,7 +2,7 @@
  * Renders public/og.png — the 1200x630 card shown when the site is shared.
  * Uses the site's own tokens so the preview looks like the site.
  *
- *   node .context/make-og.mjs
+ *   node scripts/make-og.mjs
  */
 import { chromium } from 'playwright';
 

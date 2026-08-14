@@ -1,7 +1,7 @@
 /**
- * One list of routes, used three ways: React Router's route table, the build-time
- * SEO shell generator, and the sitemap. Adding a page means editing this and
- * nothing else.
+ * One list of routes, used two ways: each route's per-page SEO tags (read by
+ * BaseLayout.astro via metaForPath) and the sitemap. Adding a page means
+ * editing this and nothing else.
  */
 
 export const SITE_URL = 'https://reeseferguson.com';

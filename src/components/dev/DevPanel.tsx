@@ -25,15 +25,18 @@ const EDITABLE = [
   '.next-case-title, .next-case-desc, .case-closing',
 ].join(', ');
 
-const fetched = new Set<string>();
-
 function loadFonts(preset: string) {
   for (const spec of FONT_PRESETS[preset]) {
-    if (fetched.has(spec)) continue;
-    fetched.add(spec);
+    const href = `https://fonts.googleapis.com/css2?family=${spec}&display=swap`;
+    // A module-scoped Set of "already fetched" specs used to dedupe this, but
+    // the <link> it guards lives in <head>, which Astro replaces wholesale on
+    // every view-transition swap — so the Set would go stale while the DOM
+    // lost the link, and preset fonts would vanish after one navigation.
+    // Checking the DOM directly stays correct across swaps.
+    if (document.head.querySelector(`link[href="${href}"]`)) continue;
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = `https://fonts.googleapis.com/css2?family=${spec}&display=swap`;
+    link.href = href;
     document.head.append(link);
   }
 }

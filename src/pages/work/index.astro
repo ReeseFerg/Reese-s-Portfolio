@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout path="/work" bodyClass="routed">
+  <section class="view is-active" id="work" aria-label="Selected work">
+    <div class="view-inner">
+      <p class="crumb">~/reese/work</p>
+      <h1 class="view-title">Selected work</h1>
+      <p class="view-lead">
+        I design interfaces and then build them — Figma and Paper for the thinking, Claude Code
+        for the shipping. Start with north-coast-bjj; it's the one that went all the way.
+      </p>
+
+      <!-- Ordered strongest first. north-coast-bjj is the only one with a real client,
+           real research and a finished product, so it leads and it's the only one that
+           gets the full-depth treatment. -->
+      <div class="work-grid">
+        <a class="work-card wc-lead" href="/work/north-coast-bjj">
+          <span class="wc-title">north-coast-bjj</span>
+          <span class="wc-outcome"
+            >[TODO: one line — real client, real users, live site. Lead with what changed for
+            the club.]</span
+          >
+          <span class="wc-meta">
+            <span class="wc-role">[TODO: role]</span> · <span class="wc-year">[TODO: year]</span
+            > · <span class="wc-tag">Client · full case study</span>
+          </span>
+        </a>
+        <a class="work-card" href="/work/databrew">
+          <span class="wc-title">databrew</span>
+          <span class="wc-outcome"
+            >[TODO: one line — a Chromium extension people will actually install. Say what it
+            saves them.]</span
+          >
+          <span class="wc-meta">
+            <span class="wc-role">Design &amp; front end</span> · <span class="wc-year"
+              >[TODO: year]</span
+            > · <span class="wc-tag">Shipping</span>
+          </span>
+        </a>
+        <a class="work-card" href="/work/savr-app">
+          <span class="wc-title">savr-app</span>
+          <span class="wc-outcome"
+            >[TODO: one line — lead with what user testing changed, not with the concept.]</span
+          >
+          <span class="wc-meta">
+            <span class="wc-role">Solo</span> · <span class="wc-year">2026</span> · <span
+              class="wc-tag">Course project</span
+            >
+          </span>
+        </a>
+        <a class="work-card" href="/work/project-cadence">
+          <span class="wc-title">project-cadence</span>
+          <span class="wc-outcome"
+            >[TODO: one line on the idea. It's early — the interesting part is the open
+            question.]</span
+          >
+          <span class="wc-meta">
+            <span class="wc-role">Design &amp; front end</span> · <span class="wc-year"
+              >2026</span
+            > · <span class="wc-tag">In progress</span>
+          </span>
+        </a>
+      </div>
+
+      <section class="shipped">
+        <h2 class="shipped-title">Things that are live</h2>
+        <ul class="shipped-list">
+          <li>
+            <a href="[TODO: north coast bjj URL]" target="_blank" rel="noopener">
+              <span class="sh-name">north-coast-bjj</span>
+              <span class="sh-desc">[TODO: one line — the site, in the wild]</span>
+              <span class="sh-arrow">↗</span>
+            </a>
+          </li>
+          <li>
+            <a href="[TODO: databrew repo or store listing]" target="_blank" rel="noopener">
+              <span class="sh-name">databrew</span>
+              <span class="sh-desc"
+                >[TODO: v1 of the extension — link the repo if it isn't listed yet]</span
+              >
+              <span class="sh-arrow">↗</span>
+            </a>
+          </li>
+          <li>
+            <a href="[TODO: this repo's URL]" target="_blank" rel="noopener">
+              <span class="sh-name">this site</span>
+              <span class="sh-desc"
+                >Hand-built — routing, terminal and all. Designed in Figma and Paper, shipped
+                with Claude Code.</span
+              >
+              <span class="sh-arrow">↗</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </section>
+</BaseLayout>

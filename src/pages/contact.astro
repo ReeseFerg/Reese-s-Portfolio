@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout path="/contact" bodyClass="routed">
+  <section class="view is-active" id="contact" aria-label="Contact">
+    <div class="view-inner">
+      <p class="crumb">~/reese/contact</p>
+      <h1 class="view-title">Get in touch</h1>
+      <p class="view-lead">
+        <span class="spark">✳</span> Open to opportunities — let's build something.
+      </p>
+      <!-- The `&#32;` below is a load-bearing literal space, not a typo: prettier-plugin-astro
+           always splits this span+anchor pair onto separate lines, and Astro's compressHTML
+           deletes the resulting newline-adjacent whitespace, dropping the rendered space
+           between the two. A character reference is a text node to the parser, not
+           whitespace, so it survives both untouched. Don't "clean" it into a literal space. -->
+      <ul class="contact-list">
+        <li>
+          <span class="ck">email</span>&#32;<a href="mailto:reesefergie@gmail.com"
+            >reesefergie@gmail.com</a
+          >
+        </li>
+        <li>
+          <span class="ck">linkedin</span>&#32;<a
+            href="[TODO: LinkedIn URL]"
+            target="_blank"
+            rel="noopener">[TODO: /in/your-handle]</a
+          >
+        </li>
+        <li>
+          <span class="ck">résumé</span>&#32;<a
+            href="/resume.pdf"
+            target="_blank"
+            rel="noopener">resume.pdf</a
+          >
+        </li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

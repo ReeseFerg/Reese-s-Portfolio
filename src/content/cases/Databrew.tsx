@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-
 export default function Databrew() {
   return (
     <article
@@ -8,9 +6,9 @@ export default function Databrew() {
       aria-label="databrew case study"
     >
       <header className="case-hero case-shell">
-        <Link className="back-link" to="/work">
+        <a className="back-link" href="/work">
           ❮ back to work
-        </Link>
+        </a>
         <p className="crumb">~/reese/work/databrew</p>
         <p className="eyebrow">
           Chromium extension <span className="accent">·</span> Shipping{' '}
@@ -131,7 +129,7 @@ export default function Databrew() {
       </div>
 
       <footer className="case-footer case-shell">
-        <Link className="next-case" to="/work/savr-app">
+        <a className="next-case" href="/work/savr-app">
           <div>
             <p className="eyebrow">Next project</p>
             <p className="next-case-title">savr-app</p>
@@ -142,14 +140,14 @@ export default function Databrew() {
           <div className="media-slot">
             <span className="slot-hint">800×500</span>thumbnail
           </div>
-        </Link>
+        </a>
         <p className="case-closing">
           [TODO: a closing line with some personality.]{' '}
           <span className="accent">Let's build something.</span>
         </p>
         <p className="case-contact">
           <a href="mailto:reesefergie@gmail.com">reesefergie@gmail.com</a>{' '}
-          <span className="sep">·</span> <Link to="/contact">more ways to reach me</Link>
+          <span className="sep">·</span> <a href="/contact">more ways to reach me</a>
         </p>
       </footer>
     </article>

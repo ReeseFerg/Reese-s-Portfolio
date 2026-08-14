@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout path="/404" bodyClass="routed">
+  <section class="view is-active" id="not-found" aria-label="Page not found">
+    <div class="view-inner">
+      <p class="crumb">~/reese</p>
+      <h1 class="view-title">404 — no such path</h1>
+      <p class="view-lead">
+        That page doesn't exist. Nothing broke — the address just doesn't point anywhere.
+      </p>
+      <!-- The `&#32;` below is a load-bearing literal space, not a typo: prettier-plugin-astro
+           always splits this span+anchor pair onto separate lines, and Astro's compressHTML
+           deletes the resulting newline-adjacent whitespace, dropping the rendered space
+           between the two. A character reference is a text node to the parser, not
+           whitespace, so it survives both untouched. Don't "clean" it into a literal space. -->
+      <ul class="contact-list">
+        <li>
+          <span class="ck">work</span>&#32;<a href="/work">selected projects</a>
+        </li>
+        <li>
+          <span class="ck">about</span>&#32;<a href="/about">who I am</a>
+        </li>
+        <li>
+          <span class="ck">contact</span>&#32;<a href="/contact">get in touch</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
