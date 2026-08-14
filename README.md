@@ -99,9 +99,9 @@ in particular how scripts have to be written to survive Astro's view-transition 
 - **`public/og.png` is generated, not designed.** It's the card people see when the
   site is shared. It matches the terminal look and is fine to ship, but if you want
   to art-direct it, edit the template in `scripts/make-og.mjs` and re-run it.
-- **`SITE_URL` in `src/lib/site.ts` is a guess** (`https://reeseferguson.com`). Change
-  it to the real domain — canonical URLs, the sitemap and every social tag are built
-  from it, and they'll all point at the wrong host until you do.
+- **`SITE_URL` is confirmed**, not a guess: `https://reeseferguson.com` is the real
+  domain. Canonical URLs, the sitemap and every social tag are built from it, so
+  leave it alone unless the domain changes.
 
 The case studies are still full of `[TODO: …]` markers. Write the copy in
 `CASE-STUDIES.md` first, then move it in — that doc explains why that order matters.

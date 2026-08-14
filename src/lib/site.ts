@@ -4,6 +4,11 @@
  * editing this and nothing else.
  */
 
+/**
+ * The real domain, confirmed — not a placeholder. Every canonical URL, sitemap
+ * entry and og:/twitter: tag is built from this, so changing it rewrites all of
+ * them at once.
+ */
 export const SITE_URL = 'https://reeseferguson.com';
 export const SITE_NAME = 'Reese Ferguson';
 
