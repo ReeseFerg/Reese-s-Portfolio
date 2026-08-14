@@ -13,6 +13,18 @@ const browser = await chromium.launch(
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 
 const results = [];
+
+// Which case studies are actually published is a decision in src/lib/site.ts
+// (`draft: true`), and the production build simply omits the drafts. Read the
+// list off the built work index rather than hardcoding slugs, so this suite
+// stays correct as Reese publishes case studies one at a time.
+await page.goto(`${baseUrl}/work`, { waitUntil: 'networkidle' });
+const PUBLISHED = await page.$$eval('a.work-card', (els) =>
+  els.map((el) => new URL(el.href).pathname.split('/').pop()),
+);
+if (PUBLISHED.length === 0) throw new Error('No published case studies to test against.');
+const LEAD = PUBLISHED[0];
+const SECOND = PUBLISHED[1] ?? null;
 const check = async (name, fn) => {
   try {
     await fn();
@@ -108,14 +120,14 @@ await check('back link returns to work', async () => {
 });
 
 await check('deep link to a real URL loads that page directly', async () => {
-  await page.goto(`${baseUrl}/work/savr-app`, { waitUntil: 'networkidle' });
-  assert(await page.locator('#case-savr-app').isVisible(), 'savr-app not visible');
+  await page.goto(`${baseUrl}/work/${LEAD}`, { waitUntil: 'networkidle' });
+  assert(await page.locator(`#case-${LEAD}`).isVisible(), `${LEAD} not visible`);
 });
 
 await check('legacy hash URL redirects to the real path', async () => {
-  await page.goto(`${baseUrl}/#/work/databrew`, { waitUntil: 'networkidle' });
-  await page.waitForURL('**/work/databrew', { timeout: 3000 });
-  assert(await page.locator('#case-databrew').isVisible(), 'databrew not visible');
+  await page.goto(`${baseUrl}/#/work/${LEAD}`, { waitUntil: 'networkidle' });
+  await page.waitForURL(`**/work/${LEAD}`, { timeout: 3000 });
+  assert(await page.locator(`#case-${LEAD}`).isVisible(), `${LEAD} not visible`);
 });
 
 await check('unknown path renders the 404 view', async () => {
@@ -159,45 +171,46 @@ await check(
     await page.click('a.nav-link[href="/work"]');
     await page.waitForURL('**/work', { timeout: 3000 });
 
-    await page.click('.work-card.wc-lead'); // north-coast-bjj — the only case with a TOC
-    await page.waitForURL('**/work/north-coast-bjj', { timeout: 3000 });
+    await page.click('.work-card.wc-lead'); // the lead case — the only one with a TOC
+    await page.waitForURL(`**/work/${LEAD}`, { timeout: 3000 });
     await page.waitForSelector('.toc-link', { timeout: 3000 });
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight * 0.5));
     await page.waitForTimeout(500);
     let active = await page.locator('.toc-link.is-active').count();
-    assert(
-      active === 1,
-      `case A (north-coast-bjj): expected exactly 1 active TOC link, got ${active}`,
-    );
+    assert(active === 1, `case A (${LEAD}): expected exactly 1 active TOC link, got ${active}`);
 
     await page.click('.back-link');
     await page.waitForURL('**/work', { timeout: 3000 });
 
-    // databrew, savr-app and project-cadence don't have a TOC sidebar at all —
-    // assert that honestly rather than pretending they do.
-    await page.click('a.work-card[href="/work/databrew"]');
-    await page.waitForURL('**/work/databrew', { timeout: 3000 });
-    await page.waitForSelector('#case-databrew', { timeout: 3000 });
-    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight * 0.5));
-    await page.waitForTimeout(300);
-    assert(
-      (await page.locator('.toc-link').count()) === 0,
-      'databrew unexpectedly rendered a TOC sidebar',
-    );
+    // The other case studies have no TOC sidebar at all, so when one is
+    // published this stop asserts that honestly rather than pretending it does.
+    // With only the lead case published there is no second case to visit, and
+    // the rebind is still exercised by returning to it below.
+    if (SECOND) {
+      await page.click(`a.work-card[href="/work/${SECOND}"]`);
+      await page.waitForURL(`**/work/${SECOND}`, { timeout: 3000 });
+      await page.waitForSelector(`#case-${SECOND}`, { timeout: 3000 });
+      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight * 0.5));
+      await page.waitForTimeout(300);
+      assert(
+        (await page.locator('.toc-link').count()) === 0,
+        `${SECOND} unexpectedly rendered a TOC sidebar`,
+      );
+      await page.click('.back-link');
+      await page.waitForURL('**/work', { timeout: 3000 });
+    }
 
-    // Back to the work index, then a second visit to the TOC-bearing case —
-    // the scroll-spy has to rebind cleanly on a revisit, not just once.
-    await page.click('.back-link');
-    await page.waitForURL('**/work', { timeout: 3000 });
+    // A second visit to the TOC-bearing case — the scroll-spy has to rebind
+    // cleanly on a revisit, not just once. This is the double-binding guard.
     await page.click('.work-card.wc-lead');
-    await page.waitForURL('**/work/north-coast-bjj', { timeout: 3000 });
+    await page.waitForURL(`**/work/${LEAD}`, { timeout: 3000 });
     await page.waitForSelector('.toc-link', { timeout: 3000 });
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight * 0.5));
     await page.waitForTimeout(500);
     active = await page.locator('.toc-link.is-active').count();
     assert(
       active === 1,
-      `case A revisit (north-coast-bjj): expected exactly 1 active TOC link, got ${active}`,
+      `case A revisit (${LEAD}): expected exactly 1 active TOC link, got ${active}`,
     );
   },
 );
@@ -221,7 +234,7 @@ await check('--accent survives a client-side swap', async () => {
 });
 
 await check('case pages ship no astro-island element at all', async () => {
-  for (const slug of ['north-coast-bjj', 'databrew', 'savr-app', 'project-cadence']) {
+  for (const slug of PUBLISHED) {
     await page.goto(`${baseUrl}/work/${slug}`, { waitUntil: 'networkidle' });
     const count = await page.locator('astro-island').count();
     assert(count === 0, `/work/${slug} shipped ${count} astro-island element(s)`);
@@ -231,7 +244,7 @@ await check('case pages ship no astro-island element at all', async () => {
 await check('no console errors anywhere', async () => {
   const errors = [];
   page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
-  for (const path of ['/', '/work', '/about', '/contact', '/work/north-coast-bjj']) {
+  for (const path of ['/', '/work', '/about', '/contact', `/work/${LEAD}`]) {
     await page.goto(baseUrl + path, { waitUntil: 'networkidle' });
   }
   assert(errors.length === 0, errors.join(' | '));

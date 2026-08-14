@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { isVisible } from '../../lib/site.ts';
 ---
 
 <BaseLayout path="/work" bodyClass="routed">
@@ -27,41 +28,50 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             > · <span class="wc-tag">Client · full case study</span>
           </span>
         </a>
-        <a class="work-card" href="/work/databrew">
-          <span class="wc-title">databrew</span>
-          <span class="wc-outcome"
-            >[TODO: one line — a Chromium extension people will actually install. Say what it
-            saves them.]</span
-          >
-          <span class="wc-meta">
-            <span class="wc-role">Design &amp; front end</span> · <span class="wc-year"
-              >[TODO: year]</span
-            > · <span class="wc-tag">Shipping</span>
-          </span>
-        </a>
-        <a class="work-card" href="/work/savr-app">
-          <span class="wc-title">savr-app</span>
-          <span class="wc-outcome"
-            >[TODO: one line — lead with what user testing changed, not with the concept.]</span
-          >
-          <span class="wc-meta">
-            <span class="wc-role">Solo</span> · <span class="wc-year">2026</span> · <span
-              class="wc-tag">Course project</span
-            >
-          </span>
-        </a>
-        <a class="work-card" href="/work/project-cadence">
-          <span class="wc-title">project-cadence</span>
-          <span class="wc-outcome"
-            >[TODO: one line on the idea. It's early — the interesting part is the open
-            question.]</span
-          >
-          <span class="wc-meta">
-            <span class="wc-role">Design &amp; front end</span> · <span class="wc-year"
-              >2026</span
-            > · <span class="wc-tag">In progress</span>
-          </span>
-        </a>
+        {
+          isVisible('/work/databrew') && (
+            <a class="work-card" href="/work/databrew">
+              <span class="wc-title">databrew</span>
+              <span class="wc-outcome">
+                [TODO: one line — a Chromium extension people will actually install. Say what it
+                saves them.]
+              </span>
+              <span class="wc-meta">
+                <span class="wc-role">Design &amp; front end</span> ·{' '}
+                <span class="wc-year">[TODO: year]</span> · <span class="wc-tag">Shipping</span>
+              </span>
+            </a>
+          )
+        }
+        {
+          isVisible('/work/savr-app') && (
+            <a class="work-card" href="/work/savr-app">
+              <span class="wc-title">savr-app</span>
+              <span class="wc-outcome">
+                [TODO: one line — lead with what user testing changed, not with the concept.]
+              </span>
+              <span class="wc-meta">
+                <span class="wc-role">Solo</span> · <span class="wc-year">2026</span> ·{' '}
+                <span class="wc-tag">Course project</span>
+              </span>
+            </a>
+          )
+        }
+        {
+          isVisible('/work/project-cadence') && (
+            <a class="work-card" href="/work/project-cadence">
+              <span class="wc-title">project-cadence</span>
+              <span class="wc-outcome">
+                [TODO: one line on the idea. It's early — the interesting part is the open
+                question.]
+              </span>
+              <span class="wc-meta">
+                <span class="wc-role">Design &amp; front end</span> ·{' '}
+                <span class="wc-year">2026</span> · <span class="wc-tag">In progress</span>
+              </span>
+            </a>
+          )
+        }
       </div>
 
       <section class="shipped">
