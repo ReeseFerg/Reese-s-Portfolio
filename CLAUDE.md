@@ -14,10 +14,16 @@ npm run dev            # http://localhost:5173
 npm run build           # -> dist/
 npm run preview        # serve dist/ exactly as deployed, http://localhost:4321
 npm run check           # typecheck (astro check) + eslint + stylelint + prettier — run before committing
+npm test                # vitest, scoped to the dev editor's pure logic
 npm run format          # prettier, writing fixes
 ```
 
-There is no test suite. Verification is visual and behavioural instead — see below.
+Verification is mostly visual and behavioural — see below. The one exception is
+`npm test`: Vitest over `src/**/*.test.ts`, scoped to the dev editor's pure logic (route
+resolution, match uniqueness, replacement validation, path containment) and the draft flag.
+That code is the only thing here that writes to your own source files, and the failure mode
+is corrupting hand-written case-study copy, so it earns direct tests. Nothing else in the
+repo has unit tests, deliberately.
 
 ## Branching
 
@@ -86,6 +92,54 @@ of the template and can't see the `import.meta.env.DEV &&` guard — so it folds
 Rollup's entry set unconditionally (upstream `withastro/astro#8659`). The chunk is genuinely
 orphaned; nothing in `dist/` references it, and it never executes. Accepted deliberately after
 evaluating alternatives — don't "fix" this by restructuring the guard.
+
+## The visual editor is dev-only by construction
+
+`src/integrations/dev-editor/` mounts a connect middleware from Astro's `astro:server:setup`
+hook, which only runs under `astro dev`. The site is `output: 'static'` with no adapter, so
+there is no production server for it to live on — a stronger guarantee than the DevPanel's
+`import.meta.env.DEV`, which as noted above still leaks an orphaned chunk. `grep -r "__edit"
+dist/` must stay empty; that is the check.
+
+Turning on **edit text** in the dev panel makes everything in `DevPanel.tsx`'s `EDITABLE` list
+typeable in place. On blur the browser POSTs `{ route, before, after }`; the server resolves a
+small set of candidate source files from the route, requires `before` to appear **exactly once**
+across them, replaces it, and runs Prettier on the file. Then Vite hot-reloads. Dropping an
+image or a clip onto a `.media-slot` placeholder writes the file and rewrites the markup —
+images to `src/assets/` behind an import so Vite hashes them, video to `public/media/` as a
+plain path.
+
+Three things are load-bearing and not obvious:
+
+- **The client captures a node's original text on `focus`, not on `blur`.** Reading it at blur
+  time returns the already-edited text, so the server would search for a string no longer in the
+  file and every save would fail.
+- **It refuses rather than guesses.** Text matching twice, text that no longer matches, text
+  containing `{ } < >`, an empty replacement, and any path outside `src/` or `public/media/` are
+  all rejected with a reason. Guessing which of two identical paragraphs you meant would
+  silently corrupt the other.
+- **Edits are uncommitted working-tree changes.** `git checkout`, `git stash` and `git reset
+  --hard` will discard them. Commit as you go.
+
+`scripts/edit-smoke.mjs` covers this against `astro dev`; `scripts/smoke.mjs` runs against a
+production preview and structurally cannot.
+
+## Unfinished case studies are hidden behind a draft flag
+
+`draft: true` on a route in `src/lib/site.ts` drops it from the production build, from `/work`'s
+cards and from the sitemap, while keeping it fully reachable under `astro dev` — you cannot
+write a case study you cannot see. Three of the four are drafts today; only `north-coast-bjj`
+is published.
+
+The case studies link to each other through `.next-case`, so publishing only some of them would
+leave a published case ending in a link to a route that no longer exists in the build.
+`src/lib/draft-links.ts` catches that at build time and **fails the build**, naming the file,
+the target and both ways to fix it. `NorthCoastBjj.tsx`'s next-case href points at `/work` for
+exactly this reason, with a comment saying when to change it back.
+
+Because drafts are absent from a production build, `.context/before` is no longer a valid
+baseline for `/work` or the three draft routes — their screenshots legitimately differ now.
+`/`, `/about`, `/contact` and `/work/north-coast-bjj` are still comparable.
 
 ## View transitions: scripts run once per document
 
@@ -160,8 +214,8 @@ a literal space, and don't reach for `prettier-ignore` as a substitute.
 
 ## Verifying a change
 
-There are no unit tests. Instead, `scripts/` holds the tooling used to verify the Astro port
-against the build it replaced (14 of 16 screenshots are pixel-identical; the two homepage shots
+Unit tests cover only the dev editor's pure logic (`npm test`). Everything else is verified by
+the tooling in `scripts/`, originally built to check the Astro port against the build it replaced (14 of 16 screenshots are pixel-identical; the two homepage shots
 differ by ~0.1–0.3% from self-hosting JetBrains Mono in Task 9 — an accepted, owner-reviewed
 state, not a bug). Use the same approach for any redesign or refactor:
 
@@ -173,12 +227,22 @@ npm run build && npx astro preview --port 4321 &   # not `vite preview` — it d
 node scripts/capture.mjs   http://localhost:4321 before   # screenshots all 8 routes, 2 widths
 node scripts/pixeldiff.mjs before after                   # per-image diff counts + y-bands
 node scripts/smoke.mjs     http://localhost:4321          # 20 behaviour checks
+npm test                                                  # vitest — editor logic + draft flag
+
+# the editor only exists under `astro dev`, so it needs its own server and script:
+npm run dev && node scripts/edit-smoke.mjs                # 11 checks
 ```
+
+**`astro dev` daemonises.** `pkill -f "astro dev"` kills the wrapper and leaves the server
+running, so a restart silently keeps serving old integration code — integrations are not
+hot-reloaded. Use `npx astro dev stop`.
 
 `smoke.mjs` covers the things screenshots can't: typewriter, theme switching, slash commands with
 Tab-completion, keyboard navigation, routing, legacy hash redirects, the 404, TOC scroll-spy
 (including that it survives repeated client-side navigation without double-binding), `--accent`
-surviving a swap, and that neither the dev panel nor any `astro-island` ships on a case page.
+surviving a swap, and that neither the dev panel nor any `astro-island` ships on a case page. It
+reads the published case list off the built work index rather than hardcoding slugs, so it stays
+correct as drafts are published.
 `pixeldiff.mjs` reports pixelmatch's differing-pixel count per image and, for anything non-zero,
 the bounding box and contiguous y-bands of the differing rows.
 

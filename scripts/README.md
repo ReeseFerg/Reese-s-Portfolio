@@ -16,7 +16,8 @@ npm i --no-save playwright pixelmatch pngjs && npx playwright install chromium
 |---|---|
 | `capture.mjs <url> <outDir>` | Screenshots all 8 routes at desktop and mobile |
 | `pixeldiff.mjs <beforeDir> <afterDir> [name...]` | Diffs two `capture.mjs` output dirs pixel-by-pixel; reports counts, and for anything non-zero, the bounding box and y-bands of the differing rows |
-| `smoke.mjs <url>` | 20 behaviour checks — typewriter, themes, commands, keyboard nav, routing, TOC scroll-spy (including across repeated client-side navigation), `--accent` surviving a swap, island containment |
+| `smoke.mjs <url>` | 20 behaviour checks — typewriter, themes, commands, keyboard nav, routing, TOC scroll-spy (including across repeated client-side navigation), `--accent` surviving a swap, island containment. Reads the published case list off the built work index, so it stays correct as drafts are published one at a time |
+| `edit-smoke.mjs <url>` | 11 checks for the dev-only visual editor. Runs against **`astro dev`**, not `astro preview` — the editor mounts from `astro:server:setup`, which never runs in a build, so `smoke.mjs` structurally cannot cover it. Restores every file it writes |
 | `make-og.mjs` | Regenerates `public/og.png`, the social preview card |
 | `make-resume-placeholder.mjs` | Regenerates the placeholder `public/resume.pdf` |
 

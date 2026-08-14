@@ -1,0 +1,4 @@
+# Destination for video dropped through the dev editor.
+# Images go to src/assets/ instead, so Vite can hash them; video stays here
+# as a plain public path because multi-megabyte binaries gain nothing from
+# the image pipeline.
