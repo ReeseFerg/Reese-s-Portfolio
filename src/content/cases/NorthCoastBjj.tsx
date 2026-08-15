@@ -19,7 +19,7 @@ export default function NorthCoastBjj() {
         {/* Title: 40–60 characters, a claim rather than a label.
              Lead: ~40 words. Between the eyebrow, the title and this, a stranger should
              know what kind of thing this is before they scroll. */}
-        <h1 className="case-title">[TODO: a statement, not the slug.]</h1>
+        <h1 className="case-title">High Impact, Low Cost</h1>
         <p className="case-lead">
           [TODO: two sentences. What the club needed, and what changed because you worked on it.
           This is the only project where you had a real client, real users and a finished
