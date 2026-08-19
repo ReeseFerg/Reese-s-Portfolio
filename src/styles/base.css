@@ -34,7 +34,7 @@ button { font: inherit; background: none; border: none; color: inherit; cursor: 
   color: var(--text);
   font-size: 13px;
   text-decoration: none;
-  transition: top 120ms ease;
+  transition: top var(--duration-fast) var(--ease-standard);
 }
 
 .skip-link:focus { top: 12px; }

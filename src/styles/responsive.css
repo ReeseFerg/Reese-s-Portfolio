@@ -20,6 +20,15 @@
   .next-case { grid-template-columns: minmax(0, 1fr); gap: 24px; }
 }
 
+/* Phones: tighten the boxed nav and swap the CV label to its short form so the
+   connected bar fits without overflowing. The header already wraps the nav to
+   its own line at 980px; this keeps that line inside the viewport. */
+@media (max-width: 560px) {
+  .site-header .btn { padding: 11px 14px; letter-spacing: 0.08em; }
+  .cv-full { display: none; }
+  .cv-short { display: inline; }
+}
+
 @media (max-width: 640px) {
   .case-meta { grid-template-columns: minmax(0, 1fr); }
   .media-grid--2, .media-grid--3 { grid-template-columns: minmax(0, 1fr); }

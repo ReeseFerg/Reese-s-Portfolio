@@ -78,7 +78,7 @@ await check('Enter runs the command, echoes it and navigates', async () => {
 });
 
 await check('nav marks the current section', async () => {
-  const cls = await page.getAttribute('a.nav-link[href="/work"]', 'class');
+  const cls = await page.getAttribute('a.btn[href="/work"]', 'class');
   assert(cls.includes('is-active'), `nav class was "${cls}"`);
 });
 
@@ -168,7 +168,7 @@ await check(
   'navigating home → work → case → back → another case keeps exactly one active TOC link',
   async () => {
     await page.goto(baseUrl, { waitUntil: 'networkidle' });
-    await page.click('a.nav-link[href="/work"]');
+    await page.click('a.btn[href="/work"]');
     await page.waitForURL('**/work', { timeout: 3000 });
 
     await page.click('.work-card.wc-lead'); // the lead case — the only one with a TOC
@@ -223,7 +223,7 @@ await check('--accent survives a client-side swap', async () => {
   );
   assert(before === '#f24e1e', `accent was "${before}" before navigating`);
 
-  await page.click('a.nav-link[href="/work"]');
+  await page.click('a.btn[href="/work"]');
   await page.waitForURL('**/work', { timeout: 3000 });
   // astro:after-swap fires before paint, but give the assertion a beat anyway.
   await page.waitForTimeout(200);

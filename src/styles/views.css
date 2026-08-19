@@ -52,7 +52,7 @@ body.routed .view-inner { padding-top: 20px; }
   border: 1px solid var(--rule);
   border-radius: 8px;
   background: var(--surface);
-  transition: border-color 120ms ease;
+  transition: border-color var(--duration-fast) var(--ease-standard);
 }
 
 .work-card:hover { border-color: var(--accent-dim); }
@@ -87,7 +87,7 @@ body.routed .view-inner { padding-top: 20px; }
   margin-left: -12px;
   border-radius: 6px;
   text-decoration: none;
-  transition: background-color 120ms ease;
+  transition: background-color var(--duration-fast) var(--ease-standard);
 }
 
 .shipped-list a:hover { background: var(--surface); }
@@ -110,7 +110,7 @@ body.routed .view-inner { padding-top: 20px; }
   font-size: 13px;
   color: var(--muted);
   text-decoration: none;
-  transition: color 120ms ease;
+  transition: color var(--duration-fast) var(--ease-standard);
 }
 
 .back-link { margin-bottom: 22px; }

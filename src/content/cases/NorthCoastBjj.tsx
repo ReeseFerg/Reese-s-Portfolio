@@ -86,11 +86,11 @@ export default function NorthCoastBjj() {
           <dl className="case-meta">
             <div>
               <dt>Role</dt>
-              <dd>[TODO: what you owned, listed — e.g. Research, UI, build]</dd>
+              <dd>Solo Product Designer</dd>
             </div>
             <div>
               <dt>Timeline</dt>
-              <dd>[TODO: e.g. Sep – Nov 2025, 8 weeks]</dd>
+              <dd>Six Months · Nov 25 - Apr 26</dd>
             </div>
             <div>
               <dt>Team</dt>
@@ -101,18 +101,20 @@ export default function NorthCoastBjj() {
             </div>
             <div>
               <dt>Tools</dt>
-              <dd>Figma · Paper · Claude Code</dd>
+              <dd>Figma · Framer · Claude Code</dd>
             </div>
           </dl>
 
           <div className="impact-row">
             <div>
-              <p className="stat-value">[00%]</p>
-              <p className="stat-label">[TODO: what it measures — the headline result]</p>
+              <p className="stat-value">260x</p>
+              <p className="stat-label">Increase in site users compared to old website</p>
             </div>
             <div>
-              <p className="stat-value">[0→0]</p>
-              <p className="stat-label">[TODO: a before/after you compressed]</p>
+              <p className="stat-value">66% Less</p>
+              <p className="stat-label">
+                The bounce rate reduced to 33% compared from old site
+              </p>
             </div>
             <div>
               <p className="stat-value">[0×]</p>
@@ -126,7 +128,7 @@ export default function NorthCoastBjj() {
           <section className="chapter" id="bjj-context">
             <p className="eyebrow">01 — Context</p>
             {/* ~70 words */}
-            <h2>[TODO: set the scene in one claim.]</h2>
+            <h2>What Makes Us Different?</h2>
             <p>
               [TODO: who the club is and where things stood when you arrived. An interviewer
               needs the stakes before they'll care about the problem.]

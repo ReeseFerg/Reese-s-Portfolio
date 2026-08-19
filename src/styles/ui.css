@@ -1,0 +1,164 @@
+/* ui.css — the boxed button system (the "techno" direction from Paper).
+   Not part of the verbatim single-file port; this is new, hand-authored UI.
+
+   Three variants, one shared interaction:
+     ghost  — normal action. Outline at rest.
+     accent — primary. Solid accent at rest.
+     white  — secondary. Solid white at rest.
+   Interaction is identical across all three: hover de-fills to a transparent
+   outline whose border matches the arrow (accent), the arrow fades in, and a
+   press re-solidifies (inverts to black text on the key colour). Disabled is
+   the default, greyed. No corner brackets — those are reserved for a later
+   animation. Everything is driven by tokens.css. */
+
+.btn {
+  --btn-key: var(--accent); /* colour the button fills to when solid/pressed */
+
+  /* Motion tuned for these buttons specifically (owner pick: linear, ~0.75× the
+     site's snappy default). Kept local so the global --ease-standard / --duration
+     tokens the rest of the site relies on stay untouched. --btn-dur drives the
+     hover colour/border de-fill; --btn-arrow-dur is the (slower) arrow grow. */
+  --btn-ease: linear;
+  --btn-dur: 160ms;
+  --btn-arrow-dur: 290ms;
+
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 22px;
+  /* position + z-index let a hovered/active cell paint its full border on top
+     of the neighbours it overlaps in a .btn-group (see the -1px there) — without
+     this the shared-divider overlap hides the cell's right border. */
+  position: relative;
+  z-index: 0;
+  border: 1px solid var(--rule);
+  background: transparent;
+  color: var(--text-body);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    color var(--btn-dur) var(--btn-ease),
+    background-color var(--btn-dur) var(--btn-ease),
+    border-color var(--btn-dur) var(--btn-ease);
+}
+
+/* The arrow is an interaction cue. At rest it collapses to zero width and
+   reserves no space; on hover/focus it grows in from the right and fades up,
+   so the whole button widens rather than the arrow just appearing in a slot
+   that was already there. max-width (not width) is used so the value is
+   transitionable — the glyph is ~1ch, 1.5em is a safe reveal target. */
+.btn__arrow {
+  display: inline-flex;
+  max-width: 0;
+  margin-left: 0;
+  opacity: 0;
+  overflow: hidden;
+  /* Fade the arrow in over the same duration it grows, so it eases up as the
+     button widens instead of snapping in ahead of the motion. Applies to every
+     button whose arrow is hidden by default; external buttons show theirs at
+     rest and never run this transition. */
+  transition:
+    max-width var(--btn-arrow-dur) var(--btn-ease),
+    margin-left var(--btn-arrow-dur) var(--btn-ease),
+    opacity var(--btn-arrow-dur) var(--btn-ease);
+}
+
+/* ---- Variants: resting emphasis ---- */
+
+/* ghost is the base .btn (outline, no fill) — this class is explicit for markup. */
+.btn--ghost {
+  --btn-key: var(--accent);
+}
+
+.btn--accent {
+  --btn-key: var(--accent);
+
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #000;
+  font-weight: 600;
+}
+
+.btn--white {
+  --btn-key: #fff;
+
+  background: #fff;
+  border-color: #fff;
+  color: #000;
+  font-weight: 600;
+}
+
+/* ---- Shared hover / keyboard focus: de-fill to an accent outline ---- */
+.btn:hover,
+.btn:focus-visible {
+  z-index: 1;
+  background: transparent;
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.btn:hover .btn__arrow,
+.btn:focus-visible .btn__arrow {
+  max-width: 1.5em;
+  margin-left: 14px;
+  opacity: 1;
+}
+
+/* External links show their ↗ at rest — it doubles as an "opens in a new tab"
+   affordance, so it stays put instead of growing in on hover. Internal buttons
+   keep the collapse-and-grow → above. */
+.btn--external .btn__arrow {
+  max-width: 1.5em;
+  margin-left: 14px;
+  opacity: 1;
+}
+
+/* ---- Pressed / active (current route): solid key fill, inverted text ---- */
+.btn:active,
+.btn.is-active {
+  z-index: 1;
+  background: var(--btn-key);
+  border-color: var(--btn-key);
+  color: #000;
+  font-weight: 600;
+}
+/* The arrow stays hover/focus-driven even here, so no state reserves space for
+   it permanently — it only ever grows in on interaction. */
+
+/* ---- Disabled: the default, greyed ---- */
+.btn:disabled,
+.btn.is-disabled {
+  background: transparent;
+  border-color: var(--rule-soft);
+  color: color-mix(in srgb, var(--faint) 45%, transparent);
+  font-weight: 500;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn:disabled .btn__arrow,
+.btn.is-disabled .btn__arrow {
+  opacity: 0;
+}
+
+/* ---- Connected segmented group (the nav bar) ---- */
+/* Overlap the 1px borders so adjacent cells share a single divider. */
+.btn-group {
+  display: inline-flex;
+}
+
+.btn-group .btn + .btn {
+  margin-left: -1px;
+}
+
+/* CV label swaps to a short form on narrow screens (responsive.css toggles
+   these), so the connected nav bar doesn't overflow a phone. */
+.cv-short {
+  display: none;
+}
+

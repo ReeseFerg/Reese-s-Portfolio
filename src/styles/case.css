@@ -84,7 +84,7 @@
   font-size: 12.5px;
   line-height: 1.4;
   color: var(--muted);
-  transition: color 120ms ease, background-color 120ms ease;
+  transition: color var(--duration-fast) var(--ease-standard), background-color var(--duration-fast) var(--ease-standard);
 }
 
 .toc-link:hover { color: var(--text); }
@@ -97,7 +97,7 @@
   padding: 6px 10px;
   font-size: 12.5px;
   color: var(--faint);
-  transition: color 120ms ease;
+  transition: color var(--duration-fast) var(--ease-standard);
 }
 
 .toc-top:hover { color: var(--accent); }
@@ -421,7 +421,7 @@
   border-radius: 12px;
   background: var(--media-surface);
   text-decoration: none;
-  transition: border-color 120ms ease;
+  transition: border-color var(--duration-fast) var(--ease-standard);
 }
 
 .next-case:hover { border-color: var(--accent-dim); }
@@ -469,7 +469,7 @@
   color: var(--muted);
   text-decoration: none;
   border-bottom: 1px solid var(--rule);
-  transition: color 120ms ease, border-color 120ms ease;
+  transition: color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard);
 }
 
 .case-contact a:hover { color: var(--accent); border-color: var(--accent-dim); }
@@ -499,10 +499,16 @@ body.on-case .read-progress { display: block; }
 .reveal {
   opacity: 0;
   transform: translateY(12px);
-  transition: opacity 520ms ease, transform 520ms ease;
+  transition: opacity var(--duration-slow) var(--ease-standard), transform var(--duration-slow) var(--ease-standard);
 }
 
 .reveal.is-in { opacity: 1; transform: none; }
+
+/* Belt-and-suspenders: case-chrome.ts already skips adding .reveal under
+   reduced motion, but this keeps the CSS correct on its own too. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
 
 /* about + contact */
 .about-lead {
