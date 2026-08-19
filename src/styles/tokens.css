@@ -47,6 +47,14 @@
   /* Media frame surface — compared live via the localhost switcher */
   --media-surface: #0f0f0f;
   --media-border: var(--rule);
+
+  /* Motion. Fast for hover/focus color transitions, medium for the button
+     arrow grow-in (fast felt too snappy for a widening motion), slow for the
+     case-study scroll reveal. */
+  --duration-fast: 120ms;
+  --duration-medium: 220ms;
+  --duration-slow: 520ms;
+  --ease-standard: ease;
 }
 
 /* Warm media frames: same dark page, warmer panels behind images and callouts */

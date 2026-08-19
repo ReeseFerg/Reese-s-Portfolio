@@ -61,6 +61,24 @@ tokens, base, terminal, views, case, dev, **responsive last** — and that order
 Don't reorder it. Start at `tokens.css` for any visual change; it holds the palette, type scale
 and spacing.
 
+**Motion durations are tokens, not literals.** `tokens.css` defines `--duration-fast` (120ms,
+hover/focus color transitions) and `--duration-slow` (520ms, the case-study scroll reveal), plus
+`--ease-standard`. New transitions should reuse one of these rather than hardcoding a value — a
+third duration is a signal to ask whether it's actually needed before adding it. `will-change`
+isn't used anywhere on the site; don't add it speculatively; only reach for it once a specific
+animation is shown to need it.
+
+**A `prefers-reduced-motion` override lives in the same file as the rule it overrides**, not in
+whichever stylesheet happened to be edited first. The cascade order above means a reduced-motion
+block placed in the wrong file can be silently beaten by an unconditional rule that loads later —
+this happened once with `.reveal`'s override sitting in `terminal.css` while `case.css` (which
+loads after it) redefined `.reveal` unconditionally, so it never actually took effect. It was
+caught only because `case-chrome.ts` independently checks `matchMedia('prefers-reduced-motion')`
+in JS and skips adding the class at all — the CSS override was pure dead weight, not a live bug.
+Keep both belts: the JS-level skip stays in `case-chrome.ts` for `.reveal` specifically (see
+its own comment), and any CSS-level reduced-motion override belongs directly beside the rule it
+guards.
+
 **Case studies are markup, not data.** `src/content/cases/*.tsx` are near-verbatim JSX
 conversions of hand-written HTML, still full of `[TODO: …]` copy markers Reese will
 replace. Treat them as content: don't refactor them into a schema, and don't "helpfully"

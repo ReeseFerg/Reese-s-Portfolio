@@ -1,0 +1,67 @@
+---
+// Boxed button — the "techno" direction. Variants: ghost (normal), accent
+// (primary), white (secondary). See src/styles/ui.css for the visual system.
+// Renders an <a> when given href, otherwise a <button>. Text comes from the
+// default slot (or the `label` prop). The arrow is decorative and state-driven.
+interface Props {
+  variant?: 'ghost' | 'accent' | 'white';
+  href?: string;
+  active?: boolean;
+  disabled?: boolean;
+  external?: boolean;
+  label?: string;
+  class?: string;
+}
+
+const {
+  variant = 'ghost',
+  href,
+  active = false,
+  disabled = false,
+  external = false,
+  label,
+  class: extra,
+} = Astro.props;
+
+const cls = [
+  'btn',
+  `btn--${variant}`,
+  external && 'btn--external',
+  active && 'is-active',
+  disabled && 'is-disabled',
+  extra,
+]
+  .filter(Boolean)
+  .join(' ');
+
+const arrow = external ? '↗' : '→';
+const isLink = Boolean(href) && !disabled;
+---
+
+{
+  isLink ? (
+    <a
+      class={cls}
+      href={href}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noopener' : undefined}
+      aria-current={active ? 'page' : undefined}
+    >
+      <span class="btn__label">
+        <slot>{label}</slot>
+      </span>
+      <span class="btn__arrow" aria-hidden="true">
+        {arrow}
+      </span>
+    </a>
+  ) : (
+    <button class={cls} disabled={disabled} aria-current={active ? 'page' : undefined}>
+      <span class="btn__label">
+        <slot>{label}</slot>
+      </span>
+      <span class="btn__arrow" aria-hidden="true">
+        {arrow}
+      </span>
+    </button>
+  )
+}

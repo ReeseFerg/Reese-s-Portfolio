@@ -47,9 +47,8 @@ export default function Terminal() {
   }, [theme]);
 
   const addLine = useCallback((kind: LogLine['kind'], marker: string, text: string) => {
-    setLines((prev) =>
-      [...prev, { id: nextId.current++, kind, marker, text }].slice(-MAX_LINES),
-    );
+    const id = nextId.current++;
+    setLines((prev) => [...prev, { id, kind, marker, text }].slice(-MAX_LINES));
   }, []);
 
   const execute = useCallback(

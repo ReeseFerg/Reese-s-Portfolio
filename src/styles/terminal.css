@@ -94,7 +94,7 @@
 .tool {
   color: var(--muted);
   padding: 1px 2px;
-  transition: color 120ms ease;
+  transition: color var(--duration-fast) var(--ease-standard);
 }
 
 .tool:hover { color: var(--text); }
@@ -288,7 +288,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .cursor, .input-cursor { animation: none; }
-  .reveal { opacity: 1; transform: none; transition: none; }
 }
 
 /* ---------- Header layout + nav ---------- */
@@ -301,22 +300,12 @@
 
 .site-nav { display: flex; align-items: center; gap: 18px; }
 
-.nav-link {
-  font-size: 13px;
-  color: var(--muted);
-  text-decoration: none;
-  transition: color 120ms ease;
-}
-
-.nav-link:hover { color: var(--text); }
-.nav-link.is-active { color: var(--accent); }
-
 /* ---------- Clickable project rows (terminal panel) ---------- */
 button.project-row {
   display: block;
   width: 100%;
   text-align: left;
-  transition: color 120ms ease;
+  transition: color var(--duration-fast) var(--ease-standard);
 }
 
 button.project-row:hover { color: var(--accent); }
