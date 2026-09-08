@@ -135,10 +135,10 @@ await check('unknown path renders the 404 view', async () => {
   assert(await page.locator('#not-found').isVisible(), '404 view not visible');
 });
 
-await check('arrow keys and Enter drive the question block', async () => {
+await check('arrow keys and Enter drive the section tabs', async () => {
   await page.goto(baseUrl, { waitUntil: 'networkidle' });
   await page.keyboard.press('ArrowDown');
-  const label = await page.textContent('.ask-option.is-selected .ask-label');
+  const label = await page.textContent('.term-tab.is-selected .term-tab-name');
   assert(label.includes('Work'), `selected option was "${label}"`);
   await page.keyboard.press('Enter');
   await page.waitForURL('**/work', { timeout: 3000 });

@@ -154,45 +154,29 @@
 .flavor-line .spark { color: var(--accent); }
 .flavor-line .slash { color: var(--text); }
 
-/* ---------- Question block ---------- */
-.ask-box {
-  position: relative;
+/* ---------- Section tabs ---------- */
+.term-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
   margin-top: 26px;
-  border: 1px solid var(--accent-dim);
-  border-radius: 8px;
-  padding: 16px 10px 10px;
 }
 
-.ask-title {
-  position: absolute;
-  top: 0;
-  left: 14px;
-  transform: translateY(-50%);
-  padding: 0 8px;
-  font-size: 13px;
-  color: var(--accent);
-  background: var(--bg);
-}
-
-.ask-option {
+.term-tab {
   display: flex;
   align-items: center;
   gap: 8px;
-  width: 100%;
-  text-align: left;
-  padding: 7px 10px;
-  border-radius: 4px;
   font-size: 13.5px;
   color: var(--muted);
 }
 
-.ask-caret { width: 12px; color: transparent; flex-shrink: 0; }
-.ask-label { color: inherit; }
-.ask-desc { color: var(--faint); }
+.term-tab-caret { color: transparent; flex-shrink: 0; }
+.term-tab-name { color: inherit; }
 
-.ask-option.is-selected { background: var(--accent-glow); color: var(--text); }
-.ask-option.is-selected .ask-caret { color: var(--accent); }
-.ask-option.is-selected .ask-desc { color: var(--muted); }
+.term-tab:hover { color: var(--text-body); }
+
+.term-tab.is-selected { color: var(--accent); font-weight: 700; }
+.term-tab.is-selected .term-tab-caret { color: var(--accent); }
 
 /* ---------- Output log ---------- */
 .term-output {

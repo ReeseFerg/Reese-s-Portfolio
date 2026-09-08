@@ -72,7 +72,7 @@ const CommandInput = forwardRef<HTMLInputElement, Props>(function CommandInput(
           type="text"
           autoComplete="off"
           spellCheck={false}
-          placeholder='try "/work" — or ? for shortcuts'
+          placeholder="type a command — try /work, /about or ? for shortcuts"
           aria-label="Command input"
           value={value}
           onChange={(e) => refresh(e.target.value)}

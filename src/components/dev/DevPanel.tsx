@@ -18,7 +18,7 @@ const FONT_PRESETS: Record<string, string[]> = {
 
 const EDITABLE = [
   '.about-copy, .project-row, .panel-heading, .flavor-line, .term-box-title, .phrase, .path-line',
-  '.ask-label, .ask-desc, .view-title, .view-lead, .wc-outcome, .about-lead, .about-copy2',
+  '.term-tab-name, .view-title, .view-lead, .wc-outcome, .about-lead, .about-copy2',
   '.case-title, .case-lead, .case-meta dd, .eyebrow, .stat-value, .stat-label',
   '.chapter h2, .chapter h3, .chapter p, .media figcaption, .callout p, .callout cite',
   '.quote-user p, .quote-user .attr, .pain-list li, .insight-card h3, .insight-card p',

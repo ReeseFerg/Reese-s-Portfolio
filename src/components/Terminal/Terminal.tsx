@@ -89,12 +89,12 @@ export default function Terminal() {
       const suggestOpen = !!document.querySelector('.suggest.is-open');
 
       if (!inInput || (input?.value === '' && !suggestOpen)) {
-        if (e.key === 'ArrowDown') {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
           e.preventDefault();
           setSelected((s) => (s + 1) % ASK_OPTIONS.length);
           return;
         }
-        if (e.key === 'ArrowUp') {
+        if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
           e.preventDefault();
           setSelected((s) => (s - 1 + ASK_OPTIONS.length) % ASK_OPTIONS.length);
           return;
@@ -191,39 +191,24 @@ export default function Terminal() {
       </div>
 
       <p className="flavor-line">
-        <span className="spark">✳</span> Open to opportunities ·{' '}
-        <span
-          className="slash"
-          role="button"
-          tabIndex={0}
-          onClick={() => execute('/contact')}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              execute('/contact');
-            }
-          }}
-        >
-          /contact
-        </span>{' '}
-        to get in touch
+        <span className="spark">✳</span> Open to opportunities — pick a section below, or type a{' '}
+        <span className="slash">/command</span> to look around.
       </p>
 
-      <div className="ask-box" id="askBox">
-        <span className="ask-title">Where would you like to go?</span>
+      <nav className="term-tabs" aria-label="Sections" id="askBox">
         {ASK_OPTIONS.map((opt, i) => (
           <button
             key={opt.cmd}
-            className={'ask-option' + (selected === i ? ' is-selected' : '')}
+            className={'term-tab' + (selected === i ? ' is-selected' : '')}
+            aria-current={selected === i ? 'true' : undefined}
             onMouseEnter={() => setSelected(i)}
             onClick={() => execute(opt.cmd)}
           >
-            <span className="ask-caret">❯</span>
-            <span className="ask-label">{opt.label}</span>
-            <span className="ask-desc">{opt.desc}</span>
+            <span className="term-tab-caret">❯</span>
+            <span className="term-tab-name">[ {opt.name} ]</span>
           </button>
         ))}
-      </div>
+      </nav>
 
       <OutputLog lines={lines} reduced={reduced} />
 
