@@ -173,13 +173,12 @@ export default function Terminal({ reduced }: { reduced: boolean }) {
         <span className="slash">/command</span> to look around.
       </p>
 
-      <div className="term-tabs" role="tablist" aria-label="Sections" id="askBox">
+      <nav className="term-tabs" aria-label="Sections" id="askBox">
         {ASK_OPTIONS.map((opt, i) => (
           <button
             key={opt.cmd}
             className={'term-tab' + (selected === i ? ' is-selected' : '')}
-            role="tab"
-            aria-selected={selected === i}
+            aria-current={selected === i ? 'true' : undefined}
             onMouseEnter={() => setSelected(i)}
             onClick={() => execute(opt.cmd)}
           >
@@ -187,7 +186,7 @@ export default function Terminal({ reduced }: { reduced: boolean }) {
             <span className="term-tab-name">[ {opt.name} ]</span>
           </button>
         ))}
-      </div>
+      </nav>
 
       <OutputLog lines={lines} reduced={reduced} />
 
