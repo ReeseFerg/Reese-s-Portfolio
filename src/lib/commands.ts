@@ -53,7 +53,7 @@ export const SHORTCUTS_TEXT =
   'shortcuts — /about, /work, /contact · /north-coast-bjj, /project-cadence, /databrew, /savr-app for project details · ↑↓ + enter picks an option above · click a tool name to re-theme the terminal';
 
 export const ASK_OPTIONS = [
-  { cmd: '/about', label: '1. About', desc: '— who I am' },
-  { cmd: '/work', label: '2. Work', desc: '— selected projects' },
-  { cmd: '/contact', label: '3. Contact', desc: '— get in touch' },
+  { cmd: '/about', name: 'About', desc: '— who I am' },
+  { cmd: '/work', name: 'Work', desc: '— selected projects' },
+  { cmd: '/contact', name: 'Contact', desc: '— get in touch' },
 ];
