@@ -19,5 +19,8 @@ dist
 .env.local
 *.local
 
+# per-developer MCP config (contains API keys, e.g. Context7)
+.mcp.json
+
 # subagent-driven-development scratch
 .superpowers
