@@ -142,9 +142,21 @@ export default function Terminal() {
 
         <div className="term-left">
           <p className="welcome">
-            Reese is <span className="phrase">{phrase}</span>
-            &nbsp;
-            <span className="cursor" />
+            {/* The phrase cycles; hidden sizers (one per full "Reese is …"
+                line) reserve the WIDEST and TALLEST option so the box never
+                reflows as the typewriter types or swaps phrases — on desktop
+                (one line) and on phones (wrapped). Live text overlays them. */}
+            <span className="line-wrap">
+              {PHRASES.map((p) => (
+                <span key={p} className="line-sizer" aria-hidden="true">
+                  Reese is {p}
+                </span>
+              ))}
+              <span className="line-live">
+                Reese is <span className="phrase">{phrase}</span>
+                <span className="cursor" />
+              </span>
+            </span>
           </p>
 
           <PixelLogos active={theme} />
