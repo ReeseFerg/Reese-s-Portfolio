@@ -28,7 +28,13 @@ const PROJECT_ROWS = [
 
 export default function Terminal() {
   const reduced = useReducedMotion();
-  const [theme, setTheme] = useState<ThemeName>('claude');
+  // No tool is selected by default — the accent falls back to the Tron-orange
+  // token in tokens.css. Hovering or focusing a tool previews its brand colour
+  // and mascot; clicking pins it. Only the pinned choice persists across a
+  // view-transition swap (see the two effects below).
+  const [pinned, setPinned] = useState<ThemeName | null>(null);
+  const [hovered, setHovered] = useState<ThemeName | null>(null);
+  const activeTheme = hovered ?? pinned;
   const [lines, setLines] = useState<LogLine[]>([]);
   const [selected, setSelected] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -36,15 +42,27 @@ export default function Terminal() {
 
   const phrase = useTypewriter(PHRASES, reduced);
 
+  // Effective accent: a hover/focus preview, else the pinned tool, else the
+  // Tron-orange token (remove the inline override so tokens.css wins).
   useEffect(() => {
-    document.documentElement.style.setProperty('--accent', THEMES[theme]);
+    const root = document.documentElement.style;
+    if (activeTheme) root.setProperty('--accent', THEMES[activeTheme]);
+    else root.removeProperty('--accent');
+  }, [activeTheme]);
+
+  // Only the pinned choice is mirrored to sessionStorage, so a transient hover
+  // preview never persists across a view-transition swap (BaseLayout.astro's
+  // is:inline script restores from this key on astro:after-swap). Clearing it
+  // when nothing is pinned lets the default Tron orange stand after a swap.
+  useEffect(() => {
     try {
-      sessionStorage.setItem(ACCENT_STORAGE_KEY, THEMES[theme]);
+      if (pinned) sessionStorage.setItem(ACCENT_STORAGE_KEY, THEMES[pinned]);
+      else sessionStorage.removeItem(ACCENT_STORAGE_KEY);
     } catch {
       // Storage can be unavailable (private mode, quota) — the re-theme still
       // works for the current page, it just won't survive a swap or reload.
     }
-  }, [theme]);
+  }, [pinned]);
 
   const addLine = useCallback((kind: LogLine['kind'], marker: string, text: string) => {
     const id = nextId.current++;
@@ -159,7 +177,7 @@ export default function Terminal() {
             </span>
           </p>
 
-          <PixelLogos active={theme} />
+          <PixelLogos active={activeTheme ?? 'claude'} />
 
           <div className="term-left-info">
             <p className="tools-line">
@@ -167,8 +185,12 @@ export default function Terminal() {
                 <span key={name}>
                   {i > 0 && <span className="sep">·</span>}
                   <button
-                    className={'tool' + (theme === name ? ' is-active' : '')}
-                    onClick={() => setTheme(name)}
+                    className={'tool' + (pinned === name ? ' is-active' : '')}
+                    onMouseEnter={() => setHovered(name)}
+                    onMouseLeave={() => setHovered(null)}
+                    onFocus={() => setHovered(name)}
+                    onBlur={() => setHovered(null)}
+                    onClick={() => setPinned(name)}
                   >
                     {label}
                   </button>
