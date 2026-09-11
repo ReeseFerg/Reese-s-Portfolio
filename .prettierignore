@@ -6,6 +6,12 @@ package-lock.json
 devbox.lock
 *.md
 
+# Vendored agent/skill tooling — checked in but not our source, so Prettier
+# doesn't own its formatting (same reasoning as .context above).
+.agents
+.claude
+.codex
+
 # CSS is owned by Stylelint, not Prettier. The styles were ported verbatim from
 # the single-file build in a compact one-rule-per-line idiom; letting Prettier
 # reformat them would explode ~1,100 lines and undo that. Keeping the two tools

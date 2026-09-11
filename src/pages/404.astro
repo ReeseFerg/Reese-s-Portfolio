@@ -1,10 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
 ---
 
 <BaseLayout path="/404" bodyClass="routed">
   <section class="view is-active" id="not-found" aria-label="Page not found">
-    <div class="view-inner">
+    <Container class="view-inner">
       <p class="crumb">~/reese</p>
       <h1 class="view-title">404 — no such path</h1>
       <p class="view-lead">
@@ -26,6 +27,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <span class="ck">contact</span>&#32;<a href="/contact">get in touch</a>
         </li>
       </ul>
-    </div>
+    </Container>
   </section>
 </BaseLayout>

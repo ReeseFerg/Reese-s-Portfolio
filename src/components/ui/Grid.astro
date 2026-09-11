@@ -1,0 +1,51 @@
+---
+// Grid — CSS grid wrapper. `columns`/`rows` accept a plain count (→ equal
+// minmax(0,1fr) tracks) or a raw template string; `gap` is off the spacing
+// scale; align/justify/flow are utility classes from layout.css.
+import type { HTMLTag, Polymorphic } from 'astro/types';
+import {
+  layoutStyle,
+  cx,
+  space,
+  gridTemplate,
+  type BaseLayoutProps,
+  type Space,
+} from './layout-props';
+
+type Props<As extends HTMLTag = 'div'> = Omit<Polymorphic<{ as: As }>, 'as'> &
+  BaseLayoutProps & {
+    as?: As;
+    columns?: string | number;
+    rows?: string | number;
+    gap?: Space;
+    align?: 'start' | 'center' | 'end' | 'baseline' | 'stretch';
+    justify?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
+    flow?: 'row' | 'column' | 'dense' | 'row-dense' | 'column-dense';
+  };
+
+const {
+  as: Tag = 'div',
+  columns,
+  rows,
+  gap,
+  align,
+  justify,
+  flow,
+  class: extra,
+  ...rest
+} = Astro.props;
+const style = layoutStyle(rest, {
+  '--l-gap': space(gap),
+  '--l-cols': gridTemplate(columns),
+  '--l-rows': gridTemplate(rows),
+});
+const cls = cx(
+  'l-grid',
+  align && `l-ai-${align}`,
+  justify && `l-jc-${justify}`,
+  flow && `l-gf-${flow}`,
+  extra,
+);
+---
+
+<Tag class={cls} style={style}><slot /></Tag>

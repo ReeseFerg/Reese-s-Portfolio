@@ -1,0 +1,16 @@
+---
+// Box — the base layout primitive the others compose. A plain block element
+// with padding/margin/sizing props from layout-props.ts. Polymorphic via `as`
+// (default <div>) so it can stand in for semantic elements. Zero JS.
+import type { HTMLTag, Polymorphic } from 'astro/types';
+import { layoutStyle, cx, type BaseLayoutProps } from './layout-props';
+
+type Props<As extends HTMLTag = 'div'> = Omit<Polymorphic<{ as: As }>, 'as'> &
+  BaseLayoutProps & { as?: As };
+
+const { as: Tag = 'div', class: extra, ...rest } = Astro.props;
+const style = layoutStyle(rest);
+const cls = cx('l-box', extra) || undefined;
+---
+
+<Tag class={cls} style={style}><slot /></Tag>

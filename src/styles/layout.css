@@ -1,0 +1,79 @@
+/* layout.css — the layout-primitive system (src/components/ui/{Box,Container,
+   Section,Flex,Grid}.astro). Radix-Themes-modeled, but every class here resolves
+   to plain CSS at build time; no JS ships. Value props (gap, columns, padding)
+   are set inline by the components — this file holds only the structural base
+   classes and the enumerated modifiers, so it stays small and cacheable.
+
+   All selectors are namespaced `l-*` and don't reference any existing site
+   class, so this file can load right after base.css without disturbing the
+   fixed cascade (tokens → base → layout → terminal → views → case → ui → dev →
+   responsive). Prettier ignores .css; Stylelint owns it. */
+
+/* ---------- Box ---------- */
+/* Base primitive — no display change; padding/margin/sizing come in inline. */
+
+/* ---------- Container ---------- */
+.l-container {
+  margin-inline: auto;
+  /* min(<track>, 100% - gutter) keeps a 96px side gutter at every width, exactly
+     as .view-inner and .case-shell do, so wrapping today's markup is a no-op. */
+  width: min(var(--l-container-w), calc(100% - var(--container-gutter)));
+}
+
+.l-container-1 { --l-container-w: var(--container-1); }
+.l-container-2 { --l-container-w: var(--container-2); }
+.l-container-3 { --l-container-w: var(--container-3); }
+.l-container-4 { --l-container-w: var(--container-4); }
+
+/* ---------- Section ---------- */
+/* Block padding is set inline from the size prop; this is just a hook. */
+
+/* ---------- Flex ---------- */
+/* gap comes in as the --l-gap custom property (set inline by the component), not
+   as an inline `gap` declaration — so a media query targeting the element's own
+   class can still override it. An unset --l-gap resolves to the 0 fallback. */
+.l-flex {
+  display: flex;
+  gap: var(--l-gap, 0);
+}
+
+.l-fd-row { flex-direction: row; }
+.l-fd-column { flex-direction: column; }
+.l-fd-row-reverse { flex-direction: row-reverse; }
+.l-fd-column-reverse { flex-direction: column-reverse; }
+
+.l-fw-nowrap { flex-wrap: nowrap; }
+.l-fw-wrap { flex-wrap: wrap; }
+.l-fw-wrap-reverse { flex-wrap: wrap-reverse; }
+
+/* ---------- Grid ---------- */
+/* Same rationale as .l-flex: columns/rows/gap arrive as custom properties so
+   responsive.css can still collapse a grid (e.g. .work-grid → 1 column at
+   980px) by overriding grid-template-columns on the element's own class. The
+   `none`/`0` fallbacks are the CSS initial values, so an unset prop is a no-op. */
+.l-grid {
+  display: grid;
+  grid-template-columns: var(--l-cols, none);
+  grid-template-rows: var(--l-rows, none);
+  gap: var(--l-gap, 0);
+}
+
+.l-gf-row { grid-auto-flow: row; }
+.l-gf-column { grid-auto-flow: column; }
+.l-gf-dense { grid-auto-flow: dense; }
+.l-gf-row-dense { grid-auto-flow: row dense; }
+.l-gf-column-dense { grid-auto-flow: column dense; }
+
+/* ---------- Shared alignment (Flex + Grid) ---------- */
+.l-ai-start { align-items: flex-start; }
+.l-ai-center { align-items: center; }
+.l-ai-end { align-items: flex-end; }
+.l-ai-baseline { align-items: baseline; }
+.l-ai-stretch { align-items: stretch; }
+
+.l-jc-start { justify-content: flex-start; }
+.l-jc-center { justify-content: center; }
+.l-jc-end { justify-content: flex-end; }
+.l-jc-between { justify-content: space-between; }
+.l-jc-around { justify-content: space-around; }
+.l-jc-evenly { justify-content: space-evenly; }

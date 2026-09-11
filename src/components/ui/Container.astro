@@ -1,0 +1,18 @@
+---
+// Container — max-width centred wrapper. `size` (1–4) maps to the width tokens
+// in tokens.css; every size keeps the same 96px side gutter, so wrapping the
+// site's existing .view-inner / .case-shell markup is visually a no-op.
+//   1 → prose column (720)   2 → wide column (1040)
+//   3 → routed-view width (1160, the .view-inner default)   4 → case shell (1296)
+import type { HTMLTag, Polymorphic } from 'astro/types';
+import { layoutStyle, cx, type BaseLayoutProps } from './layout-props';
+
+type Props<As extends HTMLTag = 'div'> = Omit<Polymorphic<{ as: As }>, 'as'> &
+  BaseLayoutProps & { as?: As; size?: '1' | '2' | '3' | '4' };
+
+const { as: Tag = 'div', size = '3', class: extra, ...rest } = Astro.props;
+const style = layoutStyle(rest);
+const cls = cx('l-container', `l-container-${size}`, extra);
+---
+
+<Tag class={cls} style={style}><slot /></Tag>

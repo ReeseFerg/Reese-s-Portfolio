@@ -61,6 +61,21 @@ tokens, base, terminal, views, case, dev, **responsive last** — and that order
 Don't reorder it. Start at `tokens.css` for any visual change; it holds the palette, type scale
 and spacing.
 
+**Layout primitives live in `src/components/ui/` (`Box`, `Container`, `Section`, `Flex`, `Grid`).**
+Radix-Themes-modeled `.astro` wrappers with a shared props helper (`layout-props.ts`); they render
+to plain HTML at build time and ship **zero JS** — they are not islands. Their prop-to-CSS split is
+load-bearing: enumerated props (`direction`/`align`/`justify`/`wrap`/`flow`) become namespaced
+`l-*` utility classes in `styles/layout.css`, but **value props (`gap`, `columns`, `rows`) are
+emitted as inline CSS *custom properties* (`--l-gap`, `--l-cols`, `--l-rows`), never as inline
+`gap`/`grid-template-columns` declarations.** That indirection is why `responsive.css` can still
+collapse `.work-grid` to one column at ≤980px: an inline *property* would beat the media query, but
+an inline *custom property* consumed by `.l-grid` leaves the real declaration at class specificity,
+so a later class rule wins. `as` is polymorphic via `astro/types`' `Polymorphic` (see any of the
+five for the exact `Omit<…,'as'> & { as?: As }` shape that keeps `as` optional). Responsive object
+props (Radix's `{ initial, md }`) are deliberately **not** implemented yet. The primitives were
+introduced as a visually-neutral refactor — every screenshot baseline stayed 0-diff — so the payoff
+(one cohesive spacing system, and structuring the case studies) is still ahead.
+
 **Motion durations are tokens, not literals.** `tokens.css` defines `--duration-fast` (120ms,
 hover/focus color transitions) and `--duration-slow` (520ms, the case-study scroll reveal), plus
 `--ease-standard`. New transitions should reuse one of these rather than hardcoding a value — a

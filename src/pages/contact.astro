@@ -1,10 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
 ---
 
 <BaseLayout path="/contact" bodyClass="routed">
   <section class="view is-active" id="contact" aria-label="Contact">
-    <div class="view-inner">
+    <Container class="view-inner">
       <p class="crumb">~/reese/contact</p>
       <h1 class="view-title">Get in touch</h1>
       <p class="view-lead">
@@ -36,6 +37,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           >
         </li>
       </ul>
-    </div>
+    </Container>
   </section>
 </BaseLayout>

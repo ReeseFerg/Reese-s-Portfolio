@@ -1,10 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
 ---
 
 <BaseLayout path="/about" bodyClass="routed">
   <section class="view is-active" id="about" aria-label="About">
-    <div class="view-inner">
+    <Container class="view-inner">
       <p class="crumb">~/reese/about</p>
       <h1 class="view-title">About me</h1>
       <p class="about-lead">
@@ -26,6 +27,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         [TODO: reverse-chronological experience — role, organization, dates. Add your business
         degree / education and any notable results.]
       </p>
-    </div>
+    </Container>
   </section>
 </BaseLayout>
