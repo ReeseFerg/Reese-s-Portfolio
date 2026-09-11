@@ -5,12 +5,14 @@ type Shape = 'wide' | 'phone' | 'square' | 'tall' | 'video';
 type Props = {
   /**
    * Imported image, e.g. `import cover from '../../assets/bjj-cover.png'`.
-   * Importing rather than using a string path is what lets Vite hash, compress
-   * and cache-bust the file. Leave it out to keep the placeholder box.
+   * Importing rather than using a string path is what lets Vite hash and
+   * cache-bust the file; actual compression/resizing only happens if the
+   * import is passed through `getImage()` from `astro:assets` first.
    *
-   * Astro types an image import as ImageMetadata — an object carrying `src`,
-   * `width` and `height` — not the bare string Vite gave us before the
-   * migration. Both are accepted: a string for anything already in public/.
+   * Astro types a plain image import as ImageMetadata — an object carrying
+   * `src`, `width` and `height`. A plain string is also accepted, either for
+   * anything already in public/ or for the `.src` of a `getImage()` result
+   * (the dev editor's generated case-study code does this).
    */
   src?: ImageMetadata | string;
   /** What the image shows, for anyone who can't see it. Required with `src`. */
