@@ -52,7 +52,7 @@ await check('clicking a tool re-themes the accent and swaps the mascot', async (
   const accent = await page.evaluate(() =>
     document.documentElement.style.getPropertyValue('--accent').trim(),
   );
-  assert(accent === '#f24e1e', `accent was "${accent}"`);
+  assert(accent === '#f2217e', `accent was "${accent}"`);
   assert(await page.locator('svg[data-logo="figma"]').isVisible(), 'figma mascot not shown');
   assert(
     (await page.locator('svg[data-logo="claude"]').count()) === 0,
@@ -221,7 +221,7 @@ await check('--accent survives a client-side swap', async () => {
   const before = await page.evaluate(() =>
     document.documentElement.style.getPropertyValue('--accent').trim(),
   );
-  assert(before === '#f24e1e', `accent was "${before}" before navigating`);
+  assert(before === '#f2217e', `accent was "${before}" before navigating`);
 
   await page.click('a.btn[href="/work"]');
   await page.waitForURL('**/work', { timeout: 3000 });
@@ -230,7 +230,7 @@ await check('--accent survives a client-side swap', async () => {
   const after = await page.evaluate(() =>
     document.documentElement.style.getPropertyValue('--accent').trim(),
   );
-  assert(after === '#f24e1e', `accent was "${after}" after the swap, expected it to survive`);
+  assert(after === '#f2217e', `accent was "${after}" after the swap, expected it to survive`);
 });
 
 await check('case pages ship no astro-island element at all', async () => {

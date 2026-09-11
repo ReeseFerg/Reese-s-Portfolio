@@ -37,3 +37,20 @@
   .quote-user { max-width: 100%; }
   .quote-user:nth-child(even) { align-self: stretch; }
 }
+
+/* Phones (<=480px): "Reese is a business graduate" can't stay large on one
+   line in a narrow column, so wrap it at a readable size instead of shrinking
+   to ~13px. The same hidden-sizer reservation (terminal.css) still applies —
+   the sizers just wrap too, so the grid cell reserves the tallest wrapped
+   phrase and the box height stays fixed as phrases swap, with no per-width
+   min-height guess. */
+@media (max-width: 480px) {
+  .welcome {
+    white-space: normal;
+    font-size: clamp(20px, 6vw, 28px);
+    line-height: 1.25;
+  }
+  .welcome .line-wrap { max-width: 100%; }
+  .welcome .line-sizer { white-space: normal; padding-right: 0; }
+  .welcome .line-live { white-space: normal; }
+}

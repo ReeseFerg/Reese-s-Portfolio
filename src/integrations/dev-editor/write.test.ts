@@ -91,13 +91,18 @@ describe('saveMedia', () => {
 
     const text = await readFile(path.join(root, CASE), 'utf8');
     expect(text).not.toContain('hint=');
+    expect(text).toMatch(/import \{ getImage \} from ['"]astro:assets['"];/);
     // Quote style is Prettier's, and the temp dir resolves no .prettierrc, so
     // match either — the assertion is about the import existing and pointing at
     // the written file, not about formatting.
     expect(text).toMatch(
-      /import media\w+ from ['"]\.\.\/\.\.\/assets\/north-coast-bjj-\w+\.png['"]/,
+      /import media\w+Source from ['"]\.\.\/\.\.\/assets\/north-coast-bjj-\w+\.png['"]/,
     );
-    expect(text).toMatch(/<MediaFrame\s+src=\{media\w+\}/);
+    expect(text).toMatch(/const media\w+ = await getImage\(\{/);
+    expect(text).toMatch(/src: media\w+Source,/);
+    expect(text).toContain('width: 1600,');
+    expect(text).toContain('height: 900,');
+    expect(text).toMatch(/<MediaFrame\s+src=\{media\w+\.src\}/);
     expect(text).toContain('width={1600}');
     expect(text).toContain('alt="The booking screen"');
     expect(await readFile(path.join(root, result.asset), 'utf8')).toBe('png-bytes');
