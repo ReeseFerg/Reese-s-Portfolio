@@ -5,7 +5,7 @@
  */
 export const THEMES = {
   claude: '#d97757', // Claude Code
-  figma: '#f24e1e', // Figma brand red-orange
+  figma: '#f2217e', // Figma magenta-pink — moved off red-orange so it doesn't clash with the Tron accent
   conductor: '#eae8e6', // conductor.build theme color (warm cream)
   paper: '#81acec', // paper.design accent blue
   framer: '#2e6bff', // brand #0055ff, brightened for contrast on black

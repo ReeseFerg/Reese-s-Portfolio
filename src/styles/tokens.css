@@ -4,7 +4,9 @@
 :root {
   --bg: #000000;
   --surface: #0f0f0f;
-  --accent: #d97757;
+  /* Tron lit-orange — the rebranded site accent (was Claude terracotta
+     #d97757). Kept in-gamut sRGB; = #ff6c00. dim/faint/glow derive from it. */
+  --accent: oklch(70.4% 0.2 45.4deg);
   --accent-dim: color-mix(in srgb, var(--accent) 55%, transparent);
   --accent-faint: color-mix(in srgb, var(--accent) 30%, transparent);
   --accent-glow: color-mix(in srgb, var(--accent) 9%, transparent);

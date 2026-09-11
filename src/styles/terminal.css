@@ -32,7 +32,9 @@
   margin-top: 14px;
   border: 1px solid var(--accent-dim);
   border-radius: 8px;
-  background: var(--surface);
+  /* No fill — the box is just its glowing border on the page's black, so the
+     hero reads as light on black (Tron). Was background: var(--surface). */
+  background: transparent;
 }
 
 .term-box-title {
@@ -56,15 +58,65 @@
   gap: 26px;
   padding: 34px 32px 22px;
   text-align: center;
+  /* Query container so the hero font can be sized as a fraction of THIS
+     column's width (see .welcome). Its width is set by flex, not by content,
+     so inline-size containment doesn't change the layout. */
+  container-type: inline-size;
+  container-name: hero;
 }
 
 .welcome {
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 26px;
+  /* Zen Dots display voice for the hero line only. Sized in container units so
+     "Reese is a business graduate" (the widest phrase) always keeps ~10px on
+     each side of THIS column at every width; clamped so it never gets absurd
+     on very wide or very narrow layouts. cqi coefficient + px offset are
+     derived from the rendered width of the widest line — see .context notes. */
+  font-family: 'Zen Dots', var(--font-display, 'JetBrains Mono'), sans-serif;
+  font-weight: 400;
+  font-size: clamp(9px, calc(5.4cqi - 1.05px), 34px);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  /* Soft warm-white bloom on "Reese is …" — the hero reads as emitting light,
+     matching the Paper design (Home board + design system). No blur/effects,
+     just a text-shadow. The accent completion overrides this below. */
+  text-shadow: 0 2px 40px color-mix(in oklch, var(--text) 70%, transparent);
 }
 
-.welcome .phrase { color: var(--accent); }
+/* Reserve the widest/tallest "Reese is …" line so the line (and the box) never
+   reflows. Every phrase is rendered hidden and stacked in one grid cell; the
+   cell sizes to the largest, and the live text overlays it left-aligned. Works
+   for the one-line desktop case and the wrapped phone case (see responsive.css)
+   with no per-width tuning. */
+.welcome .line-wrap {
+  display: inline-grid;
+  text-align: left;
+  vertical-align: baseline;
+}
+
+.welcome .line-wrap > * {
+  grid-area: 1 / 1;
+}
+
+.welcome .line-sizer {
+  visibility: hidden;
+  /* Reserve caret room on the sizer itself so the widest phrase + caret still
+     fits the reserved cell — otherwise the box grows by one caret-width only
+     when the longest phrase is showing. */
+  padding-right: 0.62em;
+}
+
+.welcome .line-live {
+  white-space: nowrap;
+}
+
+.welcome .phrase {
+  color: var(--accent);
+  /* Accent bloom derived from --accent so glow and text stay the same colour
+     and both follow the active theme (terracotta today, Tron orange once the
+     new palette lands in tokens.css). */
+  text-shadow: 0 2px 40px color-mix(in oklch, var(--accent) 80%, transparent);
+}
 
 .cursor {
   display: inline-block;
@@ -73,6 +125,15 @@
   vertical-align: -3px;
   background: var(--accent);
   animation: blink 1.1s steps(1) infinite;
+}
+
+/* Hero caret scales with the enlarged Zen Dots text rather than staying the
+   13px-terminal size. */
+.welcome .cursor {
+  width: 0.5em;
+  height: 1em;
+  vertical-align: -0.13em;
+  margin-left: 0.06em;
 }
 
 .avatar {
