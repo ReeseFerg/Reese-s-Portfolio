@@ -34,11 +34,9 @@ body.routed .view-inner { padding-top: 20px; }
 
 .view-lead .spark { color: var(--accent); }
 
-/* work grid */
+/* work grid — display/columns/gap now come from the <Grid> primitive that wraps
+   these cards (src/pages/work/index.astro); this rule owns only the top offset. */
 .work-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
   margin-top: 32px;
 }
 

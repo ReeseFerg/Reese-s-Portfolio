@@ -1,0 +1,25 @@
+---
+// Section — a vertical-padding rhythm block, rendered as <section> by default.
+// `size` (1–4) sets symmetric block padding off the spacing scale; use `py`/`pt`/
+// `pb` on the base props to override a single side (e.g. the routed views' 48/96).
+import type { HTMLTag, Polymorphic } from 'astro/types';
+import { layoutStyle, cx, space, type BaseLayoutProps } from './layout-props';
+
+type Props<As extends HTMLTag = 'section'> = Omit<Polymorphic<{ as: As }>, 'as'> &
+  BaseLayoutProps & { as?: As; size?: '1' | '2' | '3' | '4' };
+
+const SIZE_PAD: Record<string, string> = {
+  '1': space('6')!, // 28
+  '2': space('8')!, // 48
+  '3': 'var(--space-chapter)', // clamp(72,9vw,128)
+  '4': 'calc(var(--space-chapter) * 1.4)',
+};
+
+const { as: Tag = 'section', size = '3', class: extra, ...rest }: Props = Astro.props;
+// Only supply the size padding when the caller hasn't set block padding itself.
+const hasBlockPad = rest.p != null || rest.py != null || rest.pt != null || rest.pb != null;
+const style = layoutStyle(rest, hasBlockPad ? {} : { 'padding-block': SIZE_PAD[size] });
+const cls = cx('l-section', extra) || undefined;
+---
+
+<Tag class={cls} style={style}><slot /></Tag>

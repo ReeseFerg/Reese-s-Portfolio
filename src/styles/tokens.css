@@ -41,10 +41,36 @@
   --space-chapter: clamp(72px, 9vw, 128px);
   --space-block: 28px;
 
+  /* Numbered spacing scale for the layout primitives (Box/Flex/Grid/Section/
+     Container in src/components/ui/). Radix-Themes-style 1–9 ramp, but tuned to
+     this site's existing rhythm rather than Radix's defaults: step 4 is the
+     18px the work grid already uses, step 6 the 28px --space-block, and step 9
+     the 64px the shipped strip sits below. The primitives read gap/padding
+     props off these; --space-block stays as the named alias case.css uses. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 18px;
+  --space-5: 24px;
+  --space-6: 28px;
+  --space-7: 40px;
+  --space-8: 48px;
+  --space-9: 64px;
+
   --measure: 66ch;
   --col-content: 720px;
   --col-wide: 1040px;
   --rail: 200px;
+
+  /* Container max-widths for <Container size>. 1 and 2 reuse the prose columns;
+     3 is the routed-view width (min(1160px, …) that .view-inner uses today); 4
+     is the case-study shell width. The 96px side gutter matches .view-inner and
+     .case-shell exactly, so wrapping today's markup in <Container> is a no-op. */
+  --container-gutter: 96px;
+  --container-1: var(--col-content);
+  --container-2: var(--col-wide);
+  --container-3: 1160px;
+  --container-4: 1296px;
 
   /* Media frame surface — compared live via the localhost switcher */
   --media-surface: #0f0f0f;

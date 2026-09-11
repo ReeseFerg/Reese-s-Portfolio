@@ -1,11 +1,13 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/ui/Container.astro';
+import Grid from '../../components/ui/Grid.astro';
 import { isVisible } from '../../lib/site.ts';
 ---
 
 <BaseLayout path="/work" bodyClass="routed">
   <section class="view is-active" id="work" aria-label="Selected work">
-    <div class="view-inner">
+    <Container class="view-inner">
       <p class="crumb">~/reese/work</p>
       <h1 class="view-title">Selected work</h1>
       <p class="view-lead">
@@ -16,7 +18,7 @@ import { isVisible } from '../../lib/site.ts';
       <!-- Ordered strongest first. north-coast-bjj is the only one with a real client,
            real research and a finished product, so it leads and it's the only one that
            gets the full-depth treatment. -->
-      <div class="work-grid">
+      <Grid class="work-grid" columns="2" gap="4">
         <a class="work-card wc-lead" href="/work/north-coast-bjj">
           <span class="wc-title">north-coast-bjj</span>
           <span class="wc-outcome"
@@ -72,7 +74,7 @@ import { isVisible } from '../../lib/site.ts';
             </a>
           )
         }
-      </div>
+      </Grid>
 
       <section class="shipped">
         <h2 class="shipped-title">Things that are live</h2>
@@ -105,6 +107,6 @@ import { isVisible } from '../../lib/site.ts';
           </li>
         </ul>
       </section>
-    </div>
+    </Container>
   </section>
 </BaseLayout>

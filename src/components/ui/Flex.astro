@@ -1,0 +1,39 @@
+---
+// Flex — flexbox wrapper. Enumerated props (direction/align/justify/wrap) become
+// utility classes from layout.css; `gap` is inline off the spacing scale. Set
+// `as="ul"` etc. for semantic lists while keeping their own class via `class`.
+import type { HTMLTag, Polymorphic } from 'astro/types';
+import { layoutStyle, cx, space, type BaseLayoutProps, type Space } from './layout-props';
+
+type Props<As extends HTMLTag = 'div'> = Omit<Polymorphic<{ as: As }>, 'as'> &
+  BaseLayoutProps & {
+    as?: As;
+    direction?: 'row' | 'column' | 'row-reverse' | 'column-reverse';
+    align?: 'start' | 'center' | 'end' | 'baseline' | 'stretch';
+    justify?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
+    wrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
+    gap?: Space;
+  };
+
+const {
+  as: Tag = 'div',
+  direction,
+  align,
+  justify,
+  wrap,
+  gap,
+  class: extra,
+  ...rest
+} = Astro.props;
+const style = layoutStyle(rest, { '--l-gap': space(gap) });
+const cls = cx(
+  'l-flex',
+  direction && `l-fd-${direction}`,
+  align && `l-ai-${align}`,
+  justify && `l-jc-${justify}`,
+  wrap && `l-fw-${wrap}`,
+  extra,
+);
+---
+
+<Tag class={cls} style={style}><slot /></Tag>
