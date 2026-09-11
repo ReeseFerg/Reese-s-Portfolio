@@ -78,11 +78,13 @@ const VIDEO_EXT = new Set(['mp4', 'webm', 'mov', 'm4v']);
 /**
  * Writes a dropped file and rewrites the placeholder that was standing in for it.
  *
- * Images go to src/assets/ and are referenced through an import, so Vite hashes,
- * compresses and cache-busts them — the contract MediaFrame's own doc comment
- * describes. Videos go to public/media/ as plain paths: they are multi-megabyte
- * binaries that gain nothing from the image pipeline and would only bloat the
- * bundle graph.
+ * Images go to src/assets/, imported and passed through `getImage()` from
+ * `astro:assets` — the only way to reach Astro's compression/resize pipeline
+ * from a plain `.tsx` module, since `<Image>`/`<Picture>` can't be used inside
+ * a framework component. A plain `import` alone only gets Vite's hash and
+ * copy, not compression. Videos go to public/media/ as plain paths: they are
+ * multi-megabyte binaries that gain nothing from the image pipeline and would
+ * only bloat the bundle graph.
  */
 export async function saveMedia(
   repoRoot: string,
@@ -120,12 +122,23 @@ export async function saveMedia(
   await writeAsset(repoRoot, rel, input.bytes);
 
   const ident = `media${stem.replace(/[^a-zA-Z0-9]/g, '')}`;
-  const importLine = `import ${ident} from '../../assets/${stem}.${ext}';\n`;
+  // The getImage import is identical across every call, so it's deduped by
+  // replaceMarkup; the source import and getImage() call are unique per
+  // image (the identifier embeds the stem) and are always added.
+  const getImageImport = `import { getImage } from 'astro:assets';\n`;
+  const sourceImport = `import ${ident}Source from '../../assets/${stem}.${ext}';\n`;
+  const getImageCall =
+    `const ${ident} = await getImage({ src: ${ident}Source, width: ${input.width}, ` +
+    `height: ${input.height} });\n`;
   const markup =
-    `<MediaFrame${cls} src={${ident}} width={${input.width}} height={${input.height}}` +
+    `<MediaFrame${cls} src={${ident}.src} width={${input.width}} height={${input.height}}` +
     ` alt="${input.alt}" />`;
 
-  await replaceMarkup(repoRoot, input.targetFile, input.placeholder, markup, importLine);
+  await replaceMarkup(repoRoot, input.targetFile, input.placeholder, markup, [
+    getImageImport,
+    sourceImport,
+    getImageCall,
+  ]);
   return { file: input.targetFile, asset: rel };
 }
 
@@ -139,16 +152,20 @@ async function writeAsset(repoRoot: string, rel: string, bytes: Buffer): Promise
 }
 
 /**
- * Swaps placeholder markup for real markup, adding an import line if one is
- * needed. Restores the original file on any failure, so a broken import or a
- * half-written component is not a reachable state.
+ * Swaps placeholder markup for real markup, prepending any preamble lines
+ * (imports, `getImage()` calls) that aren't already in the file. Each line is
+ * deduped independently by exact match, so a constant line shared across
+ * multiple dropped images (the `getImage` import) is added once while a
+ * per-image line (which embeds a unique identifier) is always added. Restores
+ * the original file on any failure, so a broken import or a half-written
+ * component is not a reachable state.
  */
 async function replaceMarkup(
   repoRoot: string,
   file: string,
   before: string,
   after: string,
-  importLine?: string,
+  preambleLines?: string[],
 ): Promise<void> {
   const abs = path.resolve(repoRoot, file);
   if (!isInsideAllowedRoot(abs, repoRoot)) {
@@ -157,7 +174,8 @@ async function replaceMarkup(
 
   const original = await readFile(abs, 'utf8');
   let updated = original.replace(before, after);
-  if (importLine && !updated.includes(importLine)) updated = importLine + updated;
+  const missing = (preambleLines ?? []).filter((line) => !updated.includes(line));
+  if (missing.length > 0) updated = missing.join('') + updated;
 
   try {
     await writeFile(abs, updated, 'utf8');
