@@ -240,8 +240,6 @@ a literal space, and don't reach for `prettier-ignore` as a substitute.
   it only from the `astro:after-swap` handler — i.e. only across a client-side navigation, never
   on a hard reload. This matches the pre-migration single-file site's behaviour and is
   intentional, not a storage bug.
-- **`public/resume.pdf` is a generated placeholder** that says so on the page, so the
-  Résumé links resolve instead of 404ing. Regenerate via `scripts/make-resume-placeholder.mjs`.
 - **`SITE_URL` in `src/lib/site.ts` is the confirmed domain**, not a placeholder
   (`https://reeseferguson.com`, confirmed by Reese 2026-08-14). It drives every canonical
   URL, sitemap entry and social tag, so changing it silently rewrites all of them.
