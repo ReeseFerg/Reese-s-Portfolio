@@ -147,19 +147,75 @@
 .avatar svg { display: block; }
 .avatar svg[hidden] { display: none; }
 
+/* Default mascot: a dithered orange duotone photo of Reese (Paper node
+   BBZ-0), shown whenever no tool is hovered/pinned. Pill-shaped with an
+   inset accent glow, matching the design exactly rather than reusing the
+   pixel-logo footprint's rectangular avatar box. Sized well past the
+   pixel-logo footprint (this is the one moment the mascot gets to be a real
+   photo) and given auto margins so it centers in the space between the
+   hero text and the tools row rather than sitting flush under the text. */
+.term-mascot-photo {
+  height: 132px;
+  margin: auto 0;
+}
+
+.term-mascot-photo img {
+  height: 132px;
+  width: auto;
+  border-radius: 9999px;
+  box-shadow: inset 0 0 15px 1px var(--accent-dim);
+}
+
 .term-left-info { margin-top: auto; }
 
 .tools-line { font-size: 13.5px; line-height: 24px; color: var(--muted); }
 .tools-line .sep { color: var(--faint); padding: 0 2px; }
 
+/* At rest the word is greyed out but shimmers (a slow looping highlight
+   sweeping through the letters) so visitors can tell it's interactive.
+   Implemented as a text-clipped gradient rather than an opacity pulse so the
+   highlight reads as light moving across the word, not the word fading. */
 .tool {
-  color: var(--muted);
+  --tool-shimmer: linear-gradient(90deg, var(--muted) 35%, #d8d8d8 50%, var(--muted) 65%);
+
   padding: 1px 2px;
+  color: transparent;
+  background-image: var(--tool-shimmer);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: tool-shimmer var(--duration-shimmer) linear infinite;
   transition: color var(--duration-fast) var(--ease-standard);
 }
 
-.tool:hover { color: var(--text); }
-.tool.is-active { color: var(--accent); font-weight: 700; }
+@keyframes tool-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tool { animation: none; background-image: none; -webkit-text-fill-color: var(--muted); color: var(--muted); }
+}
+
+/* Brand colour on hover/focus — see --tool-color, set inline per button from
+   THEMES (src/lib/themes.ts) so the hover word and the pinned global accent
+   stay a single source of truth. */
+.tool:hover,
+.tool:focus-visible {
+  animation: none;
+  background-image: none;
+  -webkit-text-fill-color: var(--tool-color);
+  color: var(--tool-color);
+}
+
+.tool.is-active {
+  animation: none;
+  background-image: none;
+  -webkit-text-fill-color: var(--accent);
+  color: var(--accent);
+  font-weight: 700;
+}
 
 .path-line { font-size: 13px; color: var(--faint); margin-top: 2px; }
 

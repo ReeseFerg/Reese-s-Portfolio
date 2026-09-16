@@ -1,8 +1,87 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Terminal from '../components/Terminal/Terminal';
+import Container from '../components/ui/Container.astro';
+import Flex from '../components/ui/Flex.astro';
+import SnapshotCard from '../components/SnapshotCard.astro';
+
+// Curated for the homepage, not generated from CASE_SLUGS: the design drops
+// project-cadence and adds "Portfolio (WIP)", a non-route static card for the
+// site itself. Copy is placeholder — see CASE-STUDIES.md for the writing
+// rules once real numbers exist.
+const SNAPSHOTS = [
+  {
+    state: 'live' as const,
+    eyebrow: 'Client project · Live',
+    title: 'north-coast-bjj',
+    blurb:
+      '[TODO: one line — real client, real users, live site. Lead with what changed for the club.]',
+    meta: ['[TODO: role]', '[TODO: year]', '[TODO: work type]', '[TODO: case study type]'],
+    stats: [
+      { value: '[TODO]', label: '[TODO: e.g. bookings/mo]' },
+      { value: '[TODO]', label: '[TODO: e.g. no-show rate]' },
+    ],
+    caseHref: '/work/north-coast-bjj',
+    liveHref: '[TODO: north coast bjj URL]',
+  },
+  {
+    state: 'soon' as const,
+    eyebrow: 'Extension · Shipping',
+    title: 'databrew',
+    blurb:
+      '[TODO: one line — a Chromium extension people will actually install. Say what it saves them.]',
+    meta: [
+      'Design & front end',
+      '[TODO: year]',
+      '[TODO: work type]',
+      '[TODO: case study type]',
+    ],
+    stats: [
+      { value: '[TODO]', label: '[TODO]' },
+      { value: '[TODO]', label: '[TODO]' },
+    ],
+    caseHref: '/work/databrew',
+    liveHref: '[TODO: databrew URL]',
+  },
+  {
+    // Ghosted for now — not ready to show. Flip to 'live' when this site
+    // itself is ready to link to; the hover glow comes for free at that
+    // point, it's just the default state for every non-ghosted card.
+    state: 'soon' as const,
+    eyebrow: 'This site · WIP',
+    title: 'Portfolio (WIP)',
+    blurb:
+      '[TODO: one line about building this site itself — hand-built routing, terminal and all.]',
+    meta: ['Solo', '2026', '[TODO: work type]', '[TODO: case study type]'],
+    stats: [
+      { value: '[TODO]', label: '[TODO]' },
+      { value: '[TODO]', label: '[TODO]' },
+    ],
+    caseHref: '/work',
+    liveHref: '[TODO: this repo URL]',
+  },
+  {
+    state: 'soon' as const,
+    eyebrow: 'Course project · 2026',
+    title: 'savr-app',
+    blurb: '[TODO: one line — lead with what user testing changed, not with the concept.]',
+    meta: ['Solo', '2026', '[TODO: work type]', '[TODO: case study type]'],
+    stats: [
+      { value: '[TODO]', label: '[TODO]' },
+      { value: '[TODO]', label: '[TODO]' },
+    ],
+    caseHref: '/work/savr-app',
+    liveHref: '[TODO: savr-app URL]',
+  },
+];
 ---
 
 <BaseLayout path="/">
   <Terminal slot="hero" client:load />
+
+  <Container class="snapshots" size="3">
+    <Flex direction="column" gap="6">
+      {SNAPSHOTS.map((snap) => <SnapshotCard {...snap} />)}
+    </Flex>
+  </Container>
 </BaseLayout>
