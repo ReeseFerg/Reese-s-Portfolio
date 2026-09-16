@@ -12,6 +12,11 @@
     "is a portfolio recruiters may open on an old work machine. max-width works",
     "everywhere, so the mobile layout should not depend on a newer browser.",
     "",
+    "property-no-vendor-prefix: -webkit-background-clip is required alongside the",
+    "unprefixed background-clip for gradient-clipped text (terminal.css .tool) to",
+    "render in Safari at all, not just render differently — same old-Safari concern",
+    "as the range-notation exception above.",
+    "",
     "stylelint-config-html/astro teaches Stylelint to parse <style> blocks inside",
     ".astro files via postcss-html. No .astro file has one today (styles are global",
     "CSS in src/styles/ by design) — this is future-proofing, per RW-151."
@@ -31,6 +36,7 @@
     "color-hex-length": null,
     "alpha-value-notation": null,
     "value-keyword-case": null,
-    "media-feature-range-notation": null
+    "media-feature-range-notation": null,
+    "property-no-vendor-prefix": null
   }
 }

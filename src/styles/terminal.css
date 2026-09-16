@@ -182,6 +182,7 @@
   color: transparent;
   background-image: var(--tool-shimmer);
   background-size: 220% 100%;
+  -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: tool-shimmer var(--duration-shimmer) linear infinite;
