@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import { navigate } from 'astro:transitions/client';
 
 import { COMMANDS, SHORTCUTS_TEXT, ASK_OPTIONS } from '../../lib/commands';
@@ -8,8 +8,9 @@ import { useTypewriter } from '../../lib/useTypewriter';
 import PixelLogos from './PixelLogos';
 import OutputLog, { type LogLine } from './OutputLog';
 import CommandInput from './CommandInput';
+import reeseDither from '../../assets/reese-dither.png';
 
-const PHRASES = ['a UX designer', 'a business graduate', 'futureproof'];
+const PHRASES = ['a product designer', 'a business graduate', 'futureproof'];
 const MAX_LINES = 8;
 // Astro's default swap resyncs <html>'s attributes from the incoming document,
 // wiping the inline `--accent` style set below. Mirroring it to
@@ -177,7 +178,18 @@ export default function Terminal() {
             </span>
           </p>
 
-          <PixelLogos active={activeTheme ?? 'claude'} />
+          {activeTheme ? (
+            <PixelLogos active={activeTheme} />
+          ) : (
+            <div className="avatar term-mascot-photo" id="avatar">
+              <img
+                src={reeseDither.src}
+                width={reeseDither.width}
+                height={reeseDither.height}
+                alt="Reese Ferguson"
+              />
+            </div>
+          )}
 
           <div className="term-left-info">
             <p className="tools-line">
@@ -186,6 +198,7 @@ export default function Terminal() {
                   {i > 0 && <span className="sep">·</span>}
                   <button
                     className={'tool' + (pinned === name ? ' is-active' : '')}
+                    style={{ '--tool-color': THEMES[name] } as CSSProperties}
                     onMouseEnter={() => setHovered(name)}
                     onMouseLeave={() => setHovered(null)}
                     onFocus={() => setHovered(name)}

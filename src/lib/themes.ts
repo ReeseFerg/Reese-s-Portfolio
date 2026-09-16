@@ -1,15 +1,17 @@
 /**
  * Clicking a tool name re-themes the whole terminal to that brand's accent and
- * swaps the pixel mascot. Accents are pulled from each product's own site, then
- * adjusted only where contrast on black demanded it.
+ * swaps the pixel mascot. Values match Reese's Paper mock (artboard "Home —
+ * current build", 3TO-0) exactly, in oklch so they sit next to --accent's own
+ * oklch definition in tokens.css — this is the single source of truth for
+ * both the pinned global accent and each tool word's hover colour.
  */
 export const THEMES = {
-  claude: '#d97757', // Claude Code
-  figma: '#f2217e', // Figma magenta-pink — moved off red-orange so it doesn't clash with the Tron accent
-  conductor: '#eae8e6', // conductor.build theme color (warm cream)
-  paper: '#81acec', // paper.design accent blue
-  framer: '#2e6bff', // brand #0055ff, brightened for contrast on black
-  linear: '#5e6ad2', // Linear indigo
+  claude: 'oklch(67.2% 0.131 39deg)', // Claude Code
+  figma: 'oklch(63% 0.24 2deg)', // Figma magenta-pink
+  conductor: 'oklch(93.2% 0.003 68deg)', // conductor.build warm cream
+  paper: 'oklch(73.9% 0.104 258deg)', // paper.design accent blue
+  framer: 'oklch(58.2% 0.229 261.4deg)', // Framer brand blue
+  linear: 'oklch(57.8% 0.158 272.3deg)', // Linear indigo
 } as const;
 
 export type ThemeName = keyof typeof THEMES;

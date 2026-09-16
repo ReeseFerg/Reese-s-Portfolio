@@ -34,31 +34,11 @@ body.routed .view-inner { padding-top: 20px; }
 
 .view-lead .spark { color: var(--accent); }
 
-/* work grid — display/columns/gap now come from the <Grid> primitive that wraps
-   these cards (src/pages/work/index.astro); this rule owns only the top offset. */
+/* work grid — a stacked <Flex> of full-width SnapshotCards (src/pages/work/index.astro);
+   direction/gap come from the primitive, this rule owns only the top offset. */
 .work-grid {
   margin-top: 32px;
 }
-
-.work-card {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  text-align: left;
-  text-decoration: none;
-  padding: 20px;
-  border: 1px solid var(--rule);
-  border-radius: 8px;
-  background: var(--surface);
-  transition: border-color var(--duration-fast) var(--ease-standard);
-}
-
-.work-card:hover { border-color: var(--accent-dim); }
-.wc-title { font-size: 15px; font-weight: 700; color: var(--text); }
-.wc-outcome { font-size: 13.5px; line-height: 21px; color: var(--muted); }
-.wc-meta { font-size: 12.5px; color: var(--faint); margin-top: 4px; }
-.wc-tag { color: var(--accent); }
-.wc-lead { border-color: var(--accent-dim); }
 
 /* ---------- Shipped strip ----------
    Live things, not case studies. For someone early in their career this is the
@@ -124,3 +104,109 @@ body.routed .view-inner { padding-top: 20px; }
 }
 
 .eyebrow .accent { color: var(--accent); }
+
+.snapshots { padding: var(--space-chapter) 0; }
+
+/* ================= Snapshot cards ================= */
+/* Shared by the homepage and /work (src/components/SnapshotCard.astro), per
+   Reese's Paper mock. Two states: `is-live` is full colour and glows on
+   hover (the default for any card with real or forthcoming content), and
+   `is-soon` mutes everything and blurs the stats/media for projects that
+   aren't ready to show yet. */
+
+.snapshot-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  height: 600px;
+  padding: 28px 32px;
+  border: 1px solid var(--accent-faint);
+  border-radius: 8px;
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+.snapshot-card.is-live:hover {
+  border-color: var(--accent);
+  box-shadow: 0 2px 22px 6px var(--accent-glow-strong);
+}
+
+.sc-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-8);
+  padding-block: 32px;
+}
+
+.sc-top { display: flex; flex-direction: column; gap: var(--space-5); }
+.sc-titleblock { display: flex; flex-direction: column; gap: 16px; }
+
+/* Card top label (e.g. "North Coast BJJ") reuses the sitewide `.eyebrow`
+   class for markup, but Paper's card spec (node 7OY-0) diverges from that
+   class's normal mono/uppercase/faint chrome treatment: Zen Dots, capitalize
+   (not uppercase), full white — so it's overridden here, scoped to cards
+   only. The sitewide `.eyebrow` rule in this file is untouched. */
+.snapshot-card .eyebrow {
+  font-family: 'Zen Dots', var(--font-display, 'JetBrains Mono'), sans-serif;
+  font-size: 13.5px;
+  font-weight: 400;
+  text-transform: capitalize;
+  letter-spacing: -0.01em;
+  line-height: 18px;
+  color: var(--text);
+}
+
+/* Zen Dots, matching Paper's headline treatment for this text (same font as
+   the homepage hero's "Reese is …" line in terminal.css) — single weight
+   (400), so unlike most headings here this one isn't bolded. */
+.sc-title {
+  font-family: 'Zen Dots', var(--font-display, 'JetBrains Mono'), sans-serif;
+  font-size: var(--step-h3);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--accent);
+}
+.sc-blurb { font-size: 14px; line-height: 22px; color: var(--text); }
+.sc-meta { font-size: 13px; line-height: 16px; color: var(--text-body); }
+.sc-meta .accent { color: var(--accent); }
+
+.sc-stats { display: flex; gap: 86px; padding-left: var(--space-2); }
+.sc-stat { display: flex; flex-direction: column; gap: 2px; }
+.sc-stat-value { font-size: 32px; line-height: 26px; font-weight: 700; color: var(--text); }
+.sc-stat-label { font-size: 15px; line-height: 26px; font-weight: 400; color: var(--text); }
+
+/* 32px per Paper (node 7PL-0) — doesn't land on our --space-4/-5 scale step,
+   same as the other literal 32px gaps already in case.css/terminal.css. */
+.sc-actions { display: flex; gap: 32px; }
+
+.sc-media {
+  height: 542px;
+  align-self: center;
+  border-radius: 4px;
+  background: var(--media-surface);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.sc-media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.sc-media-hint { font-family: var(--mono); font-size: 12px; color: var(--faint); }
+
+/* Ghost / coming-soon state: everything muted, stats and media blurred, both
+   buttons disabled (rendered as non-interactive spans, not links). */
+.snapshot-card.is-soon .sc-title,
+.snapshot-card.is-soon .sc-blurb,
+.snapshot-card.is-soon .sc-meta,
+.snapshot-card.is-soon .sc-meta .accent,
+.snapshot-card.is-soon .eyebrow,
+.snapshot-card.is-soon .sc-stat-value,
+.snapshot-card.is-soon .sc-stat-label {
+  color: var(--muted);
+}
+
+.snapshot-card.is-soon .sc-stats,
+.snapshot-card.is-soon .sc-media {
+  filter: blur(7px);
+}

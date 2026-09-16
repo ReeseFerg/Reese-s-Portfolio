@@ -1,8 +1,65 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Container from '../../components/ui/Container.astro';
-import Grid from '../../components/ui/Grid.astro';
-import { isVisible } from '../../lib/site.ts';
+import Flex from '../../components/ui/Flex.astro';
+import SnapshotCard from '../../components/SnapshotCard.astro';
+import { CASE_SLUGS, isDraft, type CaseSlug } from '../../lib/site.ts';
+
+// One entry per CASE_SLUGS slug. Draft cases render as `soon` ghost cards
+// rather than disappearing (isVisible only gated the old small work-card;
+// SnapshotCard's `soon` state already renders no link to the excluded route,
+// so draft-links.ts's build guard stays satisfied without an isVisible gate
+// here). If Reese would rather keep drafts fully hidden on /work instead,
+// filter CASE_SLUGS below with `.filter((slug) => !isDraft('/work/' + slug))`.
+const WORK_CARDS: Record<
+  CaseSlug,
+  {
+    eyebrow: string;
+    title: string;
+    blurb: string;
+    meta: string[];
+    liveHref?: string;
+  }
+> = {
+  'north-coast-bjj': {
+    eyebrow: 'Client project · Full case study',
+    title: 'north-coast-bjj',
+    blurb:
+      '[TODO: one line — real client, real users, live site. Lead with what changed for the club.]',
+    meta: ['[TODO: role]', '[TODO: year]', '[TODO: work type]', '[TODO: case study type]'],
+    liveHref: '[TODO: north coast bjj URL]',
+  },
+  databrew: {
+    eyebrow: 'Shipping',
+    title: 'databrew',
+    blurb:
+      '[TODO: one line — a Chromium extension people will actually install. Say what it saves them.]',
+    meta: [
+      'Design & front end',
+      '[TODO: year]',
+      '[TODO: work type]',
+      '[TODO: case study type]',
+    ],
+  },
+  'savr-app': {
+    eyebrow: 'Course project',
+    title: 'savr-app',
+    blurb: '[TODO: one line — lead with what user testing changed, not with the concept.]',
+    meta: ['Solo', '2026', '[TODO: work type]', '[TODO: case study type]'],
+  },
+  'project-cadence': {
+    eyebrow: 'In progress',
+    title: 'project-cadence',
+    blurb:
+      "[TODO: one line on the idea. It's early — the interesting part is the open question.]",
+    meta: ['Design & front end', '2026', '[TODO: work type]', '[TODO: case study type]'],
+  },
+};
+
+const STAT_PLACEHOLDERS = [
+  { value: '[TODO]', label: '[TODO]' },
+  { value: '[TODO]', label: '[TODO]' },
+];
 ---
 
 <BaseLayout path="/work" bodyClass="routed">
@@ -18,63 +75,27 @@ import { isVisible } from '../../lib/site.ts';
       <!-- Ordered strongest first. north-coast-bjj is the only one with a real client,
            real research and a finished product, so it leads and it's the only one that
            gets the full-depth treatment. -->
-      <Grid class="work-grid" columns="2" gap="4">
-        <a class="work-card wc-lead" href="/work/north-coast-bjj">
-          <span class="wc-title">north-coast-bjj</span>
-          <span class="wc-outcome"
-            >[TODO: one line — real client, real users, live site. Lead with what changed for
-            the club.]</span
-          >
-          <span class="wc-meta">
-            <span class="wc-role">[TODO: role]</span> · <span class="wc-year">[TODO: year]</span
-            > · <span class="wc-tag">Client · full case study</span>
-          </span>
-        </a>
+      <Flex class="work-grid" direction="column" gap="6">
         {
-          isVisible('/work/databrew') && (
-            <a class="work-card" href="/work/databrew">
-              <span class="wc-title">databrew</span>
-              <span class="wc-outcome">
-                [TODO: one line — a Chromium extension people will actually install. Say what it
-                saves them.]
-              </span>
-              <span class="wc-meta">
-                <span class="wc-role">Design &amp; front end</span> ·{' '}
-                <span class="wc-year">[TODO: year]</span> · <span class="wc-tag">Shipping</span>
-              </span>
-            </a>
-          )
+          CASE_SLUGS.map((slug) => {
+            const card = WORK_CARDS[slug];
+            const draft = isDraft(`/work/${slug}`);
+            const state = draft ? 'soon' : 'live';
+            return (
+              <SnapshotCard
+                state={state}
+                eyebrow={card.eyebrow}
+                title={card.title}
+                blurb={card.blurb}
+                meta={card.meta}
+                stats={STAT_PLACEHOLDERS}
+                caseHref={`/work/${slug}`}
+                liveHref={card.liveHref}
+              />
+            );
+          })
         }
-        {
-          isVisible('/work/savr-app') && (
-            <a class="work-card" href="/work/savr-app">
-              <span class="wc-title">savr-app</span>
-              <span class="wc-outcome">
-                [TODO: one line — lead with what user testing changed, not with the concept.]
-              </span>
-              <span class="wc-meta">
-                <span class="wc-role">Solo</span> · <span class="wc-year">2026</span> ·{' '}
-                <span class="wc-tag">Course project</span>
-              </span>
-            </a>
-          )
-        }
-        {
-          isVisible('/work/project-cadence') && (
-            <a class="work-card" href="/work/project-cadence">
-              <span class="wc-title">project-cadence</span>
-              <span class="wc-outcome">
-                [TODO: one line on the idea. It's early — the interesting part is the open
-                question.]
-              </span>
-              <span class="wc-meta">
-                <span class="wc-role">Design &amp; front end</span> ·{' '}
-                <span class="wc-year">2026</span> · <span class="wc-tag">In progress</span>
-              </span>
-            </a>
-          )
-        }
-      </Grid>
+      </Flex>
 
       <section class="shipped">
         <h2 class="shipped-title">Things that are live</h2>
