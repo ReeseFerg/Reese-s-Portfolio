@@ -13,9 +13,29 @@
 }
 
 /* ---------- Hero terminal ---------- */
+:root {
+  /* .site-header: 28px×2 padding + ~46px nav button, stable >980px (only
+     changes in the mobile range, where the hero doesn't use this var). */
+  --header-h: 102px;
+}
+
+body:not(.routed) .hero {
+  /* Fill the space between the nav bar and the bottom of the screen so the
+     hero is the only thing visible on load; work cards fall below the fold.
+     Content stays centered via justify-content:center + margin:0 auto below.
+     dvh (first use in repo) handles mobile browser chrome; reset to auto
+     ≤980px in responsive.css, which loads last and wins the cascade. */
+  min-height: calc(100dvh - var(--header-h));
+}
+
 .hero {
   flex: 1;
-  width: min(1160px, calc(100% - 96px));
+  /* Wider than the sitewide 1160px content cap (--container-3, used by
+     .view-inner/.case-shell) — the 40px headline needs the term-left column
+     to have as much room as the Paper "Hero Layout" frame gives it (a 1400px
+     terminal box), which 1160px can't provide without wrapping or
+     overflowing. Scoped to .hero only; routed pages keep the 1160px cap. */
+  width: min(1400px, calc(100% - 96px));
   margin: 0 auto;
   padding: 24px 0 48px;
   display: flex;
@@ -51,12 +71,19 @@
 }
 
 .term-left {
-  flex: 1.15;
+  /* Widened from 1.15 (Paper's "Hero Layout" frame uses ~1.38 at its own
+     1400px box, but our .hero is narrower at typical desktop widths) so the
+     column is wide enough for "Reese is a business graduate" at 40px — see
+     the coefficient note on .welcome below for the exact fit math. */
+  flex: 1.65;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 26px;
-  padding: 34px 32px 22px;
+  gap: 32px;
+  /* Symmetric 56px block padding (was 34px/22px) — the 40px headline needs
+     more breathing room top and bottom than the old 34px cap did. Matches
+     the Paper "Hero Layout" frame. */
+  padding: 56px 32px;
   text-align: center;
   /* Query container so the hero font can be sized as a fraction of THIS
      column's width (see .welcome). Its width is set by flex, not by content,
@@ -70,11 +97,18 @@
      "Reese is a business graduate" (the widest phrase) always keeps ~10px on
      each side of THIS column at every width; clamped so it never gets absurd
      on very wide or very narrow layouts. cqi coefficient + px offset are
-     derived from the rendered width of the widest line — see .context notes. */
+     derived from the rendered width of the widest line — see .context notes.
+     Coefficient is unchanged from the 34px-cap version: at 40px the widest
+     phrase renders ~740px wide, and 5.4cqi is exactly the scaling factor
+     that keeps that phrase within its container's width at any size — a
+     bigger coefficient hits the cap before the container is wide enough and
+     overflows into the right column. Only the cap itself moves (34 → 40);
+     .term-left's widened flex share (see below) is what lets 40px actually
+     be reached before running out of room. */
   font-family: 'Zen Dots', var(--font-display, 'JetBrains Mono'), sans-serif;
   font-weight: 400;
-  font-size: clamp(9px, calc(5.4cqi - 1.05px), 34px);
-  line-height: 1.18;
+  font-size: clamp(9px, calc(5.4cqi - 1.05px), 40px);
+  line-height: 1.2;
   letter-spacing: -0.02em;
   white-space: nowrap;
   /* Soft warm-white bloom on "Reese is …" — the hero reads as emitting light,
@@ -136,8 +170,15 @@
   margin-left: 0.06em;
 }
 
+/* Height matches .term-mascot-photo (208px), not the 72px pixel-logo
+   footprint: .avatar is reused for both, and hovering a tool swaps the
+   mascot photo for a pixel logo in place. If this box only matched the
+   72px logos, that swap would shrink .term-left by ~136px and yank the
+   whole term-box up/down on every hover — sizing to the taller variant and
+   centering the shorter one inside it (align-items: center, below) keeps
+   the hero's height fixed regardless of which is showing. */
 .avatar {
-  height: 72px;
+  height: 208px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -152,15 +193,14 @@
    inset accent glow, matching the design exactly rather than reusing the
    pixel-logo footprint's rectangular avatar box. Sized well past the
    pixel-logo footprint (this is the one moment the mascot gets to be a real
-   photo) and given auto margins so it centers in the space between the
-   hero text and the tools row rather than sitting flush under the text. */
+   photo) — height comes from .avatar above so it centers vertically in the
+   same reserved space the pixel logos use. */
 .term-mascot-photo {
-  height: 132px;
   margin: auto 0;
 }
 
 .term-mascot-photo img {
-  height: 132px;
+  height: 208px;
   width: auto;
   border-radius: 9999px;
   box-shadow: inset 0 0 15px 1px var(--accent-dim);
@@ -229,32 +269,32 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 22px 32px;
+  padding: 32px;
 }
 
 /* horizontal rule between right-column sections, edge to edge like the real TUI */
 .h-rule {
   height: 1px;
   background: var(--accent-faint);
-  margin: 20px -32px;
+  margin: 28px -32px;
 }
 
 .panel-heading {
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--accent);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .about-copy {
-  font-size: 13.5px;
-  line-height: 22px;
+  font-size: 16px;
+  line-height: 26px;
   color: var(--text-body);
 }
 
 .project-row {
-  font-size: 13.5px;
-  line-height: 24px;
+  font-size: 16px;
+  line-height: 28px;
   color: var(--text);
   white-space: pre-wrap;
 }
@@ -323,11 +363,17 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 4px;
+  padding: 0 4px;
 }
 
 .input-row .chevron { color: var(--accent); font-size: 15px; flex-shrink: 0; }
 
+/* Vertical padding lives on the input itself, not .input-row, so the
+   tappable form control — not just its container — is the full ~44px row
+   height. A row-level padding leaves the actual <input> only as tall as its
+   text line box (~18px), which on a touch device means taps just above or
+   below the glyphs land on the row's own background and never focus the
+   field or raise the keyboard. */
 #cmd {
   flex: 1;
   background: none;
@@ -337,6 +383,7 @@
   font-size: 14px;
   color: var(--text);
   caret-color: var(--accent);
+  padding: 12px 0;
 }
 
 #cmd::placeholder { color: var(--faint); }

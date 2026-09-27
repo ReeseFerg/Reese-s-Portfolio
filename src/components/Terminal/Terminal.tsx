@@ -238,8 +238,8 @@ export default function Terminal() {
       </div>
 
       <p className="flavor-line">
-        <span className="spark">✳</span> Open to opportunities — pick a section below, or type a{' '}
-        <span className="slash">/command</span> to look around.
+        <span className="spark">✳</span> Open to opportunities — pick a section below, type a{' '}
+        <span className="slash">/command</span>, or scroll for recent work.
       </p>
 
       <nav className="term-tabs" aria-label="Sections" id="askBox">
