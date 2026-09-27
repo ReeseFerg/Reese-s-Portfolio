@@ -144,6 +144,14 @@ body:not(.routed) .hero {
   white-space: nowrap;
 }
 
+/* Off by default (desktop stays one line); ≤480px (responsive.css) flips
+   this to force the break between "Reese is" and the phrase. A <br> tag
+   still breaks even under white-space:nowrap when it's not display:none,
+   which is what makes the mobile override work despite the nowrap above. */
+.welcome-break {
+  display: none;
+}
+
 .welcome .phrase {
   color: var(--accent);
   /* Accent bloom derived from --accent so glow and text stay the same colour
