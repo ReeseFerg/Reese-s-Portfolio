@@ -7,18 +7,19 @@
 .case-hero .crumb { margin-bottom: 14px; }
 
 .case-title {
-  font-family: var(--font-display);
+  font-family: var(--font-zen-dots);
   font-size: var(--step-h1);
   line-height: 1.05;
-  letter-spacing: -0.02em;
-  font-weight: 600;
-  color: var(--text);
+  letter-spacing: 0.01em;
+  text-transform: capitalize;
+  font-weight: bold;
+  color: var(--accent);
   margin-top: 16px;
   max-width: 22ch;
 }
 
 .case-lead {
-  font-family: var(--font-doc);
+  font-family: var(--font-mona);
   font-size: var(--step-lead);
   line-height: var(--lh-lead);
   color: var(--text-body);
@@ -27,6 +28,18 @@
 }
 
 .case-cover { margin-top: 48px; }
+
+/* Case-scoped eyebrow: Paper's v3 treatment diverges from the sitewide mono/
+   faint chrome in views.css (.eyebrow), so it's overridden here for the hero
+   and chapter kickers only — the footer's "Next project" eyebrow stays mono. */
+.case-hero .eyebrow,
+.chapter .eyebrow {
+  font-family: var(--font-zen-dots);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.7px;
+  color: var(--accent);
+}
 
 /* ---------- Body grid: sticky rail + content column ---------- */
 .case-body {
@@ -137,13 +150,16 @@
   border-bottom: 1px solid var(--rule);
 }
 
+/* Outcome section's 4-stat row (distinct from the 3-stat hero default). */
+.impact-row--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
 .stat-value {
-  font-family: var(--font-display);
+  font-family: var(--font-zen-dots);
   font-size: var(--step-stat);
   line-height: 1;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   font-weight: 600;
-  color: var(--text);
+  color: var(--accent);
 }
 
 .stat-label {
@@ -162,26 +178,26 @@
 }
 
 .chapter h2 {
-  font-family: var(--font-display);
+  font-family: var(--font-hubot);
   font-size: var(--step-h2);
   line-height: var(--lh-head);
   letter-spacing: -0.015em;
-  font-weight: 600;
+  font-weight: 400;
   color: var(--text);
   margin-top: 16px;
 }
 
 .chapter h3 {
-  font-family: var(--font-display);
+  font-family: var(--font-hubot);
   font-size: var(--step-h3);
   line-height: 1.35;
   font-weight: 600;
-  color: var(--text);
+  color: var(--accent);
   margin-top: 48px;
 }
 
 .chapter p {
-  font-family: var(--font-doc);
+  font-family: var(--font-mona);
   font-size: var(--step-body);
   line-height: var(--lh-body);
   color: var(--text-body);
@@ -320,7 +336,7 @@
 .quote-user:nth-child(even) { align-self: flex-end; }
 
 .quote-user p {
-  font-family: var(--font-doc);
+  font-family: var(--font-mona);
   font-size: 15px;
   line-height: 1.6;
   color: var(--text-body);
@@ -385,16 +401,16 @@
 }
 
 .insight-card h3 {
-  font-family: var(--font-display);
+  font-family: var(--font-hubot);
   font-size: 16px;
   line-height: 1.35;
   font-weight: 600;
-  color: var(--text);
+  color: var(--accent);
   margin: 0;
 }
 
 .insight-card p {
-  font-family: var(--font-doc);
+  font-family: var(--font-mona);
   font-size: 13.5px;
   line-height: 1.65;
   color: var(--muted);

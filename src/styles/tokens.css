@@ -21,9 +21,12 @@
   --rule: #262626;
   --rule-soft: #1b1b1b;
   --mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+  --font-zen-dots: "Zen Dots", sans-serif;
+  --font-hubot: "Hubot Sans", sans-serif;
+  --font-mona: "Mona Sans", sans-serif;
 
-  /* Document voice — swapped by the localhost font switcher, see [data-type] below.
-     Chrome (eyebrows, meta labels, captions, nav, terminal) always stays mono. */
+  /* Document voice. Chrome (eyebrows, meta labels, captions, nav, terminal)
+     always stays mono. */
   --font-display: var(--mono);
   --font-doc: var(--mono);
 
@@ -98,19 +101,4 @@
 html[data-media-surface="warm"] {
   --media-surface: #17130f;
   --media-border: #2a2118;
-}
-
-html[data-type="serif"] {
-  --font-display: "Newsreader", Georgia, "Times New Roman", serif;
-  --font-doc: "Newsreader", Georgia, "Times New Roman", serif;
-}
-
-html[data-type="grotesk"] {
-  --font-display: "Inter", system-ui, -apple-system, sans-serif;
-  --font-doc: "Inter", system-ui, -apple-system, sans-serif;
-}
-
-html[data-type="hybrid"] {
-  --font-display: "Space Grotesk", system-ui, -apple-system, sans-serif;
-  --font-doc: "Inter", system-ui, -apple-system, sans-serif;
 }

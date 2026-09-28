@@ -168,13 +168,13 @@ body.routed .view-inner { padding-top: 20px; }
   letter-spacing: -0.01em;
   color: var(--accent);
 }
-.sc-blurb { font-size: 14px; line-height: 22px; color: var(--text); }
+.sc-blurb { font-family: var(--font-mona); font-size: 14px; line-height: 22px; color: var(--text); }
 .sc-meta { font-size: 13px; line-height: 16px; color: var(--text-body); }
 .sc-meta .accent { color: var(--accent); }
 
 .sc-stats { display: flex; gap: 86px; padding-left: var(--space-2); }
 .sc-stat { display: flex; flex-direction: column; gap: 2px; }
-.sc-stat-value { font-size: 32px; line-height: 26px; font-weight: 700; color: var(--text); }
+.sc-stat-value { font-family: var(--font-zen-dots); font-size: 32px; line-height: 26px; font-weight: 700; color: var(--text); }
 .sc-stat-label { font-size: 15px; line-height: 26px; font-weight: 400; color: var(--text); }
 
 /* 32px per Paper (node 7PL-0) — doesn't land on our --space-4/-5 scale step,
