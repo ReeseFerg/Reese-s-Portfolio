@@ -46,18 +46,20 @@
 }
 
 .case-fact {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 16px;
   padding: 12px 0;
   border-top: 1px solid var(--rule);
-  text-align: left;
 }
 
 .case-fact:last-child { border-bottom: 1px solid var(--rule); }
 
 .case-fact dt {
-  justify-self: end;
+  width: 96px;
+  flex-shrink: 0;
+  text-align: right;
   font-family: var(--font-hubot);
   font-size: 16px;
   letter-spacing: 0.1em;
@@ -65,7 +67,6 @@
 }
 
 .case-fact dd {
-  justify-self: start;
   font-family: var(--font-mona);
   font-size: 16px;
   line-height: 1.5;
@@ -484,7 +485,7 @@
 .framer-graphic {
   justify-self: center;
   align-self: center;
-  max-width: 240px;
+  width: 100%;
   margin-top: 0;
 }
 
