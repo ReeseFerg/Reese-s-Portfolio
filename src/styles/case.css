@@ -146,51 +146,49 @@
 .chapter > .comparison,
 .chapter > .build-reasons { max-width: none; }
 
-/* ---------- Sticky table of contents ---------- */
+/* ---------- Sticky table of contents: Paper's boxed mono table ---------- */
 .case-toc {
   position: sticky;
   top: 32px;
   align-self: start;
-  font-family: var(--mono);
 }
 
-.toc-label {
-  font-size: var(--step-eyebrow);
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--faint);
-  margin-bottom: 14px;
-}
+.case-toc ol { list-style: none; display: flex; flex-direction: column; }
 
-.case-toc ol { list-style: none; display: flex; flex-direction: column; gap: 1px; }
-
+/* Rows share borders (negative-margin collapse); the active row lifts above
+   its neighbours so its accent border wins on all four sides. */
 .toc-link {
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 14px;
   width: 100%;
+  margin-top: -1px;
+  padding: 14px 11px;
+  border: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.33;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   text-align: left;
-  padding: 6px 10px;
-  border-radius: 4px;
-  font-size: 12.5px;
-  line-height: 1.4;
-  color: var(--muted);
-  transition: color var(--duration-fast) var(--ease-standard), background-color var(--duration-fast) var(--ease-standard);
+  color: var(--text-body);
+  transition: color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard);
 }
 
+.toc-link:first-child { margin-top: 0; }
 .toc-link:hover { color: var(--text); }
-.toc-link.is-active { color: var(--accent); background: var(--accent-glow); }
-.toc-num { color: var(--faint); flex-shrink: 0; }
-.toc-link.is-active .toc-num { color: var(--accent); }
+.toc-num { color: var(--text-body); flex-shrink: 0; }
 
-.toc-top {
-  margin-top: 20px;
-  padding: 6px 10px;
-  font-size: 12.5px;
-  color: var(--faint);
-  transition: color var(--duration-fast) var(--ease-standard);
+.toc-link.is-active {
+  position: relative;
+  z-index: 1;
+  border-color: var(--accent);
+  background: var(--accent-glow);
+  color: var(--text);
 }
 
-.toc-top:hover { color: var(--accent); }
+.toc-link.is-active .toc-num { color: var(--accent); }
 
 /* ---------- Impact stats: centred number over a Hubot label ---------- */
 .impact-row {
@@ -481,16 +479,17 @@
 
 .reason-card h3 { color: var(--text); text-transform: none; }
 
-/* The Figma→Framer mark: logo, three arrows, logo — animated later. */
+/* The Figma→Framer mark, exported from Paper as a static image — animated
+   later. Transparent art, so no rounded frame. */
 .framer-graphic {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  color: var(--text);
+  justify-self: center;
+  align-self: center;
+  max-width: 240px;
+  margin-top: 0;
 }
 
-.framer-graphic .arrow { color: var(--accent); }
+.framer-graphic .media-frame,
+.framer-graphic img { border-radius: 0; }
 
 /* ---------- Footer: next project + closing line ---------- */
 .case-footer {

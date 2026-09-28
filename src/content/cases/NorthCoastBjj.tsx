@@ -1,3 +1,4 @@
+import figmaToFramer from '../../assets/cases/nc-figma-to-framer.png';
 import MediaFrame from '../../components/case/MediaFrame';
 
 export default function NorthCoastBjj() {
@@ -22,7 +23,6 @@ export default function NorthCoastBjj() {
         {/* Buttons, not anchors: the site is hash-routed, so an in-page #anchor
              would be read as a route and bounce you back to the terminal. */}
         <aside className="case-toc" aria-label="Contents">
-          <p className="toc-label">Contents</p>
           <ol>
             <li>
               <button className="toc-link" data-target="bjj-context">
@@ -50,9 +50,6 @@ export default function NorthCoastBjj() {
               </button>
             </li>
           </ol>
-          <button className="toc-top" data-target="top">
-            ↑ back to top
-          </button>
         </aside>
 
         <div className="case-main">
@@ -330,15 +327,12 @@ export default function NorthCoastBjj() {
                 </div>
               </div>
 
-              {/* Figma mark → arrows → Framer mark. Real marks exported from
-                  Paper; animated later. */}
+              {/* Exported from Paper as a static image; animated later. */}
               <MediaFrame
                 className="framer-graphic"
-                shape="square"
-                hint="Figma → Framer graphic"
-              >
-                animated later
-              </MediaFrame>
+                src={figmaToFramer}
+                alt="Designed in Figma, built in Framer"
+              />
             </div>
 
             <h3 className="is-lg">Utilising Framers “In Page Editing” Capabilities</h3>
