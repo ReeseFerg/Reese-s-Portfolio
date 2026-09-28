@@ -22,8 +22,8 @@
   --rule-soft: #1b1b1b;
   --mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
   --font-zen-dots: "Zen Dots", sans-serif;
-  --font-hubot: "Hubot Sans", sans-serif;
-  --font-mona: "Mona Sans", sans-serif;
+  --font-hubot: "Hubot Sans Variable", sans-serif;
+  --font-mona: "Mona Sans Variable", sans-serif;
 
   /* Document voice. Chrome (eyebrows, meta labels, captions, nav, terminal)
      always stays mono. */

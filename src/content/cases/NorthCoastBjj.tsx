@@ -16,21 +16,6 @@ export default function NorthCoastBjj() {
           Sports-Club-Funnelling-Site <span className="accent">·</span> Client-project{' '}
           <span className="accent">·</span> 2025-2026
         </p>
-        <h1 className="case-title">
-          Converting Potential User Nerves Into Sign-Ups For A New BJJ Gym
-        </h1>
-        <p className="case-lead">
-          Pro bono work redesigning North Coast's local business website by building trust
-          signals and funnelling users to class sign-ups.
-        </p>
-
-        {/* To drop the real screenshot in:
-              import cover from '../../assets/bjj-cover.png';
-              <MediaFrame className="case-cover" src={cover} width={1600} height={900}
-                alt="The finished booking site on desktop" /> */}
-        <MediaFrame className="case-cover" hint="cover — 1600×900">
-          hero shot of the finished, live site
-        </MediaFrame>
       </header>
 
       <div className="case-body case-shell">
@@ -71,35 +56,58 @@ export default function NorthCoastBjj() {
         </aside>
 
         <div className="case-main">
-          <dl className="case-meta">
-            <div>
-              <dt>Role</dt>
-              <dd>Solo Product Designer</dd>
-            </div>
-            <div>
-              <dt>Timeline</dt>
-              <dd>Seven Months · Nov 2025 - Apr 2026 &amp; Jul 2026</dd>
-            </div>
-            <div>
-              <dt>Tools</dt>
-              <dd>Figma · Framer · Claude Code · Linear</dd>
-            </div>
-          </dl>
+          <div className="case-intro">
+            <h1 className="case-title">
+              Converting Potential User Nerves Into Sign-Ups For A New BJJ Gym
+            </h1>
+            <p className="case-lead">
+              Pro bono work redesigning North Coast's local business website by building trust
+              signals and funnelling users to class sign-ups.
+            </p>
 
-          <div className="impact-row">
-            <div>
-              <p className="stat-value">92</p>
-              <p className="stat-label">SEO score evaluation from Lighthouse on mobile</p>
-            </div>
-            <div>
-              <p className="stat-value">50</p>
-              <p className="stat-label">forum enquiries in the first 30 days of the site</p>
-            </div>
-            <div>
-              <p className="stat-value">227</p>
-              <p className="stat-label">Unique users visited the site in the last 30 days</p>
+            <dl className="case-facts">
+              <div className="case-fact">
+                <dt>Role</dt>
+                <dd>Solo Product Designer</dd>
+              </div>
+              <div className="case-fact">
+                <dt>Timeline</dt>
+                <dd className="is-mono">Seven Months · Nov 2025 - Apr 2026 &amp; Jul 2026</dd>
+              </div>
+              <div className="case-fact">
+                <dt>Tools</dt>
+                <dd className="is-hubot">Figma · Framer · Claude Code · Linear</dd>
+              </div>
+            </dl>
+
+            <MediaFrame className="case-cover" shape="video" hint="hero — gif/video">
+              the finished, live site
+            </MediaFrame>
+
+            <div className="impact-row">
+              <div>
+                <p className="stat-value">92</p>
+                <p className="stat-label">SEO score evaluation from Lighthouse on mobile</p>
+              </div>
+              <div>
+                <p className="stat-value">50</p>
+                <p className="stat-label">forum enquiries in the first 30 days of the site</p>
+              </div>
+              <div>
+                <p className="stat-value">227</p>
+                <p className="stat-label">Unique users visited the site in the last 30 days</p>
+              </div>
             </div>
           </div>
+
+          <a
+            className="case-explore"
+            href="https://northcoastbjj.co.uk"
+            target="_blank"
+            rel="noopener"
+          >
+            Explore the website <span aria-hidden="true">↗</span>
+          </a>
 
           <section className="chapter" id="bjj-context">
             <p className="eyebrow">Context</p>
@@ -155,22 +163,14 @@ export default function NorthCoastBjj() {
               influenced the design and structure of the site:
             </p>
 
-            <figure className="media media--wide">
-              <div className="media-frame">
-                <div className="media-grid media-grid--2">
-                  <div className="media-slot">
-                    <span className="slot-hint">1200×900</span>user interview photo
-                  </div>
-                  <div className="media-slot">
-                    <span className="slot-hint">1200×900</span>user interview photo
-                  </div>
-                </div>
-              </div>
-            </figure>
+            <div className="comparison">
+              <MediaFrame hint="user interview photo">participant session</MediaFrame>
+              <MediaFrame hint="user interview photo">participant session</MediaFrame>
+            </div>
 
             <blockquote className="callout">
               <p>“I was anxious but Dan's way of running (the) class made me feel safe”</p>
-              <cite>Participant B</cite>
+              <cite>- Participant B</cite>
             </blockquote>
 
             <div className="card-grid">
@@ -209,13 +209,9 @@ export default function NorthCoastBjj() {
               crucial to encouraging sign-ups.
             </p>
 
-            <figure className="media media--wide">
-              <div className="media-frame">
-                <div className="media-slot">
-                  <span className="slot-hint">2000×1250</span>the site's trust-signal sections
-                </div>
-              </div>
-            </figure>
+            <MediaFrame shape="video" hint="gif/video — trust-signal sections">
+              the trust-signal sections in use
+            </MediaFrame>
 
             <ol className="pain-list">
               <li>
@@ -258,36 +254,36 @@ export default function NorthCoastBjj() {
               times more easily.
             </p>
 
-            <figure className="media media--wide">
-              <div className="media-frame">
-                <div className="media-grid media-grid--2">
-                  <div className="media-slot">
-                    <span className="slot-hint">1072×760</span>competitor timetable
-                  </div>
-                  <div className="media-slot">
-                    <span className="slot-hint">1072×760</span>my timetable design
-                  </div>
-                </div>
+            <div className="comparison">
+              <MediaFrame hint="competitor timetable" caption="Competitors">
+                competitor booking calendar
+              </MediaFrame>
+              <MediaFrame hint="my timetable design" caption="My Design">
+                belt-coloured timetable
+              </MediaFrame>
+            </div>
+
+            <div className="card-grid">
+              <div className="insight-card">
+                <h3>Reducing Complexity</h3>
+                <p>
+                  Competitor websites mostly used the same clinical looking calander booking
+                  plugin for their site, with multiple sessions of sometimes differing martial
+                  arts. By limiting complexity it reduces choice overload allowing the users to
+                  fetch the information quicker by taking into consideration Miller's Law by
+                  only having 5 days, whilst making the site some more unique.
+                </p>
               </div>
-              <figcaption>Competitors / My Design</figcaption>
-            </figure>
-
-            <h3>Reducing Complexity</h3>
-            <p>
-              Competitor websites mostly used the same clinical looking calander booking plugin
-              for their site, with multiple sessions of sometimes differing martial arts. By
-              limiting complexity it reduces choice overload allowing the users to fetch the
-              information quicker by taking into consideration Miller's Law by only having 5
-              days, whilst making the site some more unique.
-            </p>
-
-            <h3>Colour Chunking</h3>
-            <p>
-              Colour chunking by using the colours of BJJ's belt system for each day allowed for
-              information to be easier and quicker to understand with common regions. It also
-              added some fun on brand uniqueness with the novelty helping users remeber class
-              times better.
-            </p>
+              <div className="insight-card">
+                <h3>Colour Chunking</h3>
+                <p>
+                  Colour chunking by using the colours of BJJ's belt system for each day allowed
+                  for information to be easier and quicker to understand with common regions. It
+                  also added some fun on brand uniqueness with the novelty helping users remeber
+                  class times better.
+                </p>
+              </div>
+            </div>
           </section>
 
           <section className="chapter" id="bjj-build">
@@ -299,41 +295,53 @@ export default function NorthCoastBjj() {
               reasons:
             </p>
 
-            <div className="card-grid">
-              <div className="insight-card">
-                <h3>Reasonable Entry Price Point</h3>
-                <p>
-                  Priced at £8 per month, Framer provided everything that was needed, coming in
-                  slightly cheaper than the competition: Wix £9/month, Webflow £11.50/month
-                  &amp; Squarespace £12/month.
-                </p>
+            <div className="build-reasons">
+              <div className="reason-stack">
+                <div className="insight-card reason-card">
+                  <h3>Reasonable Entry Price Point</h3>
+                  <p>
+                    Priced at £8 per month, Framer provided everything that was needed, coming
+                    in slightly cheaper than the competition: Wix £9/month, Webflow £11.50/month
+                    &amp; Squarespace £12/month.
+                  </p>
+                </div>
+                <div className="insight-card reason-card">
+                  <h3>Figma to Framer Translation Layer</h3>
+                  <p>
+                    Using the Framer Plugin in Figma allowed me to translate my designs into
+                    Framer more easily than other web builders. It would also bring the added
+                    benefit of not purchasing Framers subscription plan till later in the
+                    timeline.
+                  </p>
+                </div>
+                <div className="insight-card reason-card">
+                  <h3>Great Built in SEO Optimisation</h3>
+                  <p>
+                    Improved search engine optimisation would help NC BJJ rank higher in search
+                    results, increasing the number of unique visitors.
+                  </p>
+                </div>
+                <div className="insight-card reason-card">
+                  <h3>Framers Easy to Use GUI</h3>
+                  <p>
+                    The Framer GUI inside the app is easy to use and similar to Figma, making it
+                    easier for the client to use after handover.
+                  </p>
+                </div>
               </div>
-              <div className="insight-card">
-                <h3>Figma to Framer Translation Layer</h3>
-                <p>
-                  Using the Framer Plugin in Figma allowed me to translate my designs into
-                  Framer more easily than other web builders. It would also bring the added
-                  benefit of not purchasing Framers subscription plan till later in the
-                  timeline.
-                </p>
-              </div>
-              <div className="insight-card">
-                <h3>Great Built in SEO Optimisation</h3>
-                <p>
-                  Improved search engine optimisation would help NC BJJ rank higher in search
-                  results, increasing the number of unique visitors.
-                </p>
-              </div>
-              <div className="insight-card">
-                <h3>Framers Easy to Use GUI</h3>
-                <p>
-                  The Framer GUI inside the app is easy to use and similar to Figma, making it
-                  easier for the client to use after handover.
-                </p>
-              </div>
+
+              {/* Figma mark → arrows → Framer mark. Real marks exported from
+                  Paper; animated later. */}
+              <MediaFrame
+                className="framer-graphic"
+                shape="square"
+                hint="Figma → Framer graphic"
+              >
+                animated later
+              </MediaFrame>
             </div>
 
-            <h3>Utilising Framers “In Page Editing” Capabilities</h3>
+            <h3 className="is-lg">Utilising Framers “In Page Editing” Capabilities</h3>
             <p>
               Experimenting with converting Framer designs into Framer code components taught
               that custom components could utilise Framer's editing tool on the live site. After
@@ -343,16 +351,11 @@ export default function NorthCoastBjj() {
               to live-site editing.
             </p>
 
-            <figure className="media media--wide">
-              <div className="media-frame">
-                <div className="media-slot">
-                  <span className="slot-hint">1600×1000</span>Framer in-page editing on the live
-                  site
-                </div>
-              </div>
-            </figure>
+            <MediaFrame shape="video" hint="gif/video — Framer in-page editing">
+              Framer in-page editing on the live site
+            </MediaFrame>
 
-            <h3>Reduced Scope for the MVP</h3>
+            <h3 className="is-lg">Reduced Scope for the MVP</h3>
             <p>
               Due to the time constraints (2 months from design to launch) on the minimum viable
               product, it was decided that the scope would be reduced by:
@@ -388,15 +391,19 @@ export default function NorthCoastBjj() {
 
           <section className="chapter" id="bjj-outcome">
             <p className="eyebrow">Outcome</p>
-            <h2>A User Flow That Gets Sign-ups</h2>
+            <h2 className="is-light">A User Flow That Gets Sign-ups</h2>
 
             <blockquote className="callout">
               <p>
                 “Reese went above and beyond my expectations of what the site could be, im
                 really happy with it”
               </p>
-              <cite>Coach Daniel Havelock</cite>
+              <cite>- Coach Daniel Havelock</cite>
             </blockquote>
+
+            <MediaFrame shape="video" hint="gif/video — outcome showcase">
+              another video showcase
+            </MediaFrame>
 
             <div className="impact-row impact-row--4">
               <div>
@@ -419,7 +426,7 @@ export default function NorthCoastBjj() {
               </div>
             </div>
 
-            <div className="card-grid">
+            <div className="card-stack">
               <div className="insight-card">
                 <h3>Increased Sign-ups</h3>
                 <p>
@@ -457,15 +464,6 @@ export default function NorthCoastBjj() {
               not be tracked properly, which raised the bounce rate and limited my ability to
               judge how effective the site has been.
             </p>
-
-            <figure className="media media--wide media--video">
-              <div className="media-frame">
-                <div className="media-slot">
-                  <span className="slot-hint">screen recording — 1600×1000</span>
-                  another video showcase
-                </div>
-              </div>
-            </figure>
           </section>
 
           <section className="chapter" id="bjj-reflection">

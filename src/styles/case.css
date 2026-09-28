@@ -1,33 +1,103 @@
 /* Case study reading surface: hero, sticky rail, TOC, stats, chapters,
    media, callouts, findings, cards, footer, progress bar and reveal. */
 
-/* ---------- Hero ---------- */
+/* ---------- Hero: left chrome strip, then a centred intro block ---------- */
 .case-hero { padding: 8px 0 0; }
 
 .case-hero .crumb { margin-bottom: 14px; }
 
+/* Title / lead / facts / cover / stats sit centred in the content column,
+   beside the sticky TOC — matching Paper v3. Chapters below are left-aligned. */
+.case-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
 .case-title {
   font-family: var(--font-zen-dots);
-  font-size: var(--step-h1);
-  line-height: 1.05;
+  font-size: 42px;
+  line-height: 1.15;
   letter-spacing: 0.01em;
   text-transform: capitalize;
   font-weight: bold;
   color: var(--accent);
-  margin-top: 16px;
-  max-width: 22ch;
+  max-width: 20ch;
 }
 
 .case-lead {
-  font-family: var(--font-mona);
-  font-size: var(--step-lead);
-  line-height: var(--lh-lead);
-  color: var(--text-body);
-  margin-top: 20px;
-  max-width: 54ch;
+  font-family: var(--font-hubot);
+  font-size: 20px;
+  line-height: 1.3;
+  font-weight: 400;
+  color: var(--text);
+  margin-top: 16px;
+  max-width: 70%;
 }
 
-.case-cover { margin-top: 48px; }
+/* Role / Timeline / Tools — a centred, ruled table: labels right-aligned in a
+   lane, values left-aligned, meeting at centre. */
+.case-facts {
+  align-self: stretch;
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.case-fact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding: 12px 0;
+  border-top: 1px solid var(--rule);
+  text-align: left;
+}
+
+.case-fact:last-child { border-bottom: 1px solid var(--rule); }
+
+.case-fact dt {
+  justify-self: end;
+  font-family: var(--font-hubot);
+  font-size: 16px;
+  letter-spacing: 0.1em;
+  color: var(--text);
+}
+
+.case-fact dd {
+  justify-self: start;
+  font-family: var(--font-mona);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-body);
+}
+
+.case-fact dd.is-mono { font-family: var(--mono); font-size: 14px; }
+.case-fact dd.is-hubot { font-family: var(--font-hubot); font-size: 14px; }
+
+.case-cover { align-self: stretch; margin-top: 32px; }
+
+/* White full-width bar linking to the live site. */
+.case-explore {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 32px;
+  padding: 14px 22px;
+  background: #fff;
+  color: var(--bg);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.case-explore:hover { background: var(--accent); }
 
 /* Chapter kickers: Paper's v3 treatment diverges from the sitewide mono/faint
    chrome in views.css (.eyebrow). The hero's "type · client · year" line and
@@ -37,6 +107,7 @@
   font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.7px;
+  text-transform: uppercase;
   color: var(--accent);
 }
 
@@ -63,10 +134,17 @@
   letter-spacing: 0.1em;
 }
 
-/* Prose sits at the readable column; media is free to run out to the full track.
-   Chapters stay full width so a --wide figure inside one can actually escape. */
-.chapter > * { max-width: var(--col-content); }
-.chapter > .media--wide { max-width: none; }
+/* Prose sits at a readable measure; structural blocks run the full column. */
+.chapter > * { max-width: var(--measure); }
+
+.chapter > .media,
+.chapter > .card-grid,
+.chapter > .card-stack,
+.chapter > .impact-row,
+.chapter > .pain-list,
+.chapter > .callout,
+.chapter > .comparison,
+.chapter > .build-reasons { max-width: none; }
 
 /* ---------- Sticky table of contents ---------- */
 .case-toc {
@@ -114,84 +192,44 @@
 
 .toc-top:hover { color: var(--accent); }
 
-/* ---------- Meta strip ---------- */
-.case-meta {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 28px;
-  padding: 26px 0;
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
-}
-
-.case-meta dt {
-  font-family: var(--mono);
-  font-size: var(--step-eyebrow);
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--faint);
-}
-
-.case-meta dd {
-  font-family: var(--font-doc);
-  font-size: 14.5px;
-  line-height: 1.55;
-  color: var(--text-body);
-  margin-top: 8px;
-}
-
-/* ---------- Impact stats ---------- */
+/* ---------- Impact stats: centred number over a Hubot label ---------- */
 .impact-row {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 32px;
-  padding: 44px 0;
-  border-bottom: 1px solid var(--rule);
+  margin-top: 32px;
 }
 
 /* Outcome section's 4-stat row (distinct from the 3-stat hero default). */
 .impact-row--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
-.stat-value {
-  font-family: var(--font-zen-dots);
-  font-size: var(--step-stat);
-  line-height: 1;
-  letter-spacing: -0.03em;
-  font-weight: 600;
-  color: var(--accent);
+.impact-row > * {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
-.stat-label {
-  font-family: var(--mono);
-  font-size: var(--step-caption);
-  line-height: 1.55;
-  color: var(--muted);
-  margin-top: 12px;
-  max-width: 24ch;
-}
-
-/* Inside a chapter, `.chapter p` (0,1,1) would beat the bare stat rules, so the
-   Outcome row restates them. 32px matches Paper's 4-up row; 56px won't fit. */
-.chapter > .impact-row--4 { max-width: none; }
-
-.chapter .stat-value {
+/* `.impact-row .stat-*` (0,2,0) outranks `.chapter p` (0,1,1) so the Outcome
+   row keeps its treatment inside a chapter. */
+.impact-row .stat-value {
   font-family: var(--font-zen-dots);
   font-size: 32px;
   line-height: 1.1;
   letter-spacing: -0.03em;
-  font-weight: 600;
+  font-weight: bold;
   color: var(--accent);
-  margin-top: 0;
+  margin: 0;
   max-width: none;
 }
 
-.chapter .stat-label {
-  font-family: var(--mono);
-  font-size: var(--step-caption);
-  line-height: 1.55;
-  color: var(--muted);
-  margin-top: 12px;
-  max-width: 24ch;
+.impact-row .stat-label {
+  font-family: var(--font-hubot);
+  font-size: 16px;
+  line-height: 1.3;
+  color: var(--text-body);
+  margin: 0;
+  max-width: 28ch;
 }
 
 /* ---------- Chapter: eyebrow + statement headline + prose ---------- */
@@ -202,22 +240,28 @@
 
 .chapter h2 {
   font-family: var(--font-hubot);
-  font-size: var(--step-h2);
-  line-height: var(--lh-head);
+  font-size: 28px;
+  line-height: 1.25;
   letter-spacing: -0.015em;
   font-weight: 400;
   color: var(--text);
   margin-top: 16px;
 }
 
+.chapter h2.is-light { font-weight: 300; }
+
+/* Section sub-heads inside a chapter — light and white, distinct from the
+   accent card labels (`.insight-card h3`, which is more specific). */
 .chapter h3 {
   font-family: var(--font-hubot);
-  font-size: var(--step-h3);
-  line-height: 1.35;
-  font-weight: 600;
-  color: var(--accent);
-  margin-top: 48px;
+  font-size: 22px;
+  line-height: 1.25;
+  font-weight: 300;
+  color: var(--text);
+  margin-top: 40px;
 }
+
+.chapter h3.is-lg { font-size: 28px; }
 
 .chapter p {
   font-family: var(--font-mona);
@@ -239,15 +283,11 @@
 .media { margin-top: 36px; }
 .media--wide { width: 100%; }
 
-.media-frame {
-  padding: 20px;
-  border: 1px solid var(--media-border);
-  border-radius: 10px;
-  background: var(--media-surface);
-}
+/* Paper v3 images are bare rounded rectangles — no framed surface. */
+.media-frame { border-radius: 8px; }
 
 .media-frame img,
-.media-frame video { display: block; width: 100%; border-radius: 4px; }
+.media-frame video { display: block; width: 100%; border-radius: 8px; }
 
 /* Clips autoplay silently on loop, so under reduced motion the poster stands in
    as a still and the video never plays. Swapped in CSS rather than JS so it is
@@ -308,140 +348,149 @@
 .media-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
 .media figcaption {
-  font-family: var(--mono);
-  font-size: var(--step-caption);
+  font-family: var(--font-mona);
+  font-size: 16px;
   line-height: 1.6;
-  color: var(--faint);
-  margin-top: 14px;
-  max-width: 62ch;
+  color: var(--text-body);
+  margin-top: 8px;
+  max-width: none;
 }
 
-/* ---------- Callouts ---------- */
+/* ---------- Comparison: two captioned images side by side ---------- */
+.comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.comparison .media { margin-top: 0; }
+
+/* ---------- Pull quote: accent left border, light-italic ---------- */
 .callout {
-  margin-top: 44px;
-  padding: 28px 32px;
+  margin-top: 16px;
+  padding: 8px 16px;
   border-left: 2px solid var(--accent);
-  border-radius: 0 10px 10px 0;
-  background: var(--media-surface);
+  background: transparent;
 }
 
 .callout p {
-  font-family: var(--font-display);
-  font-size: var(--step-h3);
-  line-height: 1.5;
-  color: var(--text);
-  max-width: 46ch;
+  font-family: var(--font-hubot);
+  font-weight: 300;
+  font-style: italic;
+  font-size: 22px;
+  line-height: 1.25;
+  color: var(--accent);
+  max-width: none;
   margin: 0;
 }
 
 .callout cite {
   display: block;
-  font-family: var(--mono);
-  font-size: var(--step-eyebrow);
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
+  font-family: var(--font-hubot);
+  font-weight: 300;
   font-style: normal;
-  color: var(--faint);
-  margin-top: 18px;
-}
-
-/* research observations — the quote-bubble device */
-.quote-stack { display: flex; flex-direction: column; gap: 16px; margin-top: 36px; }
-
-.quote-user {
-  padding: 20px 22px;
-  border: 1px solid var(--media-border);
-  border-radius: 12px;
-  background: var(--media-surface);
-  max-width: 82%;
-}
-
-.quote-user:nth-child(even) { align-self: flex-end; }
-
-.quote-user p {
-  font-family: var(--font-mona);
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 18px;
+  letter-spacing: 0;
+  text-transform: none;
   color: var(--text-body);
-  margin: 0;
-  max-width: none;
+  margin-top: 4px;
 }
 
-.quote-user .attr {
-  display: block;
-  font-family: var(--mono);
-  font-size: var(--step-eyebrow);
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--faint);
-  margin-top: 14px;
-}
-
-/* ---------- Numbered findings ---------- */
+/* ---------- Numbered lists: accent Hubot numeral, no dividers ---------- */
 .pain-list {
   list-style: none;
   counter-reset: pain;
-  margin-top: 32px;
+  margin-top: 16px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 8px;
 }
 
 .pain-list li {
   counter-increment: pain;
   display: grid;
   grid-template-columns: 44px minmax(0, 1fr);
-  gap: 12px;
-  padding: 18px 0;
-  border-top: 1px solid var(--rule-soft);
+  gap: 8px;
+  align-items: baseline;
   font-family: var(--font-mona);
-  font-size: 15.5px;
-  line-height: 1.6;
+  font-size: 18px;
+  line-height: 1.5;
   color: var(--text-body);
 }
 
 .pain-list strong { font-weight: 400; color: var(--text); }
 
 .pain-list li::before {
-  content: counter(pain, decimal-leading-zero);
-  font-family: var(--mono);
-  font-size: 12px;
+  content: counter(pain);
+  font-family: var(--font-hubot);
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1;
   color: var(--accent);
-  padding-top: 3px;
+  text-align: center;
 }
 
-/* ---------- Insight / feature cards ---------- */
+/* ---------- Cards: transparent, accent label over Mona body ---------- */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   gap: 16px;
-  margin-top: 36px;
+  margin-top: 24px;
 }
 
-.insight-card {
-  padding: 22px;
-  border: 1px solid var(--media-border);
-  border-radius: 10px;
-  background: var(--media-surface);
-}
+/* Outcome stacks its cards full-width rather than gridding them. */
+.card-stack { display: flex; flex-direction: column; margin-top: 24px; }
+
+.insight-card { padding: 16px; }
 
 .insight-card h3 {
   font-family: var(--font-hubot);
   font-size: 16px;
-  line-height: 1.35;
+  line-height: 1.5;
   font-weight: 600;
+  text-transform: capitalize;
   color: var(--accent);
   margin: 0;
 }
 
 .insight-card p {
   font-family: var(--font-mona);
-  font-size: 13.5px;
-  line-height: 1.65;
-  color: var(--muted);
-  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.375;
+  color: var(--text-body);
+  margin-top: 6px;
   max-width: none;
 }
+
+/* Build's "why Framer" reasons — accent outline box, white label. */
+.build-reasons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.reason-stack { display: flex; flex-direction: column; gap: 16px; }
+
+.reason-card {
+  border-radius: 8px;
+  outline: 1px solid var(--accent);
+}
+
+.reason-card h3 { color: var(--text); text-transform: none; }
+
+/* The Figma→Framer mark: logo, three arrows, logo — animated later. */
+.framer-graphic {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+}
+
+.framer-graphic .arrow { color: var(--accent); }
 
 /* ---------- Footer: next project + closing line ---------- */
 .case-footer {
