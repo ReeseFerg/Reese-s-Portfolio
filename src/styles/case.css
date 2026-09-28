@@ -467,7 +467,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 64px;
-  align-items: center;
+  align-items: stretch;
   margin-top: 16px;
 }
 
@@ -482,13 +482,15 @@
 
 /* The Figma→Framer mark, exported from Paper as a static image — animated
    later. Transparent art, so no rounded frame. */
+/* Spans the full height of the reason stack: figma mark at the top, framer
+   mark at the bottom, arrows spread between. */
 .framer-graphic {
   justify-self: center;
-  align-self: center;
+  align-self: stretch;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 60px;
+  justify-content: space-between;
 }
 
 .fg-figma { width: 129px; height: auto; }
