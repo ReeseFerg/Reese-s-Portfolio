@@ -29,10 +29,9 @@
 
 .case-cover { margin-top: 48px; }
 
-/* Case-scoped eyebrow: Paper's v3 treatment diverges from the sitewide mono/
-   faint chrome in views.css (.eyebrow), so it's overridden here for the hero
-   and chapter kickers only — the footer's "Next project" eyebrow stays mono. */
-.case-hero .eyebrow,
+/* Chapter kickers: Paper's v3 treatment diverges from the sitewide mono/faint
+   chrome in views.css (.eyebrow). The hero's "type · client · year" line and
+   the footer's "Next project" label stay mono, matching Paper. */
 .chapter .eyebrow {
   font-family: var(--font-zen-dots);
   font-size: 14px;
@@ -163,6 +162,30 @@
 }
 
 .stat-label {
+  font-family: var(--mono);
+  font-size: var(--step-caption);
+  line-height: 1.55;
+  color: var(--muted);
+  margin-top: 12px;
+  max-width: 24ch;
+}
+
+/* Inside a chapter, `.chapter p` (0,1,1) would beat the bare stat rules, so the
+   Outcome row restates them. 32px matches Paper's 4-up row; 56px won't fit. */
+.chapter > .impact-row--4 { max-width: none; }
+
+.chapter .stat-value {
+  font-family: var(--font-zen-dots);
+  font-size: 32px;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+  color: var(--accent);
+  margin-top: 0;
+  max-width: none;
+}
+
+.chapter .stat-label {
   font-family: var(--mono);
   font-size: var(--step-caption);
   line-height: 1.55;
@@ -371,11 +394,13 @@
   gap: 12px;
   padding: 18px 0;
   border-top: 1px solid var(--rule-soft);
-  font-family: var(--font-doc);
+  font-family: var(--font-mona);
   font-size: 15.5px;
   line-height: 1.6;
   color: var(--text-body);
 }
+
+.pain-list strong { font-weight: 400; color: var(--text); }
 
 .pain-list li::before {
   content: counter(pain, decimal-leading-zero);
