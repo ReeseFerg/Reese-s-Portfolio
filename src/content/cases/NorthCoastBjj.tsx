@@ -1,4 +1,3 @@
-import figmaToFramer from '../../assets/cases/nc-figma-to-framer.png';
 import MediaFrame from '../../components/case/MediaFrame';
 
 export default function NorthCoastBjj() {
@@ -327,12 +326,40 @@ export default function NorthCoastBjj() {
                 </div>
               </div>
 
-              {/* Exported from Paper as a static image; animated later. */}
-              <MediaFrame
-                className="framer-graphic"
-                src={figmaToFramer}
-                alt="Designed in Figma, built in Framer"
-              />
+              {/* Marks exported from Paper (vector + raster); the arrows are
+                  inline so they track the accent token. Animated later. */}
+              <div className="framer-graphic" aria-hidden="true">
+                <img
+                  className="fg-figma"
+                  src="/cases/nc-figma-mark.svg"
+                  alt=""
+                  width={86}
+                  height={100}
+                />
+                <div className="fg-arrows">
+                  {[0, 1, 2].map((i) => (
+                    <svg
+                      key={i}
+                      className="fg-arrow"
+                      width="28"
+                      height="28"
+                      viewBox="0 0 50 50"
+                    >
+                      <path
+                        d="M16.91 50l-8.568-8.332 16.658-16.668-16.658-16.669 8.568-8.331 24.748 25z"
+                        fill="var(--accent)"
+                      />
+                    </svg>
+                  ))}
+                </div>
+                <img
+                  className="fg-framer"
+                  src="/cases/nc-framer-mark.png"
+                  alt=""
+                  width={84}
+                  height={84}
+                />
+              </div>
             </div>
 
             <h3 className="is-lg">Utilising Framers “In Page Editing” Capabilities</h3>

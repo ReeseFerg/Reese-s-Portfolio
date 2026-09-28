@@ -485,12 +485,16 @@
 .framer-graphic {
   justify-self: center;
   align-self: center;
-  width: 100%;
-  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
 }
 
-.framer-graphic .media-frame,
-.framer-graphic img { border-radius: 0; }
+.fg-figma { width: 86px; height: auto; }
+.fg-framer { width: 84px; height: auto; }
+.fg-arrows { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.fg-arrow { display: block; transform: rotate(90deg); }
 
 /* ---------- Footer: next project + closing line ---------- */
 .case-footer {
