@@ -488,13 +488,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 40px;
+  gap: 60px;
 }
 
-.fg-figma { width: 86px; height: auto; }
-.fg-framer { width: 84px; height: auto; }
-.fg-arrows { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-.fg-arrow { display: block; transform: rotate(90deg); }
+.fg-figma { width: 129px; height: auto; }
+.fg-framer { width: 126px; height: auto; }
+.fg-arrows { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.fg-arrow { display: block; width: 42px; height: 42px; transform: rotate(90deg); }
 
 /* ---------- Footer: next project + closing line ---------- */
 .case-footer {
