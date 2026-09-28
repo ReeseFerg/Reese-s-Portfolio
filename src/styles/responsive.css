@@ -1,5 +1,34 @@
 /* Responsive overrides. Kept last so they win, exactly as in the original. */
 
+/* Short viewports: the hero's "fill the screen" min-height (terminal.css)
+   combined with the enlarged avatar/type sizes needs ~890px of height at
+   typical desktop widths to show the command input without scrolling — more
+   than most laptop screens give a browser window (1366×768 and 1280×800 both
+   fall well short). Below 900px, fall back to the pre-enlargement sizing so
+   the whole terminal — tabs and command input included — actually fits in
+   the space the min-height rule promises. This is a height query, so it
+   applies independently of, and stacks with, the max-width queries below. */
+@media (max-height: 900px) {
+  .avatar { height: 132px; }
+  .term-mascot-photo img { height: 132px; }
+
+  .term-left {
+    flex: 1.15;
+    gap: 26px;
+    padding: 34px 32px 22px;
+  }
+
+  .welcome {
+    font-size: clamp(9px, calc(5.4cqi - 1.05px), 34px);
+    line-height: 1.18;
+  }
+  .term-right { padding: 22px 32px; }
+  .h-rule { margin: 20px -32px; }
+  .panel-heading { font-size: 14px; margin-bottom: 10px; }
+  .about-copy { font-size: 13.5px; line-height: 22px; }
+  .project-row { font-size: 13.5px; line-height: 24px; }
+}
+
 @media (max-width: 1100px) {
   .case-body { grid-template-columns: minmax(0, 1fr); gap: 0; margin-top: 48px; }
   .case-toc { display: none; }
@@ -8,7 +37,7 @@
 @media (max-width: 980px) {
   .site-header { padding: 24px 28px; flex-wrap: wrap; gap: 10px; }
   .site-nav { gap: 14px; }
-  .hero { width: calc(100% - 56px); justify-content: flex-start; padding-top: 12px; }
+  .hero { width: calc(100% - 56px); justify-content: flex-start; padding-top: 12px; min-height: auto; }
   .term-box { flex-direction: column; }
   .term-divider { width: auto; height: 1px; align-self: stretch; }
   .term-left-info { margin-top: 6px; }
@@ -39,19 +68,22 @@
   .quote-user:nth-child(even) { align-self: stretch; }
 }
 
-/* Phones (<=480px): "Reese is a business graduate" can't stay large on one
-   line in a narrow column, so wrap it at a readable size instead of shrinking
-   to ~13px. The same hidden-sizer reservation (terminal.css) still applies —
-   the sizers just wrap too, so the grid cell reserves the tallest wrapped
-   phrase and the box height stays fixed as phrases swap, with no per-width
-   min-height guess. */
+/* Phones (<=480px): free word-wrapping used to leave "Reese is" and the
+   phrase to break wherever they fit, which put "futureproof" and "a product
+   designer" on two lines but "a business graduate" — the longest phrase — on
+   three, so the hero visibly grew and shrank as it cycled. Force exactly two
+   lines instead: .welcome-break (terminal.css, off by default) turns on and
+   splits "Reese is" from the phrase every time, and the phrase itself stays
+   nowrap so it can't wrap a second time on its own line. font-size is sized
+   in cqi against the same term-left container desktop's .welcome uses, so it
+   scales with the column's real width rather than a fixed vw guess — 7.4cqi
+   is the largest size that still fits "a business graduate" (the widest
+   phrase, plus the sizer's caret padding) on one line at every width in this
+   query, derived the same way as desktop's 5.4cqi coefficient. */
 @media (max-width: 480px) {
   .welcome {
-    white-space: normal;
-    font-size: clamp(20px, 6vw, 28px);
-    line-height: 1.25;
+    font-size: clamp(13px, 7.4cqi, 28px);
+    line-height: 1.3;
   }
-  .welcome .line-wrap { max-width: 100%; }
-  .welcome .line-sizer { white-space: normal; padding-right: 0; }
-  .welcome .line-live { white-space: normal; }
+  .welcome-break { display: block; }
 }

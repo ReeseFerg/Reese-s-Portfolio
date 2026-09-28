@@ -164,15 +164,20 @@ export default function Terminal() {
             {/* The phrase cycles; hidden sizers (one per full "Reese is …"
                 line) reserve the WIDEST and TALLEST option so the box never
                 reflows as the typewriter types or swaps phrases — on desktop
-                (one line) and on phones (wrapped). Live text overlays them. */}
+                (one line) and on phones (always exactly two: "Reese is" then
+                the phrase, forced by .welcome-break — see its CSS for why a
+                free-wrapping phrase used to jump between two and three
+                lines). Live text overlays them. */}
             <span className="line-wrap">
               {PHRASES.map((p) => (
                 <span key={p} className="line-sizer" aria-hidden="true">
-                  Reese is {p}
+                  Reese is <br className="welcome-break" />
+                  {p}
                 </span>
               ))}
               <span className="line-live">
-                Reese is <span className="phrase">{phrase}</span>
+                Reese is <br className="welcome-break" />
+                <span className="phrase">{phrase}</span>
                 <span className="cursor" />
               </span>
             </span>
@@ -238,8 +243,8 @@ export default function Terminal() {
       </div>
 
       <p className="flavor-line">
-        <span className="spark">✳</span> Open to opportunities — pick a section below, or type a{' '}
-        <span className="slash">/command</span> to look around.
+        <span className="spark">✳</span> Open to opportunities — pick a section below, type a{' '}
+        <span className="slash">/command</span>, or scroll for recent work.
       </p>
 
       <nav className="term-tabs" aria-label="Sections" id="askBox">
