@@ -76,9 +76,11 @@ export default function NorthCoastBjj() {
               </div>
             </dl>
 
-            <MediaFrame className="case-cover" shape="video" hint="hero — gif/video">
-              the finished, live site
-            </MediaFrame>
+            <MediaFrame
+              className="case-cover"
+              video="/media/nc-hero.mp4"
+              alt="The finished North Coast BJJ site in use"
+            />
 
             <div className="impact-row">
               <div>
@@ -372,9 +374,10 @@ export default function NorthCoastBjj() {
               to live-site editing.
             </p>
 
-            <MediaFrame shape="video" hint="gif/video — Framer in-page editing">
-              Framer in-page editing on the live site
-            </MediaFrame>
+            <MediaFrame
+              video="/media/nc-inpage-editing.mp4"
+              alt="Editing the live Framer site in-page"
+            />
 
             <h3 className="is-lg">Reduced Scope for the MVP</h3>
             <p>
