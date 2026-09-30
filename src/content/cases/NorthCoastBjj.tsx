@@ -1,3 +1,5 @@
+import interview1 from '../../assets/cases/nc-interview-1.jpg';
+import interview2 from '../../assets/cases/nc-interview-2.jpg';
 import MediaFrame from '../../components/case/MediaFrame';
 
 export default function NorthCoastBjj() {
@@ -162,8 +164,8 @@ export default function NorthCoastBjj() {
             </p>
 
             <div className="comparison">
-              <MediaFrame hint="user interview photo">participant session</MediaFrame>
-              <MediaFrame hint="user interview photo">participant session</MediaFrame>
+              <MediaFrame src={interview1} alt="A North Coast BJJ user interview session" />
+              <MediaFrame src={interview2} alt="Members training at the North Coast BJJ club" />
             </div>
 
             <blockquote className="callout">
