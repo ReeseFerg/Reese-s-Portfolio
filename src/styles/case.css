@@ -87,6 +87,7 @@
   gap: 12px;
   margin-top: 32px;
   padding: 14px 22px;
+  border: 1px solid #fff;
   background: #fff;
   color: var(--bg);
   font-family: var(--mono);
@@ -95,10 +96,25 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
-  transition: background-color var(--duration-fast) var(--ease-standard);
+  transition: background-color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard), scale var(--duration-fast) var(--ease-standard);
 }
 
-.case-explore:hover { background: var(--accent); }
+/* Matches the nav bar's button interaction (see ui.css): hover de-fills to an
+   accent outline; a press re-solidifies to the button's own key colour — white,
+   not accent, since this is an external link and the nav's white CV button
+   (also external) stays white on press too. */
+.case-explore:hover {
+  background: transparent;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.case-explore:active {
+  background: #fff;
+  border-color: #fff;
+  color: var(--bg);
+  scale: 0.96;
+}
 
 /* Chapter kickers: Paper's v3 treatment diverges from the sitewide mono/faint
    chrome in views.css (.eyebrow). The hero's "type · client · year" line and

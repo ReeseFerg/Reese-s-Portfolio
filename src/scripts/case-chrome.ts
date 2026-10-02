@@ -85,9 +85,19 @@ function bind() {
       },
       { rootMargin: '0px 0px -12% 0px' },
     );
-    root.querySelectorAll('.case-cover, .impact-row, .chapter, .next-case').forEach((el) => {
+    root.querySelectorAll('.case-cover, .chapter, .next-case').forEach((el) => {
       el.classList.add('reveal');
       observer!.observe(el);
+    });
+
+    // Repeated-item groups (stat tiles, insight cards) stagger ~100ms apart
+    // instead of revealing as one block, so the sequence reads as a group.
+    root.querySelectorAll('.impact-row, .card-grid, .card-stack').forEach((group) => {
+      [...group.children].forEach((child, i) => {
+        (child as HTMLElement).style.transitionDelay = `${i * 100}ms`;
+        child.classList.add('reveal');
+        observer!.observe(child);
+      });
     });
   }
 
