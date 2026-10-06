@@ -456,6 +456,67 @@ body:not(.routed) .hero {
 
 .site-nav { display: flex; align-items: center; gap: 18px; }
 
+/* Hamburger toggle — hidden by default (desktop); responsive.css reveals it
+   below 768px. The three bars are absolutely stacked so the top and bottom can
+   rotate into an X about the centred middle bar, which fades out. Reuses the
+   site's --duration-fast / --ease-standard (no new duration token). */
+.nav-toggle {
+  display: none;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0; /* no box around the icon, in either the bars or the X state */
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.nav-toggle__bars,
+.nav-toggle__bars span {
+  display: block;
+}
+
+.nav-toggle__bars {
+  position: relative;
+  width: 20px;
+  height: 14px;
+  margin: 0 auto;
+}
+
+.nav-toggle__bars span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: currentcolor;
+  transition:
+    transform var(--duration-fast) var(--ease-standard),
+    opacity var(--duration-fast) var(--ease-standard);
+}
+
+.nav-toggle__bars span:nth-child(1) { top: 0; }
+.nav-toggle__bars span:nth-child(2) { top: 6px; }
+.nav-toggle__bars span:nth-child(3) { top: 12px; }
+
+.site-header[data-menu-open] .nav-toggle__bars span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.site-header[data-menu-open] .nav-toggle__bars span:nth-child(2) {
+  opacity: 0;
+}
+
+.site-header[data-menu-open] .nav-toggle__bars span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Reduced-motion override lives beside the rule it guards (CLAUDE.md): the
+   bars still snap to the X, just without the tween. */
+@media (prefers-reduced-motion: reduce) {
+  .nav-toggle__bars span { transition: none; }
+}
+
 /* ---------- Clickable project rows (terminal panel) ---------- */
 button.project-row {
   display: block;
