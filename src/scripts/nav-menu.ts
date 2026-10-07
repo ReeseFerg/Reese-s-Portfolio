@@ -47,11 +47,13 @@ function bind() {
   );
 
   // Tapping a link inside the panel navigates (or opens the CV in a new tab) —
-  // either way the menu should close behind it.
+  // either way the menu should close behind it. Guarded by isOpen() so it's a
+  // no-op on desktop, where the same links live in the inline bar and the menu
+  // is never open (no stray aria writes to the hidden toggle).
   menu.addEventListener(
     'click',
     (e) => {
-      if ((e.target as HTMLElement).closest('a')) close();
+      if (isOpen() && (e.target as HTMLElement).closest('a')) close();
     },
     { signal },
   );

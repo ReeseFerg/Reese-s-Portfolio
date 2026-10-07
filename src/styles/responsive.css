@@ -101,12 +101,16 @@
   /* Black blur behind the open panel — a light black tint over a backdrop blur
      rather than a heavy opaque wash. Sits at z-index -1 within the header's
      stacking context, so it covers page content but stays behind the logo and
-     the panel itself. */
+     the panel itself. pointer-events:none so a tap on the dimmed area passes
+     through to the content below — otherwise the scrim would swallow the tap
+     and resolve its target to .site-header, defeating nav-menu.ts's
+     click-outside-to-close (which checks the target is outside the header). */
   .site-header[data-menu-open]::after {
     content: '';
     position: fixed;
     inset: 0;
     z-index: -1;
+    pointer-events: none;
     background: color-mix(in srgb, var(--bg) 25%, transparent);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
