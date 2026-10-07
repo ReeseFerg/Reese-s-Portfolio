@@ -66,8 +66,10 @@ body:not(.routed) .hero {
   font-size: 13px;
   color: var(--accent);
   letter-spacing: 0.02em;
-  /* top half matches the page, bottom half the box, so the chip reads as a break in the border line */
-  background: linear-gradient(to bottom, var(--bg) 50%, var(--surface) 50%);
+  /* Solid black chip masks the accent border line it sits on and blends with
+     the page (the box itself is transparent-on-black now). Was a bg/surface
+     gradient from when the box had a --surface fill. */
+  background: var(--bg);
 }
 
 .term-left {
@@ -287,22 +289,31 @@ body:not(.routed) .hero {
   margin: 28px -32px;
 }
 
+/* "About me" / "Recent projects" subtitles — Zen Dots display voice, bigger,
+   matching Hero Layout A (was 17px bold mono). Zen Dots is single-weight (400),
+   so it isn't bolded. */
 .panel-heading {
-  font-size: 17px;
-  font-weight: 700;
+  font-family: 'Zen Dots', var(--font-display, 'JetBrains Mono'), sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 28px;
   color: var(--accent);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
+/* Bigger body copy in Mona Sans (proportional, not the terminal mono) — the
+   updated Hero Layout A reads softer and more legible than the monospace. */
 .about-copy {
-  font-size: 16px;
-  line-height: 26px;
-  color: var(--text-body);
+  font-family: var(--font-mona);
+  font-size: 20px;
+  line-height: 34px;
+  color: var(--text);
 }
 
 .project-row {
-  font-size: 16px;
-  line-height: 28px;
+  font-family: var(--font-mona);
+  font-size: 20px;
+  line-height: 30px;
   color: var(--text);
   white-space: pre-wrap;
 }
