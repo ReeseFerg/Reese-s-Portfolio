@@ -10,7 +10,7 @@ import OutputLog, { type LogLine } from './OutputLog';
 import CommandInput from './CommandInput';
 import reeseDither from '../../assets/reese-dither.png';
 
-const PHRASES = ['a product designer', 'a business graduate', 'futureproof'];
+const PHRASES = ['a product designer', 'a business graduate', 'learning coding'];
 const MAX_LINES = 8;
 // Astro's default swap resyncs <html>'s attributes from the incoming document,
 // wiping the inline `--accent` style set below. Mirroring it to
@@ -225,9 +225,9 @@ export default function Terminal() {
           <div>
             <h2 className="panel-heading">About me</h2>
             <p className="about-copy">
-              I&apos;m Reese — a UX designer and business graduate who designs with AI in the
-              loop. I shape interfaces in Figma and Paper, pressure-test them with real flows,
-              then ship them with Claude Code. Less deck, more demo.
+              I&apos;m Reese — a product designer located in Inverness, Scotland. Using my
+              business degree, AI and front end learning to help local businesses and build real
+              projects.
             </p>
           </div>
           <div className="h-rule" />
@@ -235,7 +235,7 @@ export default function Terminal() {
             <h2 className="panel-heading">Recent projects</h2>
             {PROJECT_ROWS.map(({ cmd, name, desc }) => (
               <button key={cmd} className="project-row" onClick={() => execute(cmd)}>
-                {name} <span className="desc">{desc}</span>
+                /{name} <span className="desc">{desc}</span>
               </button>
             ))}
           </div>

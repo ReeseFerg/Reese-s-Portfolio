@@ -51,9 +51,77 @@
   .build-reasons { grid-template-columns: minmax(0, 1fr); gap: var(--space-6); }
 }
 
+/* Below 768px the connected bar becomes a hamburger + dropdown panel. The
+   toggle appears, and #site-menu (the same element that is the inline bar on
+   desktop) re-roles as a full-width panel under the header, hidden until the
+   toggle sets data-menu-open on the header. max-width syntax, not (width <= …)
+   (CLAUDE.md Stylelint convention). */
+@media (max-width: 768px) {
+  .site-header {
+    position: relative;
+    z-index: 60; /* lift the header + panel above page content and the scrim */
+    flex-wrap: nowrap;
+  }
+
+  .nav-toggle { display: inline-flex; align-items: center; justify-content: center; }
+
+  /* The panel: full width under the header, stacked rows, collapsed until open.
+     Solid black (not the grey --surface) so the rows read as flat black rather
+     than a grey-brown fill; the page behind is blurred by the scrim below. No
+     panel border or padding — the stacked buttons' own borders define the rows,
+     so there's no divider line between the header and the first button. */
+  #site-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    background: var(--bg);
+  }
+
+  .site-header[data-menu-open] #site-menu { display: flex; }
+
+  /* Rows, not a connected horizontal bar: drop the -1px horizontal overlap and
+     collapse the vertical dividers instead; every button fills the row. */
+  #site-menu .btn {
+    width: 100%;
+    justify-content: space-between;
+    padding: 16px 18px;
+    letter-spacing: 0.08em;
+  }
+
+  #site-menu .btn + .btn { margin-left: 0; margin-top: -1px; }
+
+  /* Full CV label fits on its own full-width row — override the ≤560 short swap. */
+  #site-menu .cv-full { display: inline; }
+  #site-menu .cv-short { display: none; }
+
+  /* Black blur behind the open panel — a light black tint over a backdrop blur
+     rather than a heavy opaque wash. Sits at z-index -1 within the header's
+     stacking context, so it covers page content but stays behind the logo and
+     the panel itself. pointer-events:none so a tap on the dimmed area passes
+     through to the content below — otherwise the scrim would swallow the tap
+     and resolve its target to .site-header, defeating nav-menu.ts's
+     click-outside-to-close (which checks the target is outside the header). */
+  .site-header[data-menu-open]::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: color-mix(in srgb, var(--bg) 25%, transparent);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+}
+
 /* Phones: tighten the boxed nav and swap the CV label to its short form so the
-   connected bar fits without overflowing. The header already wraps the nav to
-   its own line at 980px; this keeps that line inside the viewport. */
+   connected bar fits without overflowing. These target the bare .btn / .cv-*;
+   below 768 the #site-menu dropdown rules above are id-scoped and outrank them,
+   so this now only has visible effect if the bar ever shows under 560px. Kept
+   for safety / that band. */
 @media (max-width: 560px) {
   .site-header .btn { padding: 11px 14px; letter-spacing: 0.08em; }
   .cv-full { display: none; }
@@ -67,6 +135,15 @@
   .callout { padding: 22px 20px; }
   .quote-user { max-width: 100%; }
   .quote-user:nth-child(even) { align-self: stretch; }
+
+  /* Case-study type that has no mobile override otherwise — the desktop sizes
+     overflow or wrap awkwardly on a phone. Conservative reductions, verified
+     against the baseline screenshots. */
+  .case-title { font-size: 30px; }
+  .impact-row .stat-value { font-size: 26px; }
+  .chapter h2 { font-size: 24px; }
+  .chapter h3 { font-size: 20px; }
+  .chapter h3.is-lg { font-size: 24px; }
 }
 
 /* Phones (<=480px): free word-wrapping used to leave "Reese is" and the

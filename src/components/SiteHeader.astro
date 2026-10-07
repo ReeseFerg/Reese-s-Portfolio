@@ -19,7 +19,29 @@ const isActive = (to: string) => pathname === to || pathname.startsWith(to + '/'
 <header class="site-header">
   <a class="logo" href="/">Reese Ferguson</a>
   <nav class="site-nav" aria-label="Primary">
-    <div class="btn-group">
+    {
+      /* Hamburger — hidden above 768px (CSS), the only control shown below it.
+        A real <button>, so no href; nav-menu.ts drives aria-expanded and the
+        header's data-menu-open state. */
+    }
+    <button
+      type="button"
+      class="nav-toggle"
+      aria-expanded="false"
+      aria-controls="site-menu"
+      aria-label="Open menu"
+    >
+      <span class="nav-toggle__bars" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+    {
+      /* One element, two guises: the connected segmented bar on desktop and the
+        dropdown panel below 768px. CSS does the swap — markup stays single-source. */
+    }
+    <div class="btn-group" id="site-menu">
       {
         NAV.map(({ to, label }) => (
           <Button variant="ghost" href={to} active={isActive(to)}>
