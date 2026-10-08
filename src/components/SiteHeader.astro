@@ -1,8 +1,13 @@
 ---
 import Button from './ui/Button.astro';
 
+// `match` is what decides the active state, `to` is where the link actually
+// goes. They diverge for Work: its href is the homepage anchor `/#work`
+// (pathname never contains a hash, so comparing against that would never
+// match), but a visitor browsing a case study at /work/<slug> is still
+// looking at "Work" and the nav should say so.
 const NAV = [
-  { to: '/#work', label: 'Work' },
+  { to: '/#work', match: '/work', label: 'Work' },
   { to: '/about', label: 'About' },
   { to: '/contact', label: 'Contact' },
 ];
@@ -13,7 +18,7 @@ const pathname = Astro.url.pathname;
 // so /work stayed active on /work/savr-app. Match that: exact match or a
 // path segment prefix, not a bare string prefix (so /work doesn't light up
 // on a hypothetical /workshop).
-const isActive = (to: string) => pathname === to || pathname.startsWith(to + '/');
+const isActive = (match: string) => pathname === match || pathname.startsWith(match + '/');
 ---
 
 <header class="site-header">
@@ -43,8 +48,8 @@ const isActive = (to: string) => pathname === to || pathname.startsWith(to + '/'
     }
     <div class="btn-group" id="site-menu">
       {
-        NAV.map(({ to, label }) => (
-          <Button variant="ghost" href={to} active={isActive(to)}>
+        NAV.map(({ to, match, label }) => (
+          <Button variant="ghost" href={to} active={isActive(match ?? to)}>
             {label}
           </Button>
         ))
