@@ -84,14 +84,23 @@ export default function Terminal() {
       const match = COMMANDS.find((c) => c.cmd.toLowerCase() === v.toLowerCase());
       if (match) {
         addLine('out-resp', '⏺', match.out);
-        navigate(match.route);
+        if (match.route.startsWith('/#')) {
+          // Home-anchor route: the terminal only ever renders on the homepage,
+          // so the target is always present — scroll to it instead of a
+          // navigate() that would just re-land on the same page.
+          document
+            .getElementById(match.route.slice(2))
+            ?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
+        } else {
+          navigate(match.route);
+        }
       } else if (v.startsWith('/')) {
         addLine('out-err', '✗', 'command not found: ' + v + ' · try ? for shortcuts');
       } else {
         addLine('out-err', '✗', 'not a command: ' + v + ' · commands start with /');
       }
     },
-    [addLine],
+    [addLine, reduced],
   );
 
   // Arrow keys move through the question block, number keys pick an option, and

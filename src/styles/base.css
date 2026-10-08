@@ -2,6 +2,13 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+/* Smooth-scrolls `/#work` deep links and the terminal's scrollIntoView call. */
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
 body {
   background: var(--bg);
   color: var(--text);
