@@ -21,7 +21,6 @@ if (!baseUrl || !outDir) {
 
 const ROUTES = [
   ['home', ''],
-  ['work', '/work'],
   ['about', '/about'],
   ['contact', '/contact'],
   ['case-north-coast-bjj', '/work/north-coast-bjj'],

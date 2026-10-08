@@ -1,4 +1,4 @@
-/* Routed full-page views: work grid, shipped strip, about, contact. */
+/* Routed full-page views: about, contact. */
 
 /* ---------- Routed views ---------- */
 .view { display: none; }
@@ -33,46 +33,6 @@ body.routed .view-inner { padding-top: 20px; }
 }
 
 .view-lead .spark { color: var(--accent); }
-
-/* work grid — a stacked <Flex> of full-width SnapshotCards (src/pages/work/index.astro);
-   direction/gap come from the primitive, this rule owns only the top offset. */
-.work-grid {
-  margin-top: 32px;
-}
-
-/* ---------- Shipped strip ----------
-   Live things, not case studies. For someone early in their career this is the
-   cheapest credibility on the site: proof that work leaves the Figma file. */
-.shipped { margin-top: 64px; padding-top: 32px; border-top: 1px solid var(--rule); }
-
-.shipped-title {
-  font-family: var(--mono);
-  font-size: var(--step-eyebrow);
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--faint);
-  font-weight: 400;
-}
-
-.shipped-list { list-style: none; margin-top: 18px; display: flex; flex-direction: column; gap: 2px; }
-
-.shipped-list a {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px 12px;
-  padding: 11px 12px;
-  margin-left: -12px;
-  border-radius: 6px;
-  text-decoration: none;
-  transition: background-color var(--duration-fast) var(--ease-standard);
-}
-
-.shipped-list a:hover { background: var(--surface); }
-.sh-name { font-size: 14px; font-weight: 700; color: var(--text); }
-.sh-desc { font-size: 13px; color: var(--muted); flex: 1 1 240px; }
-.sh-arrow { font-family: var(--mono); font-size: 12px; color: var(--faint); }
-.shipped-list a:hover .sh-arrow { color: var(--accent); }
 
 /* ================= Case study ================= */
 
@@ -109,11 +69,17 @@ body.routed .view-inner { padding-top: 20px; }
    card edges line up under it — wider than the default size-3 container (1160).
    Scoped with .l-container so it beats .l-container-3's --l-container-w. */
 .snapshots.l-container { --l-container-w: 1400px; }
-.snapshots { padding: var(--space-chapter) 0; }
+
+.snapshots {
+  padding: var(--space-chapter) 0;
+  /* breathing room above the first card when `/#work` scrolls here, so it
+     doesn't land flush against the viewport edge. */
+  scroll-margin-top: var(--header-h);
+}
 
 /* ================= Snapshot cards ================= */
-/* Shared by the homepage and /work (src/components/SnapshotCard.astro), per
-   Reese's "Home — change build" Paper mock. The whole card sits MUTED at rest;
+/* src/components/SnapshotCard.astro, per Reese's "Home — change build" Paper
+   mock. The whole card sits MUTED at rest;
    a ready card (`is-live`) lights every element up to full colour on hover and
    gains the accent border + glow. `is-soon` stays muted, blurs its body and
    disables both buttons — projects that aren't ready to show yet. */

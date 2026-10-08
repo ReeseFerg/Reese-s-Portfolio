@@ -38,6 +38,6 @@ export function deadLinkMessage(dead: DeadLink[]): string {
     'Published case studies link to draft ones:',
     ...lines,
     '',
-    'Point those links at /work, or drop `draft: true` from the targets in src/lib/site.ts.',
+    'Point those links at /#work, or drop `draft: true` from the targets in src/lib/site.ts.',
   ].join('\n');
 }

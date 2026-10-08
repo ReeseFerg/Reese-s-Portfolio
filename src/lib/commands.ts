@@ -14,8 +14,8 @@ export const COMMANDS: Command[] = [
   {
     cmd: '/work',
     desc: 'selected projects',
-    out: 'opening work — 4 selected projects',
-    route: '/work',
+    out: 'scrolling to recent work…',
+    route: '/#work',
   },
   {
     cmd: '/contact',

@@ -6,7 +6,7 @@ export default function Databrew() {
       aria-label="databrew case study"
     >
       <header className="case-hero case-shell">
-        <a className="back-link" href="/work">
+        <a className="back-link" href="/#work">
           ❮ back to work
         </a>
         <p className="crumb">~/reese/work/databrew</p>

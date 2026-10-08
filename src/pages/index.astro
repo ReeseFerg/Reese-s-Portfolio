@@ -57,7 +57,7 @@ const SNAPSHOTS = [
       { value: '[TODO]', label: '[TODO]' },
       { value: '[TODO]', label: '[TODO]' },
     ],
-    caseHref: '/work',
+    caseHref: '/#work',
     liveHref: '[TODO: this repo URL]',
   },
   {
@@ -79,7 +79,7 @@ const SNAPSHOTS = [
 <BaseLayout path="/">
   <Terminal slot="hero" client:load />
 
-  <Container class="snapshots" size="3">
+  <Container class="snapshots" id="work" size="3">
     <Flex direction="column" gap="6">
       {SNAPSHOTS.map((snap) => <SnapshotCard {...snap} />)}
     </Flex>
