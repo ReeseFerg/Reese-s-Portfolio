@@ -7,41 +7,33 @@ import SnapshotCard from '../components/SnapshotCard.astro';
 
 // Curated for the homepage, not generated from CASE_SLUGS: the design drops
 // project-cadence and adds "Portfolio (WIP)", a non-route static card for the
-// site itself. Copy is placeholder — see CASE-STUDIES.md for the writing
-// rules once real numbers exist.
+// site itself. Copy supplied by Reese (RW-155). Only North Coast is shipped
+// and measured, so it alone carries stats; the three `soon` cards omit the
+// stats block and hide their "Visit Site" button until there's a public URL.
 const SNAPSHOTS = [
   {
     state: 'live' as const,
     eyebrow: 'North Coast BJJ',
     title: 'Building potential newcomer trust in an intimidating sport',
     blurb:
-      '[TODO: one line — real client, real users, live site. Lead with what changed for the club.]',
-    meta: ['[TODO: role]', '[TODO: year]', '[TODO: work type]', '[TODO: case study type]'],
+      "Pro bono work redesigning North Coast's local business website by building trust signals and funnelling users to class sign-ups.",
+    meta: ['Solo Product Designer', '2025–2026', 'Design & front end', 'Client project'],
     stats: [
-      { value: '[TODO]', label: '[TODO: e.g. bookings/mo]' },
-      { value: '[TODO]', label: '[TODO: e.g. no-show rate]' },
+      { value: '50', label: 'forum enquiries in first 30 days' },
+      { value: '227', label: 'unique users in last 30 days' },
     ],
     caseHref: '/work/north-coast-bjj',
-    liveHref: '[TODO: north coast bjj URL]',
+    // Keep in sync with the case study's "Visit Site" button (NorthCoastBjj.tsx).
+    liveHref: 'https://northcoastbjj.co.uk',
   },
   {
     state: 'soon' as const,
     eyebrow: 'DataBrew',
     title: 'Front end design engineering project',
     blurb:
-      '[TODO: one line — a Chromium extension people will actually install. Say what it saves them.]',
-    meta: [
-      'Design & front end',
-      '[TODO: year]',
-      '[TODO: work type]',
-      '[TODO: case study type]',
-    ],
-    stats: [
-      { value: '[TODO]', label: '[TODO]' },
-      { value: '[TODO]', label: '[TODO]' },
-    ],
+      'Creating the front end and branding for a developer tools summary extension alongside a back end developer',
+    meta: ['branding, design front end', '2026', 'browser extension', 'in development'],
     caseHref: '/work/databrew',
-    liveHref: '[TODO: databrew URL]',
   },
   {
     // Ghosted for now — not ready to show. Flip to 'live' when this site
@@ -50,28 +42,17 @@ const SNAPSHOTS = [
     state: 'soon' as const,
     eyebrow: 'Portfolio',
     title: 'Codebase front end development work',
-    blurb:
-      '[TODO: one line about building this site itself — hand-built routing, terminal and all.]',
-    meta: ['Solo', '2026', '[TODO: work type]', '[TODO: case study type]'],
-    stats: [
-      { value: '[TODO]', label: '[TODO]' },
-      { value: '[TODO]', label: '[TODO]' },
-    ],
+    blurb: 'Experimenting with design choices and front end architecture',
+    meta: ['solo', '2026', 'design and front end', 'MVP complete'],
     caseHref: '/#work',
-    liveHref: '[TODO: this repo URL]',
   },
   {
     state: 'soon' as const,
     eyebrow: 'SAVR Financial Literacy App',
     title: 'Google design case study',
-    blurb: '[TODO: one line — lead with what user testing changed, not with the concept.]',
-    meta: ['Solo', '2026', '[TODO: work type]', '[TODO: case study type]'],
-    stats: [
-      { value: '[TODO]', label: '[TODO]' },
-      { value: '[TODO]', label: '[TODO]' },
-    ],
+    blurb: 'Coursework mobile app design mockups in Figma',
+    meta: ['Solo', '2026'],
     caseHref: '/work/savr-app',
-    liveHref: '[TODO: savr-app URL]',
   },
 ];
 ---

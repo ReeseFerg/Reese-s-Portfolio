@@ -23,7 +23,7 @@ type Props = {
   title: string;
   blurb: string;
   meta: string[];
-  stats: SnapshotStat[];
+  stats?: SnapshotStat[];
   state: 'live' | 'soon';
   caseHref: string;
   liveHref?: string;
@@ -37,7 +37,7 @@ const {
   title,
   blurb,
   meta,
-  stats,
+  stats = [],
   state,
   caseHref,
   liveHref,
@@ -71,16 +71,18 @@ const soon = state === 'soon';
       </p>
     </div>
 
-    <div class="sc-stats">
-      {
-        stats.map((stat) => (
-          <div class="sc-stat">
-            <span class="sc-stat-value">{stat.value}</span>
-            <span class="sc-stat-label">{stat.label}</span>
-          </div>
-        ))
-      }
-    </div>
+    {
+      stats.length > 0 && (
+        <div class="sc-stats">
+          {stats.map((stat) => (
+            <div class="sc-stat">
+              <span class="sc-stat-value">{stat.value}</span>
+              <span class="sc-stat-label">{stat.label}</span>
+            </div>
+          ))}
+        </div>
+      )
+    }
 
     <div class="sc-actions">
       <Button
