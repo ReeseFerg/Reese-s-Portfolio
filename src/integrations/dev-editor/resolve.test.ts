@@ -23,10 +23,6 @@ describe('candidateFiles', () => {
     ]);
   });
 
-  it('maps the work index to its page', () => {
-    expect(candidateFiles('/work')).toEqual(['src/pages/work/index.astro']);
-  });
-
   it('maps about and contact to their pages', () => {
     expect(candidateFiles('/about')).toEqual(['src/pages/about.astro']);
     expect(candidateFiles('/contact')).toEqual(['src/pages/contact.astro']);
@@ -42,6 +38,7 @@ describe('candidateFiles', () => {
   it('returns nothing for an unknown route rather than guessing', () => {
     expect(candidateFiles('/nope')).toEqual([]);
     expect(candidateFiles('/work/not-a-case')).toEqual([]);
+    expect(candidateFiles('/work')).toEqual([]);
   });
 });
 
