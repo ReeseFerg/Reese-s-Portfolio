@@ -162,7 +162,7 @@ export default function Terminal() {
     <section className="hero">
       <p className="term-line">Last login: Tue Jul 22 20:44:24 on console</p>
       <p className="term-line">
-        reese@portfolio ~ % <span className="cmd">claude</span>
+        reese@portfolio ~ % <span className="cmd">./reese</span>
       </p>
 
       <div className="term-box">
