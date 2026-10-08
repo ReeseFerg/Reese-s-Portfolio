@@ -119,6 +119,7 @@ body.routed .view-inner { padding-top: 20px; }
    disables both buttons — projects that aren't ready to show yet. */
 
 .snapshot-card {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-3);
@@ -203,6 +204,27 @@ body.routed .view-inner { padding-top: 20px; }
 /* 32px per Paper — doesn't land on our --space scale, like the other literal
    32px gaps already in case.css/terminal.css. */
 .sc-actions { display: flex; gap: 32px; }
+
+/* RW-159: the whole live card is a hit area for its case study. The ghost
+   "View case study" anchor stretches a transparent ::after over the entire
+   card (soon cards render a disabled <button>, so they never get .sc-cover
+   and stay non-clickable); the "Visit Site" anchor is raised above the stretch
+   so it still navigates externally.
+
+   .sc-cover is forced back to `position: static` so its ::after escapes to the
+   card (`.snapshot-card` is the nearest positioned ancestor) instead of sizing
+   to the button. `.btn`'s own `position: relative; z-index` (ui.css) only
+   matters inside a `.btn-group`, which these cards don't use. */
+.btn.sc-cover { position: static; }
+
+.btn.sc-cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.sc-actions .btn--white { position: relative; z-index: 2; }
 
 .sc-media {
   height: 542px;
