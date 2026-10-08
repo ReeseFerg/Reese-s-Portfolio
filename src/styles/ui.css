@@ -150,13 +150,15 @@
    Boxed, icon-only — same rest/hover language as .btn (outline at rest,
    de-fills to accent on hover/focus) but square, since there's no label to
    give it width. All pages, not gated to case studies: back-to-top.ts reveals
-   it past a scroll threshold. visibility (not display) is what's toggled, so
-   it never leaves the tab order and the top-of-page screenshot stays 0-diff. */
+   it past a scroll threshold. visibility (not display) is what's toggled:
+   display:none can't transition, so opacity/translate would snap instead of
+   fading; visibility still drops it from the tab order and a11y tree while
+   hidden, which opacity alone wouldn't. */
 .to-top {
   position: fixed;
   right: 24px;
   bottom: 24px;
-  z-index: 55; /* below the mobile menu's 60 (responsive.css), same band as .read-progress */
+  z-index: 55; /* below the mobile menu and .read-progress, both at 60 (responsive.css, case.css) */
   display: inline-flex;
   align-items: center;
   justify-content: center;
