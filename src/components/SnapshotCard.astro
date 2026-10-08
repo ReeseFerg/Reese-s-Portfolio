@@ -83,11 +83,18 @@ const soon = state === 'soon';
     </div>
 
     <div class="sc-actions">
-      <Button variant="ghost" href={caseHref} disabled={soon}> View case study </Button>
+      <Button
+        variant="ghost"
+        href={caseHref}
+        disabled={soon}
+        class={soon ? undefined : 'sc-cover'}
+      >
+        View case study
+      </Button>
       {
         liveHref && (
           <Button variant="white" href={liveHref} external disabled={soon}>
-            View Live
+            Visit Site
           </Button>
         )
       }
