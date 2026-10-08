@@ -146,6 +146,53 @@
   opacity: 0;
 }
 
+/* ---- Back to top (RW-133) ----
+   Boxed, icon-only — same rest/hover language as .btn (outline at rest,
+   de-fills to accent on hover/focus) but square, since there's no label to
+   give it width. All pages, not gated to case studies: back-to-top.ts reveals
+   it past a scroll threshold. visibility (not display) is what's toggled, so
+   it never leaves the tab order and the top-of-page screenshot stays 0-diff. */
+.to-top {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 55; /* below the mobile menu's 60 (responsive.css), same band as .read-progress */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--rule);
+  background: transparent;
+  color: var(--text-body);
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  translate: 0 12px;
+  transition:
+    opacity var(--duration-medium) var(--ease-standard),
+    translate var(--duration-medium) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  translate: 0 0;
+}
+
+.to-top:hover,
+.to-top:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .to-top { transition: none; }
+}
+
 /* ---- Connected segmented group (the nav bar) ---- */
 /* Overlap the 1px borders so adjacent cells share a single divider. */
 .btn-group {
