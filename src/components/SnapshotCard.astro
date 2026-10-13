@@ -6,13 +6,15 @@
 // `soon` (everything muted/blurred, buttons disabled — projects not ready
 // to show).
 //
-// The right-hand image is a plain placeholder rather than the case studies'
-// `<MediaFrame>` convention: these cards are rendered from a data array (a
-// bespoke list on the homepage, `CASE_SLUGS` on /work), not one-off JSX per
-// card, so the dev editor's hint-based text search — which looks for a single
-// literal `<MediaFrame hint="…">` occurrence per source file — can't target
-// one card out of a loop. Dropping a real image in means editing the calling
-// page's data array directly (import it, pass it as `image`).
+// The right-hand media area is a plain placeholder rather than the case
+// studies' `<MediaFrame>` component: these cards are rendered from a data
+// array (a bespoke list on the homepage, `CASE_SLUGS` on /work), not one-off
+// JSX per card, so the dev editor's hint-based text search — which looks for
+// a single literal `<MediaFrame hint="…">` occurrence per source file —
+// can't target one card out of a loop. Dropping real media in means editing
+// the calling page's data array directly (import it, pass it as `image`, or
+// pass a `video`/`poster` public path for a clip — same autoplay/loop/muted
+// + reduced-motion-poster pattern as `MediaFrame.tsx`).
 import type { ImageMetadata } from 'astro';
 import Button from './ui/Button.astro';
 
@@ -28,6 +30,8 @@ type Props = {
   caseHref: string;
   liveHref?: string;
   image?: ImageMetadata | string;
+  video?: string;
+  poster?: string;
   imageAlt?: string;
   class?: string;
 };
@@ -42,6 +46,8 @@ const {
   caseHref,
   liveHref,
   image,
+  video,
+  poster,
   imageAlt = '',
   class: extra,
 } = Astro.props;
@@ -104,6 +110,26 @@ const soon = state === 'soon';
   </div>
 
   <div class="sc-media">
-    {imgSrc ? <img src={imgSrc} alt={imageAlt} /> : <span class="sc-media-hint">image</span>}
+    {
+      video ? (
+        <>
+          <video
+            class="sc-media-video"
+            src={video}
+            poster={poster}
+            autoplay
+            loop
+            muted
+            playsinline
+            aria-label={imageAlt}
+          />
+          {poster && <img class="sc-media-still" src={poster} alt={imageAlt} />}
+        </>
+      ) : imgSrc ? (
+        <img src={imgSrc} alt={imageAlt} />
+      ) : (
+        <span class="sc-media-hint">image</span>
+      )
+    }
   </div>
 </div>
