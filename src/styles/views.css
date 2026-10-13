@@ -213,3 +213,111 @@ body.routed .view-inner { padding-top: 20px; }
 .snapshot-card.is-soon .sc-media {
   filter: blur(7px);
 }
+
+/* ---------- Site footer (every route, rendered once from BaseLayout) ---------- */
+.site-footer {
+  margin-top: auto; /* #root is flex column — pins this to the bottom on short pages */
+  padding: 64px 48px;
+  background: var(--bg);
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 32px;
+}
+
+/* Brand modifiers set --brand (and, only where the fill colour isn't the
+   brand colour itself — X's press state is pure white, not its near-white
+   label colour — --brand-bg) and let the shared states below read them. */
+.footer-social {
+  --brand: var(--rule);
+  --brand-bg: var(--brand);
+  --brand-contrast: var(--bg);
+
+  display: flex;
+  align-items: center;
+  padding: 14px 22px;
+  border: 1px solid var(--rule);
+  background: transparent;
+  color: var(--text-body);
+  font-family: var(--font-zen-dots);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+/* Hidden at rest, like .btn__arrow: collapses to zero width and reserves no
+   space, so the button only widens once the icon actually grows in on hover
+   — not a fixed-width slot that just fades its contents. */
+.footer-social__icon {
+  height: 16px;
+  max-width: 0;
+  margin-left: 0;
+  opacity: 0;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition:
+    max-width var(--duration-fast) var(--ease-standard),
+    margin-left var(--duration-fast) var(--ease-standard),
+    opacity var(--duration-fast) var(--ease-standard);
+}
+
+.footer-social:hover,
+.footer-social:focus-visible {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+.footer-social:hover .footer-social__icon,
+.footer-social:focus-visible .footer-social__icon {
+  max-width: 16px;
+  margin-left: 14px;
+  opacity: 1;
+}
+
+.footer-social:active {
+  background: var(--brand-bg);
+  border-color: var(--brand);
+  color: var(--brand-contrast);
+}
+
+.footer-social--linkedin {
+  --brand: oklch(51.3% 0.135 254.7deg);
+  --brand-contrast: var(--text);
+}
+
+.footer-social--github {
+  --brand: var(--text);
+  --brand-contrast: var(--bg);
+}
+
+.footer-social--gmail {
+  --brand: oklch(65.6% 0.223 27deg);
+  --brand-contrast: var(--text);
+}
+
+.footer-social--x {
+  --brand: var(--text);
+  --brand-bg: #fff;
+  --brand-contrast: #000;
+}
+
+.footer-tag {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text-body);
+}
