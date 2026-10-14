@@ -24,8 +24,8 @@ export async function readCandidates(
  * Formatting after every write is what stops the editor causing format drift:
  * `npm run check` runs `prettier --check`, and these exact files were verified
  * Prettier-stable during the Astro migration. The `&#32;` entities in
- * contact.astro and 404.astro sit *between* elements and are never inside a
- * replaced span, so a within-node replacement cannot disturb them.
+ * 404.astro sit *between* elements and are never inside a replaced span, so a
+ * within-node replacement cannot disturb them.
  *
  * On any failure the original content is written back, so a half-formatted or
  * truncated source file is not a reachable state.

@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 
+import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import DevPanel from '../components/dev/DevPanel';
 import { metaForPath, SITE_NAME, SITE_URL } from '../lib/site.ts';
@@ -136,6 +137,7 @@ const ogImage = `${SITE_URL}/og.png`;
       <main class="views" id="main" tabindex="-1">
         <slot />
       </main>
+      <SiteFooter />
     </div>
     {import.meta.env.DEV && <DevPanel client:only="react" />}
     <script src="../scripts/route-focus.ts"></script>
