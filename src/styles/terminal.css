@@ -66,8 +66,10 @@ body:not(.routed) .hero {
   font-size: 13px;
   color: var(--accent);
   letter-spacing: 0.02em;
-  /* top half matches the page, bottom half the box, so the chip reads as a break in the border line */
-  background: linear-gradient(to bottom, var(--bg) 50%, var(--surface) 50%);
+  /* Solid black chip masks the accent border line it sits on and blends with
+     the page (the box itself is transparent-on-black now). Was a bg/surface
+     gradient from when the box had a --surface fill. */
+  background: var(--bg);
 }
 
 .term-left {
@@ -287,22 +289,31 @@ body:not(.routed) .hero {
   margin: 28px -32px;
 }
 
+/* "About me" / "Recent projects" subtitles — Zen Dots display voice, bigger,
+   matching Hero Layout A (was 17px bold mono). Zen Dots is single-weight (400),
+   so it isn't bolded. */
 .panel-heading {
-  font-size: 17px;
-  font-weight: 700;
+  font-family: 'Zen Dots', var(--font-display, 'JetBrains Mono'), sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 28px;
   color: var(--accent);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
+/* Bigger body copy in Mona Sans (proportional, not the terminal mono) — the
+   updated Hero Layout A reads softer and more legible than the monospace. */
 .about-copy {
-  font-size: 16px;
-  line-height: 26px;
-  color: var(--text-body);
+  font-family: var(--font-mona);
+  font-size: 20px;
+  line-height: 34px;
+  color: var(--text);
 }
 
 .project-row {
-  font-size: 16px;
-  line-height: 28px;
+  font-family: var(--font-mona);
+  font-size: 20px;
+  line-height: 30px;
   color: var(--text);
   white-space: pre-wrap;
 }
@@ -455,6 +466,67 @@ body:not(.routed) .hero {
 }
 
 .site-nav { display: flex; align-items: center; gap: 18px; }
+
+/* Hamburger toggle — hidden by default (desktop); responsive.css reveals it
+   below 768px. The three bars are absolutely stacked so the top and bottom can
+   rotate into an X about the centred middle bar, which fades out. Reuses the
+   site's --duration-fast / --ease-standard (no new duration token). */
+.nav-toggle {
+  display: none;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0; /* no box around the icon, in either the bars or the X state */
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.nav-toggle__bars,
+.nav-toggle__bars span {
+  display: block;
+}
+
+.nav-toggle__bars {
+  position: relative;
+  width: 20px;
+  height: 14px;
+  margin: 0 auto;
+}
+
+.nav-toggle__bars span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: currentcolor;
+  transition:
+    transform var(--duration-fast) var(--ease-standard),
+    opacity var(--duration-fast) var(--ease-standard);
+}
+
+.nav-toggle__bars span:nth-child(1) { top: 0; }
+.nav-toggle__bars span:nth-child(2) { top: 6px; }
+.nav-toggle__bars span:nth-child(3) { top: 12px; }
+
+.site-header[data-menu-open] .nav-toggle__bars span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.site-header[data-menu-open] .nav-toggle__bars span:nth-child(2) {
+  opacity: 0;
+}
+
+.site-header[data-menu-open] .nav-toggle__bars span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Reduced-motion override lives beside the rule it guards (CLAUDE.md): the
+   bars still snap to the X, just without the tween. */
+@media (prefers-reduced-motion: reduce) {
+  .nav-toggle__bars span { transition: none; }
+}
 
 /* ---------- Clickable project rows (terminal panel) ---------- */
 button.project-row {

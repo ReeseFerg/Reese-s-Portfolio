@@ -13,7 +13,6 @@ const HOME_FILES = [
 ];
 
 const PAGE_ROUTES: Record<string, string> = {
-  '/work': 'src/pages/work/index.astro',
   '/about': 'src/pages/about.astro',
   '/contact': 'src/pages/contact.astro',
 };

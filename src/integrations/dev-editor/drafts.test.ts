@@ -11,7 +11,7 @@ describe('draft routes', () => {
   });
 
   it('never marks a non-case page as a draft', () => {
-    for (const p of ['/', '/work', '/about', '/contact']) {
+    for (const p of ['/', '/about', '/contact']) {
       expect(isDraft(p)).toBe(false);
     }
   });
@@ -34,7 +34,7 @@ describe('draft routes', () => {
 
   it('keeps the non-case pages in the sitemap', () => {
     const xml = sitemap();
-    for (const p of ['/', '/work', '/about', '/contact']) {
+    for (const p of ['/', '/about', '/contact']) {
       expect(xml).toContain(`<loc>https://reeseferguson.com${p}</loc>`);
     }
   });

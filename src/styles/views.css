@@ -1,4 +1,4 @@
-/* Routed full-page views: work grid, shipped strip, about, contact. */
+/* Routed full-page views: about, contact. */
 
 /* ---------- Routed views ---------- */
 .view { display: none; }
@@ -34,46 +34,6 @@ body.routed .view-inner { padding-top: 20px; }
 
 .view-lead .spark { color: var(--accent); }
 
-/* work grid — a stacked <Flex> of full-width SnapshotCards (src/pages/work/index.astro);
-   direction/gap come from the primitive, this rule owns only the top offset. */
-.work-grid {
-  margin-top: 32px;
-}
-
-/* ---------- Shipped strip ----------
-   Live things, not case studies. For someone early in their career this is the
-   cheapest credibility on the site: proof that work leaves the Figma file. */
-.shipped { margin-top: 64px; padding-top: 32px; border-top: 1px solid var(--rule); }
-
-.shipped-title {
-  font-family: var(--mono);
-  font-size: var(--step-eyebrow);
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--faint);
-  font-weight: 400;
-}
-
-.shipped-list { list-style: none; margin-top: 18px; display: flex; flex-direction: column; gap: 2px; }
-
-.shipped-list a {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px 12px;
-  padding: 11px 12px;
-  margin-left: -12px;
-  border-radius: 6px;
-  text-decoration: none;
-  transition: background-color var(--duration-fast) var(--ease-standard);
-}
-
-.shipped-list a:hover { background: var(--surface); }
-.sh-name { font-size: 14px; font-weight: 700; color: var(--text); }
-.sh-desc { font-size: 13px; color: var(--muted); flex: 1 1 240px; }
-.sh-arrow { font-family: var(--mono); font-size: 12px; color: var(--faint); }
-.shipped-list a:hover .sh-arrow { color: var(--accent); }
-
 /* ================= Case study ================= */
 
 /* One shared container width for hero, body and footer so the page has a single left edge. */
@@ -105,16 +65,27 @@ body.routed .view-inner { padding-top: 20px; }
 
 .eyebrow .accent { color: var(--accent); }
 
-.snapshots { padding: var(--space-chapter) 0; }
+/* Match the hero/terminal box width exactly (min(1400px, 100% − 96px)) so the
+   card edges line up under it — wider than the default size-3 container (1160).
+   Scoped with .l-container so it beats .l-container-3's --l-container-w. */
+.snapshots.l-container { --l-container-w: 1400px; }
+
+.snapshots {
+  padding: var(--space-chapter) 0;
+  /* breathing room above the first card when `/#work` scrolls here, so it
+     doesn't land flush against the viewport edge. */
+  scroll-margin-top: var(--header-h);
+}
 
 /* ================= Snapshot cards ================= */
-/* Shared by the homepage and /work (src/components/SnapshotCard.astro), per
-   Reese's Paper mock. Two states: `is-live` is full colour and glows on
-   hover (the default for any card with real or forthcoming content), and
-   `is-soon` mutes everything and blurs the stats/media for projects that
-   aren't ready to show yet. */
+/* src/components/SnapshotCard.astro, per Reese's "Home — change build" Paper
+   mock. The whole card sits MUTED at rest;
+   a ready card (`is-live`) lights every element up to full colour on hover and
+   gains the accent border + glow. `is-soon` stays muted, blurs its body and
+   disables both buttons — projects that aren't ready to show yet. */
 
 .snapshot-card {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-3);
@@ -143,43 +114,83 @@ body.routed .view-inner { padding-top: 20px; }
 .sc-top { display: flex; flex-direction: column; gap: var(--space-5); }
 .sc-titleblock { display: flex; flex-direction: column; gap: 16px; }
 
-/* Card top label (e.g. "North Coast BJJ") reuses the sitewide `.eyebrow`
-   class for markup, but Paper's card spec (node 7OY-0) diverges from that
-   class's normal mono/uppercase/faint chrome treatment: Zen Dots, capitalize
-   (not uppercase), full white — so it's overridden here, scoped to cards
-   only. The sitewide `.eyebrow` rule in this file is untouched. */
+/* Resting = every text element muted; `.is-live:hover` below lights each one.
+   Eyebrow (project name) and title both use Zen Dots — the homepage hero's
+   display face — at the card's two sizes. The sitewide `.eyebrow` rule is
+   untouched; this reskins it (capitalize, not the chrome's mono/uppercase)
+   scoped to cards only. */
+.snapshot-card .eyebrow,
+.sc-title,
+.sc-blurb,
+.sc-meta,
+.sc-meta .accent,
+.sc-stat-value,
+.sc-stat-label {
+  color: var(--muted);
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
 .snapshot-card .eyebrow {
   font-family: 'Zen Dots', var(--font-display, 'JetBrains Mono'), sans-serif;
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 400;
   text-transform: capitalize;
   letter-spacing: -0.01em;
   line-height: 18px;
-  color: var(--text);
 }
 
-/* Zen Dots, matching Paper's headline treatment for this text (same font as
-   the homepage hero's "Reese is …" line in terminal.css) — single weight
-   (400), so unlike most headings here this one isn't bolded. */
 .sc-title {
   font-family: 'Zen Dots', var(--font-display, 'JetBrains Mono'), sans-serif;
-  font-size: var(--step-h3);
+  font-size: 24px;
+  line-height: 30px;
   font-weight: 400;
   letter-spacing: -0.01em;
-  color: var(--accent);
 }
-.sc-blurb { font-family: var(--font-mona); font-size: 14px; line-height: 22px; color: var(--text); }
-.sc-meta { font-size: 13px; line-height: 16px; color: var(--text-body); }
-.sc-meta .accent { color: var(--accent); }
+
+.sc-blurb { font-family: var(--font-mona); font-size: 16px; line-height: 26px; }
+.sc-meta { font-family: var(--font-mona); font-size: 13px; line-height: 16px; }
 
 .sc-stats { display: flex; gap: 86px; padding-left: var(--space-2); }
 .sc-stat { display: flex; flex-direction: column; gap: 2px; }
-.sc-stat-value { font-family: var(--font-zen-dots); font-size: 32px; line-height: 26px; font-weight: 700; color: var(--text); }
-.sc-stat-label { font-size: 15px; line-height: 26px; font-weight: 400; color: var(--text); }
+/* Both stats share one treatment (owner pick: unify on Hubot Sans). */
+.sc-stat-value { font-family: var(--font-hubot); font-size: 32px; line-height: 26px; font-weight: 700; }
+.sc-stat-label { font-family: var(--font-mona); font-size: 15px; line-height: 26px; font-weight: 400; }
 
-/* 32px per Paper (node 7PL-0) — doesn't land on our --space-4/-5 scale step,
-   same as the other literal 32px gaps already in case.css/terminal.css. */
+/* Ready card lights up to full colour on hover (soon cards never do). */
+.snapshot-card.is-live:hover .eyebrow,
+.snapshot-card.is-live:hover .sc-meta .accent { color: var(--accent); }
+
+.snapshot-card.is-live:hover .sc-title,
+.snapshot-card.is-live:hover .sc-stat-value,
+.snapshot-card.is-live:hover .sc-stat-label { color: var(--text); }
+
+.snapshot-card.is-live:hover .sc-blurb,
+.snapshot-card.is-live:hover .sc-meta { color: var(--text-body); }
+
+/* 32px per Paper — doesn't land on our --space scale, like the other literal
+   32px gaps already in case.css/terminal.css. */
 .sc-actions { display: flex; gap: 32px; }
+
+/* RW-159: the whole live card is a hit area for its case study. The ghost
+   "View case study" anchor stretches a transparent ::after over the entire
+   card (soon cards render a disabled <button>, so they never get .sc-cover
+   and stay non-clickable); the "Visit Site" anchor is raised above the stretch
+   so it still navigates externally.
+
+   .sc-cover is forced back to `position: static` so its ::after escapes to the
+   card (`.snapshot-card` is the nearest positioned ancestor) instead of sizing
+   to the button. `.btn`'s own `position: relative; z-index` (ui.css) only
+   matters inside a `.btn-group`, which these cards don't use. */
+.btn.sc-cover { position: static; }
+
+.btn.sc-cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.sc-actions .btn--white { position: relative; z-index: 2; }
 
 .sc-media {
   height: 542px;
@@ -192,21 +203,129 @@ body.routed .view-inner { padding-top: 20px; }
 }
 
 .sc-media img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.sc-media-hint { font-family: var(--mono); font-size: 12px; color: var(--faint); }
+.sc-media video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.sc-media .sc-media-still { display: none; }
 
-/* Ghost / coming-soon state: everything muted, stats and media blurred, both
-   buttons disabled (rendered as non-interactive spans, not links). */
-.snapshot-card.is-soon .sc-title,
-.snapshot-card.is-soon .sc-blurb,
-.snapshot-card.is-soon .sc-meta,
-.snapshot-card.is-soon .sc-meta .accent,
-.snapshot-card.is-soon .eyebrow,
-.snapshot-card.is-soon .sc-stat-value,
-.snapshot-card.is-soon .sc-stat-label {
-  color: var(--muted);
+@media (prefers-reduced-motion: reduce) {
+  .sc-media video { display: none; }
+  .sc-media .sc-media-still { display: block; width: 100%; height: 100%; object-fit: cover; }
 }
 
+.sc-media-hint { font-family: var(--mono); font-size: 12px; color: var(--faint); }
+
+/* Not ready: stays muted (above), blurs its body. The buttons are left
+   unblurred — they render disabled (greyed, non-interactive) via SnapshotCard. */
+.snapshot-card.is-soon .sc-blurb,
+.snapshot-card.is-soon .sc-meta,
 .snapshot-card.is-soon .sc-stats,
 .snapshot-card.is-soon .sc-media {
   filter: blur(7px);
+}
+
+/* ---------- Site footer (every route, rendered once from BaseLayout) ---------- */
+.site-footer {
+  margin-top: auto; /* #root is flex column — pins this to the bottom on short pages */
+  padding: 64px 48px;
+  background: var(--bg);
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 32px;
+}
+
+/* Brand modifiers set --brand (and, only where the fill colour isn't the
+   brand colour itself — X's press state is pure white, not its near-white
+   label colour — --brand-bg) and let the shared states below read them. */
+.footer-social {
+  --brand: var(--rule);
+  --brand-bg: var(--brand);
+  --brand-contrast: var(--bg);
+
+  display: flex;
+  align-items: center;
+  padding: 14px 22px;
+  border: 1px solid var(--rule);
+  background: transparent;
+  color: var(--text-body);
+  font-family: var(--font-zen-dots);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+/* Hidden at rest, like .btn__arrow: collapses to zero width and reserves no
+   space, so the button only widens once the icon actually grows in on hover
+   — not a fixed-width slot that just fades its contents. */
+.footer-social__icon {
+  height: 16px;
+  max-width: 0;
+  margin-left: 0;
+  opacity: 0;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition:
+    max-width var(--duration-fast) var(--ease-standard),
+    margin-left var(--duration-fast) var(--ease-standard),
+    opacity var(--duration-fast) var(--ease-standard);
+}
+
+.footer-social:hover,
+.footer-social:focus-visible {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+.footer-social:hover .footer-social__icon,
+.footer-social:focus-visible .footer-social__icon {
+  max-width: 16px;
+  margin-left: 14px;
+  opacity: 1;
+}
+
+.footer-social:active {
+  background: var(--brand-bg);
+  border-color: var(--brand);
+  color: var(--brand-contrast);
+}
+
+.footer-social--linkedin {
+  --brand: oklch(51.3% 0.135 254.7deg);
+  --brand-contrast: var(--text);
+}
+
+.footer-social--github {
+  --brand: var(--text);
+  --brand-contrast: var(--bg);
+}
+
+.footer-social--gmail {
+  --brand: oklch(65.6% 0.223 27deg);
+  --brand-contrast: var(--text);
+}
+
+.footer-social--x {
+  --brand: var(--text);
+  --brand-bg: #fff;
+  --brand-contrast: #000;
+}
+
+.footer-tag {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text-body);
 }

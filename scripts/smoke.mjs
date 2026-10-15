@@ -16,10 +16,13 @@ const results = [];
 
 // Which case studies are actually published is a decision in src/lib/site.ts
 // (`draft: true`), and the production build simply omits the drafts. Read the
-// list off the built work index rather than hardcoding slugs, so this suite
-// stays correct as Reese publishes case studies one at a time.
-await page.goto(`${baseUrl}/work`, { waitUntil: 'networkidle' });
-const PUBLISHED = await page.$$eval('a.work-card', (els) =>
+// list off the homepage's live cards rather than hardcoding slugs, so this
+// suite stays correct as Reese publishes case studies one at a time. A `soon`
+// card's "View case study" renders as a disabled <button> with no href (see
+// Button.astro), so every real `a.btn[href^="/work/"]` on the homepage is
+// necessarily a published case — no extra filtering needed.
+await page.goto(baseUrl, { waitUntil: 'networkidle' });
+const PUBLISHED = await page.$$eval('a.btn[href^="/work/"]', (els) =>
   els.map((el) => new URL(el.href).pathname.split('/').pop()),
 );
 if (PUBLISHED.length === 0) throw new Error('No published case studies to test against.');
@@ -37,14 +40,12 @@ const assert = (cond, msg) => {
   if (!cond) throw new Error(msg);
 };
 
-await page.goto(baseUrl, { waitUntil: 'networkidle' });
-
 await check('typewriter types the first phrase', async () => {
   await page.waitForFunction(() => document.querySelector('.phrase')?.textContent?.length > 3, {
     timeout: 5000,
   });
   const t = await page.textContent('.phrase');
-  assert('a UX designer'.startsWith(t.trim()), `unexpected phrase text: "${t}"`);
+  assert('a product designer'.startsWith(t.trim()), `unexpected phrase text: "${t}"`);
 });
 
 await check('clicking a tool re-themes the accent and swaps the mascot', async () => {
@@ -52,7 +53,7 @@ await check('clicking a tool re-themes the accent and swaps the mascot', async (
   const accent = await page.evaluate(() =>
     document.documentElement.style.getPropertyValue('--accent').trim(),
   );
-  assert(accent === '#f2217e', `accent was "${accent}"`);
+  assert(accent === 'oklch(63% 0.24 2deg)', `accent was "${accent}"`);
   assert(await page.locator('svg[data-logo="figma"]').isVisible(), 'figma mascot not shown');
   assert(
     (await page.locator('svg[data-logo="claude"]').count()) === 0,
@@ -71,26 +72,28 @@ await check('typing a slash command opens suggestions and Tab completes', async 
   assert((await page.inputValue('#cmd')) === '/work', 'Tab did not complete');
 });
 
-await check('Enter runs the command, echoes it and navigates', async () => {
+await check('Enter runs the command, echoes it and scrolls to the work section', async () => {
   await page.keyboard.press('Enter');
-  await page.waitForURL('**/work', { timeout: 3000 });
-  assert(await page.locator('.view#work').isVisible(), 'work view not visible');
+  await page.waitForFunction(
+    () => {
+      const el = document.getElementById('work');
+      if (!el) return false;
+      const r = el.getBoundingClientRect();
+      return r.top < window.innerHeight && r.bottom > 0;
+    },
+    { timeout: 3000 },
+  );
 });
 
-await check('nav marks the current section', async () => {
-  const cls = await page.getAttribute('a.btn[href="/work"]', 'class');
-  assert(cls.includes('is-active'), `nav class was "${cls}"`);
-});
-
-await check('work card opens the case study at a real URL', async () => {
-  await page.click('.work-card.wc-lead');
-  await page.waitForURL('**/work/north-coast-bjj', { timeout: 3000 });
-  assert(await page.locator('#case-north-coast-bjj').isVisible(), 'case not visible');
+await check('homepage project card opens the case study at a real URL', async () => {
+  await page.click(`a.btn[href="/work/${LEAD}"]`);
+  await page.waitForURL(`**/work/${LEAD}`, { timeout: 3000 });
+  assert(await page.locator(`#case-${LEAD}`).isVisible(), `${LEAD} not visible`);
 });
 
 await check('case study renders its table of contents and chapters', async () => {
-  assert((await page.locator('.toc-link').count()) === 7, 'expected 7 TOC entries');
-  assert((await page.locator('.chapter').count()) === 7, 'expected 7 chapters');
+  assert((await page.locator('.toc-link').count()) === 5, 'expected 5 TOC entries');
+  assert((await page.locator('.chapter').count()) === 5, 'expected 5 chapters');
 });
 
 await check('scrolling a case study advances the TOC and the progress bar', async () => {
@@ -114,9 +117,10 @@ await check('TOC click jumps to that chapter', async () => {
   );
 });
 
-await check('back link returns to work', async () => {
+await check('back link returns to the homepage work section', async () => {
   await page.click('.back-link');
-  await page.waitForURL('**/work', { timeout: 3000 });
+  await page.waitForURL('**/#work', { timeout: 3000 });
+  assert(await page.locator('#work').isVisible(), 'work section not visible');
 });
 
 await check('deep link to a real URL loads that page directly', async () => {
@@ -141,7 +145,15 @@ await check('arrow keys and Enter drive the section tabs', async () => {
   const label = await page.textContent('.term-tab.is-selected .term-tab-name');
   assert(label.includes('Work'), `selected option was "${label}"`);
   await page.keyboard.press('Enter');
-  await page.waitForURL('**/work', { timeout: 3000 });
+  await page.waitForFunction(
+    () => {
+      const el = document.getElementById('work');
+      if (!el) return false;
+      const r = el.getBoundingClientRect();
+      return r.top < window.innerHeight && r.bottom > 0;
+    },
+    { timeout: 3000 },
+  );
 });
 
 await check('number keys jump straight to a section', async () => {
@@ -160,18 +172,16 @@ await check('the dev panel is absent from the production build', async () => {
 // so a listener that fails to rebind — or rebinds twice — after a swap would
 // go uncaught. This drives client-side navigation through a case study twice,
 // with a stop at a case that honestly has no sidebar in between (only
-// north-coast-bjj gets one — see src/pages/work/index.astro), and checks the
-// DOM invariant a broken bind/teardown cycle would violate either direction:
-// never more than one active TOC link, and never zero once scrolled past the
-// first chapter.
+// north-coast-bjj gets one — see the homepage's live snapshot card), and
+// checks the DOM invariant a broken bind/teardown cycle would violate either
+// direction: never more than one active TOC link, and never zero once
+// scrolled past the first chapter.
 await check(
-  'navigating home → work → case → back → another case keeps exactly one active TOC link',
+  'navigating home → case → back → another case keeps exactly one active TOC link',
   async () => {
     await page.goto(baseUrl, { waitUntil: 'networkidle' });
-    await page.click('a.btn[href="/work"]');
-    await page.waitForURL('**/work', { timeout: 3000 });
 
-    await page.click('.work-card.wc-lead'); // the lead case — the only one with a TOC
+    await page.click(`a.btn[href="/work/${LEAD}"]`); // the lead case — the only one with a TOC
     await page.waitForURL(`**/work/${LEAD}`, { timeout: 3000 });
     await page.waitForSelector('.toc-link', { timeout: 3000 });
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight * 0.5));
@@ -180,14 +190,14 @@ await check(
     assert(active === 1, `case A (${LEAD}): expected exactly 1 active TOC link, got ${active}`);
 
     await page.click('.back-link');
-    await page.waitForURL('**/work', { timeout: 3000 });
+    await page.waitForURL('**/#work', { timeout: 3000 });
 
     // The other case studies have no TOC sidebar at all, so when one is
     // published this stop asserts that honestly rather than pretending it does.
     // With only the lead case published there is no second case to visit, and
     // the rebind is still exercised by returning to it below.
     if (SECOND) {
-      await page.click(`a.work-card[href="/work/${SECOND}"]`);
+      await page.click(`a.btn[href="/work/${SECOND}"]`);
       await page.waitForURL(`**/work/${SECOND}`, { timeout: 3000 });
       await page.waitForSelector(`#case-${SECOND}`, { timeout: 3000 });
       await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight * 0.5));
@@ -197,12 +207,12 @@ await check(
         `${SECOND} unexpectedly rendered a TOC sidebar`,
       );
       await page.click('.back-link');
-      await page.waitForURL('**/work', { timeout: 3000 });
+      await page.waitForURL('**/#work', { timeout: 3000 });
     }
 
     // A second visit to the TOC-bearing case — the scroll-spy has to rebind
     // cleanly on a revisit, not just once. This is the double-binding guard.
-    await page.click('.work-card.wc-lead');
+    await page.click(`a.btn[href="/work/${LEAD}"]`);
     await page.waitForURL(`**/work/${LEAD}`, { timeout: 3000 });
     await page.waitForSelector('.toc-link', { timeout: 3000 });
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight * 0.5));
@@ -221,16 +231,19 @@ await check('--accent survives a client-side swap', async () => {
   const before = await page.evaluate(() =>
     document.documentElement.style.getPropertyValue('--accent').trim(),
   );
-  assert(before === '#f2217e', `accent was "${before}" before navigating`);
+  assert(before === 'oklch(63% 0.24 2deg)', `accent was "${before}" before navigating`);
 
-  await page.click('a.btn[href="/work"]');
-  await page.waitForURL('**/work', { timeout: 3000 });
+  await page.click('a.btn[href="/about"]');
+  await page.waitForURL('**/about', { timeout: 3000 });
   // astro:after-swap fires before paint, but give the assertion a beat anyway.
   await page.waitForTimeout(200);
   const after = await page.evaluate(() =>
     document.documentElement.style.getPropertyValue('--accent').trim(),
   );
-  assert(after === '#f2217e', `accent was "${after}" after the swap, expected it to survive`);
+  assert(
+    after === 'oklch(63% 0.24 2deg)',
+    `accent was "${after}" after the swap, expected it to survive`,
+  );
 });
 
 await check('case pages ship no astro-island element at all', async () => {
@@ -244,7 +257,7 @@ await check('case pages ship no astro-island element at all', async () => {
 await check('no console errors anywhere', async () => {
   const errors = [];
   page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
-  for (const path of ['/', '/work', '/about', '/contact', `/work/${LEAD}`]) {
+  for (const path of ['/', '/about', '/contact', `/work/${LEAD}`]) {
     await page.goto(baseUrl + path, { waitUntil: 'networkidle' });
   }
   assert(errors.length === 0, errors.join(' | '));

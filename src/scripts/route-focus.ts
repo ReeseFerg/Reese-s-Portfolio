@@ -16,6 +16,12 @@
  * The two listeners below are top-level and registered once, by design —
  * only the focus() call inside the page-load handler needs to happen again
  * per navigation, and it re-reads `navigated` fresh each time.
+ *
+ * `#work` deep links get their own check, unconditional on `navigated`: a
+ * `/#work` link from a case study (or a hard reload of that URL) needs the
+ * homepage cards scrolled into view on *every* page-load, first or swapped.
+ * `focus({ preventScroll: true })` above never fights this — that's the
+ * point of `preventScroll`.
  */
 
 let navigated = false;
@@ -25,6 +31,10 @@ document.addEventListener('astro:after-swap', () => {
 });
 
 document.addEventListener('astro:page-load', () => {
+  if (location.hash === '#work') {
+    document.getElementById('work')?.scrollIntoView();
+  }
+
   if (!navigated) return;
   document.getElementById('main')?.focus({ preventScroll: true });
 });

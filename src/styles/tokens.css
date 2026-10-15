@@ -64,7 +64,7 @@
   --space-8: 48px;
   --space-9: 64px;
 
-  --measure: 66ch;
+  --measure: 90%; /* chapter prose cap: ~90% of the content column (Option A, chosen 2026-10-05), not a classic line-length measure */
   --col-content: 720px;
   --col-wide: 1040px;
   --rail: 200px;

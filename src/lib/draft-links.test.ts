@@ -28,9 +28,9 @@ describe('findDeadDraftLinks', () => {
     expect(dead).toEqual([]);
   });
 
-  it('ignores links to /work itself, the escape hatch for a lone published case', () => {
+  it('ignores links to /#work itself, the escape hatch for a lone published case', () => {
     const dead = findDeadDraftLinks(
-      [{ slug: 'north-coast-bjj', text: '<a href="/work">back</a>' }],
+      [{ slug: 'north-coast-bjj', text: '<a href="/#work">back</a>' }],
       ['north-coast-bjj'],
     );
     expect(dead).toEqual([]);

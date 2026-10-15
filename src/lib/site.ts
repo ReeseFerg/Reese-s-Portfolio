@@ -43,12 +43,6 @@ export const ROUTES: RouteMeta[] = [
       'UX designer and business graduate. I design interfaces in Figma and Paper, then ship them with Claude Code.',
   },
   {
-    path: '/work',
-    title: 'Selected work — Reese Ferguson',
-    description:
-      'Client projects and case studies. Start with north-coast-bjj — real client, real research, shipped product.',
-  },
-  {
     path: '/about',
     title: 'About — Reese Ferguson',
     description:

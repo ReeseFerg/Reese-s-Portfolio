@@ -151,7 +151,7 @@
   letter-spacing: 0.1em;
 }
 
-/* Prose sits at a readable measure; structural blocks run the full column. */
+/* Prose runs ~90% of the content column by deliberate choice (--measure); structural blocks run the full column. */
 .chapter > * { max-width: var(--measure); }
 
 .chapter > .media,

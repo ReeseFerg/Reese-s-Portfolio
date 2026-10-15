@@ -6,7 +6,7 @@ export default function SavrApp() {
       aria-label="savr-app case study"
     >
       <header className="case-hero case-shell">
-        <a className="back-link" href="/work">
+        <a className="back-link" href="/#work">
           ❮ back to work
         </a>
         <p className="crumb">~/reese/work/savr-app</p>

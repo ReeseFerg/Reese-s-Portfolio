@@ -10,9 +10,9 @@ import { layoutStyle, cx, type BaseLayoutProps } from './layout-props';
 type Props<As extends HTMLTag = 'div'> = Omit<Polymorphic<{ as: As }>, 'as'> &
   BaseLayoutProps & { as?: As; size?: '1' | '2' | '3' | '4' };
 
-const { as: Tag = 'div', size = '3', class: extra, ...rest } = Astro.props;
+const { as: Tag = 'div', size = '3', class: extra, id, ...rest } = Astro.props;
 const style = layoutStyle(rest);
 const cls = cx('l-container', `l-container-${size}`, extra);
 ---
 
-<Tag class={cls} style={style}><slot /></Tag>
+<Tag class={cls} style={style} id={id}><slot /></Tag>

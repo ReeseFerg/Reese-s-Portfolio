@@ -213,15 +213,16 @@ to a single space; Astro's `compressHTML` (on by default in production builds) g
 renders with no space between "x" and "y" at all. This cost the Astro migration three separate
 rounds of failed screenshot diffs before the cause was found.
 
-`src/pages/404.astro` and `src/pages/contact.astro` both have load-bearing spaces between a
-`<span>` and an adjacent `<a>` that would otherwise vanish this way. The fix there is `&#32;`
-(a numeric character reference for a space) instead of a literal space — an entity is a text node
-to the parser, not whitespace, so it survives `compressHTML` untouched. The obvious alternative,
-wrapping the line in `<!-- prettier-ignore -->`, doesn't work here: `prettier-plugin-astro@0.14.1`
-has a byte-offset/UTF-16 bug that corrupts markup around a `prettier-ignore`d block when the file
+`src/pages/404.astro` has load-bearing spaces between a `<span>` and an adjacent `<a>` that would
+otherwise vanish this way. The fix there is `&#32;` (a numeric character reference for a space)
+instead of a literal space — an entity is a text node to the parser, not whitespace, so it
+survives `compressHTML` untouched. The obvious alternative, wrapping the line in
+`<!-- prettier-ignore -->`, doesn't work here: `prettier-plugin-astro@0.14.1` has a
+byte-offset/UTF-16 bug that corrupts markup around a `prettier-ignore`d block when the file
 contains multi-byte characters (an ignored `<ul class="contact-list">` came back missing its
-opening `<ul`). Both files have inline comments explaining this; don't "clean up" the `&#32;` into
-a literal space, and don't reach for `prettier-ignore` as a substitute.
+opening `<ul`). The file has an inline comment explaining this; don't "clean up" the `&#32;` into
+a literal space, and don't reach for `prettier-ignore` as a substitute. (`contact.astro` had the
+same pattern until its link list was replaced by the site-wide footer.)
 
 ## Conventions that look like mistakes but aren't
 
