@@ -1,32 +1,81 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/ui/Container.astro';
+import AboutCarousel from '../components/about/AboutCarousel';
+import PhotoStack from '../components/about/PhotoStack';
+import bjj from '../assets/about/bjj.jpg';
+import bouldering from '../assets/about/bouldering.webp';
+import f1 from '../assets/about/formula-one.jpg';
+
+const hobbies = [
+  {
+    image: bjj,
+    alt: 'Reese and a training partner in BJJ gis after class',
+    title: 'Brazilian Jiu Jitsu',
+    copy: [
+      "BJJ is the art of folding clothes with people in them! It's great for the mind and body, building perseverance and mental toughness. It's a great hobby that I'd recommend anyone try.",
+      'Oh, and I got my blue belt this year too!!',
+    ],
+  },
+  {
+    image: bouldering,
+    alt: 'Wildflowers',
+    title: 'Bouldering',
+    copy: [
+      "Bouldering, or indoor climbing, is another hobby that's just better with friends! I love how it pushes you out of your comfort zone and allows you to socialise and build a community around you.",
+      "If you ever thought about it, go for it! Everyone's super friendly, and the barrier to entry is low!",
+    ],
+  },
+  {
+    image: f1,
+    alt: 'Formula One trackside',
+    title: 'Formula One',
+    copy: [
+      'My oldest obsession motorsport, is a big passion of mine, I enjoy tuning in every sunday to the races.',
+      'My biggest pinch myself moment was winning paddock passes for the 2018 British GP!',
+    ],
+  },
+];
 ---
 
 <BaseLayout path="/about" bodyClass="routed">
   <section class="view is-active" id="about" aria-label="About">
     <Container class="view-inner">
       <p class="crumb">~/reese/about</p>
-      <h1 class="view-title">About me</h1>
-      <p class="about-lead">
-        I'm Reese — a UX designer and business graduate who designs with AI in the loop. I shape
-        interfaces in Figma and Paper, pressure-test them with real flows, then ship them with
-        Claude Code. Less deck, more demo.
+      <h1 class="about-title">a little about me</h1>
+      <div class="about-intro-row">
+        <div class="about-intro-col">
+          <p class="about-intro">
+            Growing up in the temperate climate of the Scottish highlands, I find myself
+            experimenting, tinkering and soaking in as much learning from the many talented
+            induviduals in the industry who help inspire me and push me to grow.
+          </p>
+          <p class="about-intro">
+            My arrival to product design was definately not the orthodox approach, it involved
+            lots of trials tribulations and failure. Leaving university after graduating in
+            Business Management, I started a few businesses, failed at those busines, but
+            grateful I stumbled into this work I truly love and want to grow in!
+          </p>
+        </div>
+        <PhotoStack client:load className="about-photo-stack" ariaLabel="Photos of Reese" />
+      </div>
+      <p class="about-intro">
+        When I'm not focusing on work, my time is spent with family and friends, reading or
+        enjoying some of my hobbies... also with my friends!
       </p>
-      <h2 class="about-sub">Toolkit</h2>
-      <ul class="tool-list">
-        <li>Figma</li>
-        <li>Paper</li>
-        <li>Claude Code</li>
-        <li>Conductor</li>
-        <li>Framer</li>
-        <li>Linear</li>
-      </ul>
-      <h2 class="about-sub">Experience</h2>
-      <p class="about-copy2">
-        [TODO: reverse-chronological experience — role, organization, dates. Add your business
-        degree / education and any notable results.]
-      </p>
+      <AboutCarousel
+        client:load
+        autoplay={0}
+        aspect="3 / 4"
+        height="min(72vh, 620px)"
+        ariaLabel="Photos of Reese's hobbies"
+        slides={hobbies.map((hobby) => ({
+          image: hobby.image.src,
+          title: hobby.title,
+          alt: hobby.alt,
+          paragraphs: hobby.copy,
+        }))}
+      />
     </Container>
   </section>
 </BaseLayout>

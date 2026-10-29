@@ -108,11 +108,23 @@ no wiring changes. See "View transitions" below for how this script's lifecycle 
 part is not obvious from reading it top to bottom.
 
 **The terminal** (`src/components/Terminal/`: `Terminal.tsx`, `CommandInput.tsx`, `OutputLog.tsx`,
-`PixelLogos.tsx`) owns the homepage and is the site's **only** island — mounted `client:load`
-from `src/pages/index.astro`, nowhere else. `Terminal.tsx` holds theme, output log and
-question-block selection; `CommandInput.tsx` owns the input and suggestions; commands live in
+`PixelLogos.tsx`) owns the homepage and was the site's only island until the About page islands — mounted
+`client:load` from `src/pages/index.astro`, nowhere else. `Terminal.tsx` holds theme, output log
+and question-block selection; `CommandInput.tsx` owns the input and suggestions; commands live in
 `lib/commands.ts` and map to routes. A document-level keydown handler drives arrow keys, number
 keys and "type anywhere to focus the input".
+
+**`src/pages/about.astro`** mounts two more islands, both `client:load`, both from this page only.
+`AboutCarousel.tsx` is a card-deck photo carousel of Reese's hobby photos, placed below the intro
+text: drag, arrow keys, or the prev/next buttons throw the top card off the pile (autoplay off);
+it also shows the two flanking slides as static peeks and the active slide's hobby paragraphs
+below the title. `PhotoStack.tsx`, next to the intro paragraphs near the top of the page, is a
+square pile of photos using **framer-motion** (the only place in the repo that library is used —
+everywhere else motion is CSS, per the tokens above) for the drag-tilt-and-send-to-back physics.
+Both share placeholder-art logic (`src/components/about/placeholder-art.ts`): a slide/card with no
+`image` gets a procedurally painted landscape instead of a blank square, so either component works
+before real photos are wired in. `scripts/smoke.mjs` only asserts no island ships on **case**
+pages, so neither needs updating there.
 
 **The dev panel** (`src/components/dev/DevPanel.tsx`) is mounted `{import.meta.env.DEV && <DevPanel
 client:only="react" />}` in `BaseLayout.astro`, so the `import.meta.env.DEV` check is evaluated at
