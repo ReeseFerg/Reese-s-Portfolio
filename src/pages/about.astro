@@ -2,36 +2,17 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/ui/Container.astro';
 import AboutCarousel from '../components/about/AboutCarousel';
-import PhotoStack from '../components/about/PhotoStack';
 import bjj from '../assets/about/bjj.jpg';
 import bouldering from '../assets/about/bouldering.webp';
 import f1 from '../assets/about/formula-one.jpg';
 import hikeSummit from '../assets/about/hike-summit.jpg';
-import frankfurtIce from '../assets/about/frankfurt-ice.jpg';
 import graduation from '../assets/about/graduation.jpg';
 import dogBeach from '../assets/about/dog-beach.jpg';
-import beachCollies from '../assets/about/beach-collies.jpg';
-import f1Vettel from '../assets/about/f1-vettel.jpg';
 
 const photos = [
   { id: 'hike', image: hikeSummit.src, alt: 'Reese and friends at the summit of a hike' },
-  {
-    id: 'collies',
-    image: beachCollies.src,
-    alt: 'Reese throwing a stick for two collies on a beach',
-  },
-  {
-    id: 'vettel',
-    image: f1Vettel.src,
-    alt: 'Reese with Sebastian Vettel at a Formula One paddock',
-  },
   { id: 'dog', image: dogBeach.src, alt: 'A dog mid-leap on a Scottish beach' },
   { id: 'graduation', image: graduation.src, alt: 'Reese and two friends in graduation gowns' },
-  {
-    id: 'frankfurt',
-    image: frankfurtIce.src,
-    alt: 'Reese and friends among ice sculptures in Frankfurt',
-  },
 ];
 
 const hobbies = [
@@ -70,34 +51,32 @@ const hobbies = [
     <Container class="view-inner">
       <p class="crumb">~/reese/about</p>
       <h1 class="about-title">a little about me</h1>
-      <div class="about-intro-row">
-        <div class="about-intro-col">
-          <p class="about-intro">
-            Growing up in the temperate climate of the Scottish highlands, I find myself
-            experimenting, tinkering and soaking in as much learning from the many talented
-            induviduals in the industry who help inspire me and push me to grow.
-          </p>
-          <p class="about-intro">
-            My arrival to product design was definately not the orthodox approach, it involved
-            lots of trials tribulations and failure. Leaving university after graduating in
-            Business Management, I started a few businesses, failed at those busines, but
-            grateful I stumbled into this work I truly love and want to grow in!
-          </p>
-        </div>
-        <PhotoStack
-          client:load
-          className="about-photo-stack"
-          ariaLabel="Photos of Reese"
-          items={photos}
-        />
-      </div>
+      <p class="about-intro">
+        Growing up in the temperate climate of the Scottish highlands, I find myself
+        experimenting, tinkering and soaking in as much learning from the many talented
+        induviduals in the industry who help inspire me and push me to grow.
+      </p>
+      <p class="about-intro">
+        My arrival to product design was definately not the orthodox approach, it involved lots
+        of trials tribulations and failure. Leaving university after graduating in Business
+        Management, I started a few businesses, failed at those busines, but grateful I stumbled
+        into this work I truly love and want to grow in!
+      </p>
+      <ul class="about-gallery" aria-label="Photos of Reese">
+        {
+          photos.map((p) => (
+            <li>
+              <img src={p.image} alt={p.alt} loading="lazy" />
+            </li>
+          ))
+        }
+      </ul>
       <p class="about-intro">
         When I'm not focusing on work, my time is spent with family and friends, reading or
         enjoying some of my hobbies... also with my friends!
       </p>
       <AboutCarousel
         client:load
-        autoplay={0}
         aspect="3 / 4"
         height="min(72vh, 620px)"
         ariaLabel="Photos of Reese's hobbies"
