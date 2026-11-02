@@ -79,10 +79,9 @@ function StackCard({ children, isFront, zIndex, onSendToBack, settings, reduce }
       Math.abs(info.offset.y) > settings.swipeThreshold;
     if (draggedFarEnough) {
       onSendToBack();
-    } else {
-      x.set(0);
-      y.set(0);
     }
+    x.set(0);
+    y.set(0);
   }
 
   return (
