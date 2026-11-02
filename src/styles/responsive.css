@@ -50,6 +50,12 @@
   .impact-row { grid-template-columns: minmax(0, 1fr); gap: 28px; padding: 32px 0; }
   .next-case { grid-template-columns: minmax(0, 1fr); gap: 24px; }
   .build-reasons { grid-template-columns: minmax(0, 1fr); gap: var(--space-6); }
+  .about-intro-row { flex-direction: column; }
+  /* Stacked: no text sibling to hand the column a height, so give the stage a
+     concrete square (flex:1 0 0 would collapse to 0 with no height to fill). */
+  .about-photo-stack { align-self: center; margin-top: var(--space-6); }
+  #about .about-photo-stack { transform: none; }
+  #about .ps-stage { flex: none; height: auto; width: min(var(--ps-size), 80vw); }
 }
 
 /* Below 768px the connected bar becomes a hamburger + dropdown panel. The

@@ -628,32 +628,55 @@ body.on-case .read-progress { display: block; }
 }
 
 /* about + contact */
-.about-lead {
-  font-size: 15px;
-  line-height: 25px;
-  color: var(--text-body);
-  margin-top: 12px;
-  max-width: 64ch;
-}
-
-.about-sub {
-  font-size: 14px;
-  font-weight: 700;
+.about-title {
+  font-family: var(--font-zen-dots);
+  font-size: 24px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
   color: var(--accent);
-  margin: 30px 0 12px;
+  margin-bottom: var(--space-7);
 }
 
-.tool-list { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
+#about .cd-root { margin-top: var(--space-8); margin-bottom: var(--space-7); padding-inline: 0; }
 
-.tool-list li {
-  font-size: 13px;
+/* align-items:stretch so the photo column matches the intro text column's
+   height; PhotoStack's stage is height:100% + square, so the pile lines up
+   with the top of the first paragraph and its bottom lands by the last one. */
+.about-intro-row {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-8);
+  margin-top: var(--space-7);
+  /* The PhotoStack's Prev/Next buttons are placed absolutely just below the
+     square (controls margin 42px + 40px tall = 82px), so reserve that overhang
+     here to keep the next paragraph from colliding with them. */
+  padding-bottom: 82px;
+}
+
+.about-intro-col { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+
+.about-photo-stack { flex: 1; min-width: 0; }
+
+/* The photo unit centres in its own column, which starts a gap's width to the
+   right of the text; nudge it left by half the gap so it reads as centred in the
+   whole space between the paragraph's right edge and the content max-width.
+   Applied to the column (not just the stage) so the controls stay under it. */
+#about .about-photo-stack { transform: translateX(calc(var(--space-8) / -2)); }
+
+.about-intro {
+  font-family: var(--font-mona);
+  font-size: 16px;
+  line-height: 1.62;
   color: var(--text-body);
-  border: 1px solid var(--rule);
-  border-radius: 5px;
-  padding: 5px 10px;
+  margin-top: var(--space-6);
 }
 
-.about-copy2 { font-size: 14px; line-height: 24px; color: var(--text-body); max-width: 64ch; }
+.about-intro-col .about-intro:first-child { margin-top: 0; }
+
+/* The "when I'm not focusing" line sits on its own below the two-column row;
+   give it room to breathe (on top of the row's reserved button overhang) so the
+   page doesn't read as tightly packed. */
+.about-intro-row + .about-intro { margin-top: var(--space-7); }
 
 .contact-list {
   list-style: none;
