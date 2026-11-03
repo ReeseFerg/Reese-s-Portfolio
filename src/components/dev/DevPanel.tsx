@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
  */
 const EDITABLE = [
   '.about-copy, .project-row, .panel-heading, .flavor-line, .term-box-title, .phrase, .path-line',
-  '.term-tab-name, .view-title, .view-lead, .about-lead, .about-copy2',
+  '.term-tab-name, .view-title, .view-lead, .about-title, .about-intro',
   '.sc-title, .sc-blurb, .sc-stat-value, .sc-stat-label',
   '.case-title, .case-lead, .case-meta dd, .case-fact dd, .eyebrow, .stat-value, .stat-label',
   '.chapter h2, .chapter h3, .chapter p, .media figcaption, .callout p, .callout cite',
