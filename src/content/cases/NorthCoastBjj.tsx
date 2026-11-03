@@ -1,5 +1,7 @@
 import interview1 from '../../assets/cases/nc-interview-1.jpg';
 import interview2 from '../../assets/cases/nc-interview-2.jpg';
+import timetableCompetitor from '../../assets/cases/nc-timetable-competitor.png';
+import timetableOurs from '../../assets/cases/nc-timetable-ours.png';
 import MediaFrame from '../../components/case/MediaFrame';
 
 export default function NorthCoastBjj() {
@@ -81,7 +83,10 @@ export default function NorthCoastBjj() {
             <MediaFrame
               className="case-cover"
               video="/media/nc-hero.mp4"
+              poster="/media/nc-hero-poster.jpg"
               alt="The finished North Coast BJJ site in use"
+              width={1600}
+              height={984}
             />
 
             <div className="impact-row">
@@ -209,9 +214,13 @@ export default function NorthCoastBjj() {
               crucial to encouraging sign-ups.
             </p>
 
-            <MediaFrame shape="video" hint="gif/video — trust-signal sections">
-              the trust-signal sections in use
-            </MediaFrame>
+            <MediaFrame
+              video="/media/nc-trust-signals.mp4"
+              poster="/media/nc-trust-signals-poster.jpg"
+              alt="The live site's trust-signal sections funnelling users toward class sign-ups"
+              width={2294}
+              height={1410}
+            />
 
             <ol className="pain-list">
               <li>
@@ -255,12 +264,16 @@ export default function NorthCoastBjj() {
             </p>
 
             <div className="comparison">
-              <MediaFrame hint="competitor timetable" caption="Competitors">
-                competitor booking calendar
-              </MediaFrame>
-              <MediaFrame hint="my timetable design" caption="My Design">
-                belt-coloured timetable
-              </MediaFrame>
+              <MediaFrame
+                src={timetableCompetitor}
+                alt="A competitor's dense grid-style class booking calendar"
+                caption="Competitors"
+              />
+              <MediaFrame
+                src={timetableOurs}
+                alt="North Coast BJJ's simplified, belt-coloured timetable cards"
+                caption="My Design"
+              />
             </div>
 
             <div className="card-grid">
@@ -378,7 +391,10 @@ export default function NorthCoastBjj() {
 
             <MediaFrame
               video="/media/nc-inpage-editing.mp4"
+              poster="/media/nc-inpage-editing-poster.jpg"
               alt="Editing the live Framer site in-page"
+              width={1600}
+              height={984}
             />
 
             <h3 className="is-lg">Reduced Scope for the MVP</h3>
@@ -427,9 +443,13 @@ export default function NorthCoastBjj() {
               <cite>- Coach Daniel Havelock</cite>
             </blockquote>
 
-            <MediaFrame shape="video" hint="gif/video — outcome showcase">
-              another video showcase
-            </MediaFrame>
+            <MediaFrame
+              video="/media/nc-outcome.mp4"
+              poster="/media/nc-outcome-poster.jpg"
+              alt="The finished North Coast BJJ site, showing the sign-up flow end to end"
+              width={2294}
+              height={1410}
+            />
 
             <div className="impact-row impact-row--4">
               <div>
@@ -531,32 +551,6 @@ export default function NorthCoastBjj() {
           </section>
         </div>
       </div>
-
-      <footer className="case-footer case-shell">
-        {/* Points at /#work while databrew is still a draft — see draft: true in
-            src/lib/site.ts. The build refuses to ship a link to an unpublished
-            case, so change this back to /work/databrew when that one goes live. */}
-        <a className="next-case" href="/#work">
-          <div>
-            <p className="eyebrow">Next project</p>
-            <p className="next-case-title">databrew</p>
-            <p className="next-case-desc">
-              [TODO: one line on why someone who read this should read that one.]
-            </p>
-          </div>
-          <div className="media-slot">
-            <span className="slot-hint">800×500</span>thumbnail
-          </div>
-        </a>
-        <p className="case-closing">
-          [TODO: a closing line with some personality.]{' '}
-          <span className="accent">Let's build something.</span>
-        </p>
-        <p className="case-contact">
-          <a href="mailto:reesefergie@gmail.com">reesefergie@gmail.com</a>{' '}
-          <span className="sep">·</span> <a href="/contact">more ways to reach me</a>
-        </p>
-      </footer>
     </article>
   );
 }
