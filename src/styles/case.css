@@ -295,7 +295,11 @@
 }
 
 /* ---------- Media ---------- */
-.media { margin-top: var(--space-7); }
+/* Symmetric vertical rhythm: a video/image gets equal breathing room above and
+   below, independent of what follows it. The bottom margin collapses with the
+   next sibling's margin-top (larger wins, so nothing doubles up), and when media
+   ends a chapter it collapses into the chapter gap — no dangling space. */
+.media { margin-top: var(--space-block); margin-bottom: var(--space-block); }
 .media--wide { width: 100%; }
 
 /* Paper v3 images are bare rounded rectangles — no framed surface. */
@@ -376,10 +380,13 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
-  margin-top: var(--space-5);
+  margin-top: var(--space-block);
+  margin-bottom: var(--space-block);
 }
 
-.comparison .media { margin-top: 0; }
+/* The paired figures own no outer margin — the `.comparison` wrapper carries the
+   symmetric spacing, so the pair reads as a single media block. */
+.comparison .media { margin: 0; }
 
 /* Fixed landscape tiles; the photo crops to fill rather than setting the
    height. */

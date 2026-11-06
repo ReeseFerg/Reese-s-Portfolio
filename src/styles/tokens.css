@@ -44,8 +44,10 @@
   --lh-lead: 1.55;
   --lh-head: 1.18;
 
-  /* Vertical rhythm. Chapters used to sit 26px apart. */
-  --space-chapter: clamp(72px, 9vw, 128px);
+  /* Vertical rhythm between sections. Tightened to the ~56–60px gap measured in
+     the reference case studies; a gentle clamp keeps it from ballooning past
+     ~64px on wide screens (it previously reached 128px at 9vw). */
+  --space-chapter: clamp(56px, 4.5vw, 64px);
   --space-block: 28px;
 
   /* Numbered spacing scale for the layout primitives (Box/Flex/Grid/Section/
