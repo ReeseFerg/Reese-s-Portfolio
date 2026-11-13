@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/ui/Container.astro';
-import AboutCarousel from '../components/about/AboutCarousel';
+import AboutCarousel, { type HobbyPhoto } from '../components/about/AboutCarousel';
 import bjj from '../assets/about/bjj.jpg';
 import bouldering from '../assets/about/bouldering.webp';
 import f1 from '../assets/about/formula-one.jpg';
@@ -17,31 +17,44 @@ const photos = [
 
 const hobbies = [
   {
-    image: bjj,
-    alt: 'Reese and a training partner in BJJ gis after class',
     title: 'Brazilian Jiu Jitsu',
     copy: [
       "BJJ is the art of folding clothes with people in them! It's great for the mind and body, building perseverance and mental toughness. It's a great hobby that I'd recommend anyone try.",
       'Oh, and I got my blue belt this year too!!',
     ],
+    // TODO: swap the two painted placeholders for Reese's other two BJJ photos.
+    photos: [
+      { image: bjj.src, alt: 'Reese and a training partner in BJJ gis after class' },
+      { palette: 'dusk', seed: 11 },
+      { palette: 'alpine', seed: 27 },
+    ] satisfies HobbyPhoto[],
   },
   {
-    image: bouldering,
-    alt: 'Wildflowers',
     title: 'Bouldering',
     copy: [
       "Bouldering, or indoor climbing, is another hobby that's just better with friends! I love how it pushes you out of your comfort zone and allows you to socialise and build a community around you.",
       "If you ever thought about it, go for it! Everyone's super friendly, and the barrier to entry is low!",
     ],
+    // TODO: Reese only has video for this one — swap `photos` for a `video`
+    // (+ optional `videoPoster`/`videoAspect`) once that clip is in hand.
+    photos: [
+      { image: bouldering.src, alt: 'Wildflowers' },
+      { palette: 'mist', seed: 42 },
+      { palette: 'dawn', seed: 58 },
+    ] satisfies HobbyPhoto[],
   },
   {
-    image: f1,
-    alt: 'Formula One trackside',
     title: 'Formula One',
     copy: [
       'My oldest obsession motorsport, is a big passion of mine, I enjoy tuning in every sunday to the races.',
       'My biggest pinch myself moment was winning paddock passes for the 2018 British GP!',
     ],
+    // TODO: swap the two painted placeholders for Reese's other two F1 photos.
+    photos: [
+      { image: f1.src, alt: 'Formula One trackside' },
+      { palette: 'alpine', seed: 63 },
+      { palette: 'dusk', seed: 19 },
+    ] satisfies HobbyPhoto[],
   },
 ];
 ---
@@ -78,13 +91,12 @@ const hobbies = [
       <AboutCarousel
         client:load
         aspect="3 / 4"
-        height="min(72vh, 620px)"
+        height="auto"
         ariaLabel="Photos of Reese's hobbies"
         slides={hobbies.map((hobby) => ({
-          image: hobby.image.src,
           title: hobby.title,
-          alt: hobby.alt,
           paragraphs: hobby.copy,
+          photos: hobby.photos,
         }))}
       />
     </Container>
