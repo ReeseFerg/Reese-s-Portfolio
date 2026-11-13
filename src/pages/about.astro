@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/ui/Container.astro';
 import AboutCarousel, { type HobbyPhoto } from '../components/about/AboutCarousel';
+import PhotoGallery from '../components/about/PhotoGallery';
 import bjj from '../assets/about/bjj.jpg';
 import bouldering from '../assets/about/bouldering.webp';
 import f1 from '../assets/about/formula-one.jpg';
@@ -75,15 +76,7 @@ const hobbies = [
         Management, I started a few businesses, failed at those busines, but grateful I stumbled
         into this work I truly love and want to grow in!
       </p>
-      <ul class="about-gallery" aria-label="Photos of Reese">
-        {
-          photos.map((p) => (
-            <li>
-              <img src={p.image} alt={p.alt} loading="lazy" />
-            </li>
-          ))
-        }
-      </ul>
+      <PhotoGallery client:load photos={photos} ariaLabel="Photos of Reese" />
       <p class="about-intro">
         When I'm not focusing on work, my time is spent with family and friends, reading or
         enjoying some of my hobbies... also with my friends!

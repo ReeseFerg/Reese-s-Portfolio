@@ -675,6 +675,39 @@ body.on-case .read-progress { display: block; }
   .about-gallery img { transition: none; }
 }
 
+/* Cursor-follow hint: a small pill reading "View" that tracks the pointer
+   over a photo, replacing the system cursor there (set inline per-<li>, only
+   while it's the hovered one). position:fixed + pointer-events:none so it
+   never steals the hover/click the <li> itself needs. */
+.gallery-cursor {
+  position: fixed;
+  z-index: 50;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.gallery-cursor-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--text);
+  background: var(--bg);
+  padding: 6px 12px;
+  border-radius: 999px;
+  animation: gallery-cursor-in var(--duration-fast) var(--ease-standard);
+}
+
+@keyframes gallery-cursor-in {
+  from { opacity: 0; transform: translateX(-6px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-cursor-label { animation: none; }
+}
+
 .contact-list {
   list-style: none;
   margin-top: 24px;
