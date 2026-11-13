@@ -3,26 +3,26 @@ import * as React from 'react';
 /*
  * Photo row with a custom-cursor hover hint: hovering a photo keeps it
  * dimmed-in (the sibling dim is plain CSS `:hover`, unchanged) and tracks a
- * small pill reading `label` ("View") next to the pointer, replacing the
- * system cursor over that photo. This is the one island on an otherwise
- * zero-JS page section — the mouse-tracking it needs can't be done in CSS.
+ * small pill reading that photo's own `label` next to the pointer,
+ * replacing the system cursor over that photo. This is the one island on
+ * an otherwise zero-JS page section — the mouse-tracking it needs can't be
+ * done in CSS.
  */
 
 export type GalleryPhoto = {
   image: string;
   alt: string;
+  /** Text shown in the cursor pill while this photo is hovered. */
+  label: string;
 };
 
 export type PhotoGalleryProps = {
   photos: GalleryPhoto[];
-  /** Text shown in the cursor pill on hover. */
-  label?: string;
   ariaLabel?: string;
 };
 
 export default function PhotoGallery({
   photos,
-  label = 'View',
   ariaLabel = 'Photos of Reese',
 }: PhotoGalleryProps) {
   const [pos, setPos] = React.useState(null as { x: number; y: number } | null);
@@ -53,7 +53,7 @@ export default function PhotoGallery({
       </ul>
       {pos && hoverIndex !== null ? (
         <div className="gallery-cursor" style={{ left: pos.x, top: pos.y }} aria-hidden="true">
-          <span className="gallery-cursor-label">{label}</span>
+          <span className="gallery-cursor-label">{photos[hoverIndex].label}</span>
         </div>
       ) : null}
     </div>
