@@ -13,8 +13,10 @@
 // a single literal `<MediaFrame hint="…">` occurrence per source file —
 // can't target one card out of a loop. Dropping real media in means editing
 // the calling page's data array directly (import it, pass it as `image`, or
-// pass a `video`/`poster` public path for a clip — same autoplay/loop/muted
-// + reduced-motion-poster pattern as `MediaFrame.tsx`).
+// pass a `video`/`poster` public path for a clip). Unlike `MediaFrame.tsx`,
+// this card deliberately does NOT autoplay: the clip plays only while the
+// card is hovered or focused (see `src/scripts/snapshot-video.ts`), idling on
+// its poster frame otherwise. Don't "restore" autoplay here.
 import type { ImageMetadata } from 'astro';
 import Button from './ui/Button.astro';
 
@@ -117,7 +119,7 @@ const soon = state === 'soon';
             class="sc-media-video"
             src={video}
             poster={poster}
-            autoplay
+            preload="none"
             loop
             muted
             playsinline
