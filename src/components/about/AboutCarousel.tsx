@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { useReducedMotion } from '../../lib/useReducedMotion';
 import { type LandPalette, usePlaceholderImages } from './placeholder-art';
 
 /*
@@ -181,9 +182,16 @@ const defaultOrder = () => Array.from({ length: PHOTOS_PER_HOBBY }, (_, i) => i)
     story for card size — it overrides the CSS formula derived from the
     `height` prop, so a tier's size is this table, not a screen-dependent
     calculation. Height follows from `aspect` automatically. */
+// `spread` must clear half of `deckMaxWidth` (with some room to spare) or
+// the outer cards' own centres sit underneath the (higher z-index) centre
+// card, making them mostly occluded and hard to click or drag precisely —
+// confirmed via elementFromPoint at the old wide-tier spread (110 < 120).
+// Narrow is the exception: it's deliberately tight so the fan clears
+// cd-root's overflow:hidden on small screens, a pre-existing tradeoff kept
+// as-is here.
 const TIER = {
-  wide: { deckMaxWidth: '240px', spread: 110, fanAngle: 12, fanLift: 18, textMinHeight: 112 },
-  medium: { deckMaxWidth: '200px', spread: 80, fanAngle: 10, fanLift: 14, textMinHeight: 140 },
+  wide: { deckMaxWidth: '240px', spread: 130, fanAngle: 12, fanLift: 18, textMinHeight: 112 },
+  medium: { deckMaxWidth: '200px', spread: 110, fanAngle: 10, fanLift: 14, textMinHeight: 140 },
   narrow: { deckMaxWidth: '190px', spread: 28, fanAngle: 8, fanLift: 10, textMinHeight: 228 },
 } as const;
 
@@ -222,18 +230,7 @@ export default function AboutCarousel({
   const rootRef = React.useRef(null as HTMLDivElement | null);
   const busy = React.useRef(false);
 
-  // Detect after mount, not during render: reading matchMedia at render time
-  // makes the server (false) and client (true, under reduced motion) disagree,
-  // which React 19 flags as a hydration mismatch.
-  const [reduce, setReduce] = React.useState(false);
-  React.useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setReduce(mq.matches);
-    const onChangeMq = (e: MediaQueryListEvent) => setReduce(e.matches);
-    mq.addEventListener('change', onChangeMq);
-    return () => mq.removeEventListener('change', onChangeMq);
-  }, []);
+  const reduce = useReducedMotion();
 
   // Three size tiers, at the same 980px/640px window-width cuts the rest of
   // the site uses (responsive.css), rather than a single ad hoc breakpoint.
@@ -483,7 +480,9 @@ export default function AboutCarousel({
                     'px) rotate(' +
                     pose.rot.toFixed(2) +
                     'deg)',
-                  zIndex: pose.z,
+                  // Above the centre slot's max (10) so a card being dragged
+                  // through the centre stays on top of it, not behind it.
+                  zIndex: dragging ? 20 : pose.z,
                   transition: dragging ? 'none' : undefined,
                 }}
                 onClick={() => onCardClick(slot as 0 | 1 | 2)}
@@ -499,7 +498,11 @@ export default function AboutCarousel({
                 }
               >
                 {srcs[photoIndex] ? (
-                  <img src={srcs[photoIndex]} alt="" draggable={false} />
+                  <img
+                    src={srcs[photoIndex]}
+                    alt={s.photos?.[photoIndex]?.alt ?? ''}
+                    draggable={false}
+                  />
                 ) : null}
               </button>
             );

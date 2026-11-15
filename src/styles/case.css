@@ -647,7 +647,10 @@ body.on-case .read-progress { display: block; }
   margin-top: var(--space-6);
 }
 
-.about-intro:first-of-type { margin-top: 0; }
+/* Not `:first-of-type` — `.crumb` is also a <p> and precedes it, so
+   `.about-intro:first-of-type` (first <p> sibling) never matches an
+   `.about-intro` element at all. Target the one that's actually first. */
+.about-title + .about-intro { margin-top: 0; }
 
 .about-gallery {
   display: flex;
