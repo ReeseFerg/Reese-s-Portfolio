@@ -67,6 +67,10 @@ function bind() {
   };
 
   const onMove = (e: PointerEvent) => {
+    // Paused over the work cards, whose hover has its own motion (cover video).
+    // Stateless: leaving the card just means the next move lights cells again,
+    // and anything already lit finishes fading out.
+    if ((e.target as Element | null)?.closest('.snapshot-card')) return;
     const col = Math.floor(e.clientX / pixelSize);
     const row = Math.floor(e.clientY / pixelSize);
     // Cell coordinates are bounded by the viewport, so this packing is collision-free.
