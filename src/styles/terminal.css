@@ -12,6 +12,23 @@
   letter-spacing: 0.02em;
 }
 
+/* ---------- Pixel trail (homepage cursor background) ---------- */
+/* Painted by src/scripts/pixel-trail.ts. z-index -1 sits above the root's
+   black background but behind all content. */
+.pixel-trail {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pixel-trail { display: none; }
+}
+
 /* ---------- Hero terminal ---------- */
 :root {
   /* .site-header: 28px×2 padding + ~46px nav button, stable >980px (only
@@ -214,6 +231,9 @@ body:not(.routed) .hero {
   width: auto;
   border-radius: 9999px;
   box-shadow: inset 0 0 15px 1px var(--accent-dim);
+  /* The dither PNG has transparent pixels; without a fill the pixel trail
+     (fixed behind the page) shows through the photo. */
+  background: var(--bg);
 }
 
 .term-left-info { margin-top: auto; }
